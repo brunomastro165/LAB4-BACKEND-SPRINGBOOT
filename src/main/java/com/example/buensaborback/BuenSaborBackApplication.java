@@ -1,10 +1,7 @@
 package com.example.buensaborback;
 
-import com.example.buensaborback.domain.entities.*;
-import com.example.buensaborback.domain.entities.enums.Estado;
-import com.example.buensaborback.domain.entities.enums.FormaPago;
-import com.example.buensaborback.domain.entities.enums.TipoEnvio;
-import com.example.buensaborback.domain.entities.enums.TipoPromocion;
+import com.example.buensaborback.entities.*;
+import com.example.buensaborback.entities.enums.*;
 import com.example.buensaborback.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +73,7 @@ public class BuenSaborBackApplication {
 		SpringApplication.run(BuenSaborBackApplication.class, args);
 		logger.info("Estoy activo en el main");
 	}
+
 
 
 	@Bean
@@ -274,8 +272,13 @@ public class BuenSaborBackApplication {
 			logger.info("{}",sucursalGodoyCruz);
 			logger.info("----------------Pedido ---------------------");
 			logger.info("{}",pedido);
+
+
 		};
+
+
 	}
+
 }
 
 
