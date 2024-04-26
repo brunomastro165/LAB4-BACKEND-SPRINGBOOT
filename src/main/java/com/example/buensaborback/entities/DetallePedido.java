@@ -19,6 +19,11 @@ public class DetallePedido extends Base {
     private Double subTotal;
 
     @ManyToOne
+    @JoinColumn(name = "articuloId")
     private Articulo articulo;
+
+    @ManyToOne
+    @JoinColumn(name = "pedidoId")
+    private Pedido pedido;
 
 }

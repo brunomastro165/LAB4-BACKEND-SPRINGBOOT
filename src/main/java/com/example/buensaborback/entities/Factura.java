@@ -3,6 +3,8 @@ package com.example.buensaborback.entities;
 import com.example.buensaborback.entities.Base;
 import com.example.buensaborback.entities.enums.FormaPago;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -23,5 +25,8 @@ public class Factura extends Base {
     private String mpPaymentType;
     private FormaPago formaPago;
     private Double totalVenta;
+    @OneToOne
+    @JoinColumn(name = "pedidoId")
+    private Pedido pedido;
 
 }

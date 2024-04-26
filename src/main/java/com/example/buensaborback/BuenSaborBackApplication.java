@@ -84,6 +84,8 @@ public class BuenSaborBackApplication {
 			// Crear 1 pais
 			// Crear 2 provincias para ese pais
 			// crear 2 localidades para cada provincia
+
+			/*
 			Pais pais1 = Pais.builder().nombre("Argentina").build();
 			Provincia provincia1 = Provincia.builder().nombre("Mendoza").pais(pais1).build();
 			Provincia provincia2 = Provincia.builder().nombre("Cordoba").pais(pais1).build();
@@ -273,7 +275,7 @@ public class BuenSaborBackApplication {
 			logger.info("----------------Pedido ---------------------");
 			logger.info("{}",pedido);
 
-
+*/
 		};
 
 

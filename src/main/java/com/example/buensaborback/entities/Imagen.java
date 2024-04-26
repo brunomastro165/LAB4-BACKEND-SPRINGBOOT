@@ -2,6 +2,9 @@ package com.example.buensaborback.entities;
 
 import com.example.buensaborback.entities.Base;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 @NoArgsConstructor
@@ -14,5 +17,15 @@ import lombok.*;
 public class Imagen extends Base {
 
     private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "articuloId")
+    private Articulo articulo;
+    @OneToOne
+    @JoinColumn(name = "clienteId")
+    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "promocionId")
+    private Promocion promocion;
     
 }

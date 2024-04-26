@@ -19,6 +19,7 @@ public class Domicilio extends Base {
     private Integer nroDpto;
 
     @ManyToOne
+    @JoinColumn(name="localidadId")
     private Localidad localidad;
 
 }

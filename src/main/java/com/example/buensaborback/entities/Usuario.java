@@ -1,4 +1,4 @@
-package com.example.buensaborback.entities.enums;
+package com.example.buensaborback.entities;
 
 import com.example.buensaborback.entities.Base;
 import jakarta.persistence.Entity;

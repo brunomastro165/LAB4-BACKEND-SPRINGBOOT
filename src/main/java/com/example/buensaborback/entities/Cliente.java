@@ -1,6 +1,5 @@
 package com.example.buensaborback.entities;
 
-import com.example.buensaborback.entities.enums.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,25 +21,24 @@ public class Cliente extends Base {
     private String email;
 
     @OneToOne
+    @JoinColumn(name = "usuarioId")
     private Usuario usuario;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cliente")
     private Imagen imagen;
 
-    @OneToMany
-    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
-    //DE ESTA MANERA PONE EL FOREIGN KEY 'cliente_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "cliente_id")
-    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cliente")
     @Builder.Default
     private Set<Pedido> pedidos = new HashSet<>();
 
+
+    //Revisar
+
+
     @ManyToMany
-    //SE AGREGA EL JOIN TABLE PARA QUE JPA CREE LA TABLA INTERMEDIA EN UNA RELACION MANY TO MANY
     @JoinTable(name = "cliente_domicilio",
             joinColumns = @JoinColumn(name = "cliente_id"),
             inverseJoinColumns = @JoinColumn(name = "domicilio_id"))
-    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
     private Set<Domicilio> domicilios = new HashSet<>();
 

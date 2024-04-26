@@ -1,6 +1,6 @@
 package com.example.buensaborback.controllers;
 
-import com.example.buensaborback.entities.enums.Usuario;
+import com.example.buensaborback.entities.Usuario;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.UsuarioServiceImpl;
 import org.springframework.web.bind.annotation.CrossOrigin;
