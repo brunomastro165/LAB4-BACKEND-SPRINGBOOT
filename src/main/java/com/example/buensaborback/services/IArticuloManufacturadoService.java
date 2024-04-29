@@ -4,7 +4,7 @@ import com.example.buensaborback.entities.ArticuloManufacturado;
 
 import java.util.List;
 
-public interface IArticuloManufacturadoService extends IBaseService<ArticuloManufacturado,Long>{
+public interface IArticuloManufacturadoService extends IArticuloService<ArticuloManufacturado,Long>{
 
     ArticuloManufacturado asignarImagenes(Long id, List<Long> imagenesIds);
     ArticuloManufacturado removerImagenes(Long id, List<Long> imagenesIds);

@@ -1,5 +1,6 @@
 package com.example.buensaborback.services.impl;
 
+import com.example.buensaborback.entities.Articulo;
 import com.example.buensaborback.services.IArticuloManufacturadoService;
 import com.example.buensaborback.services.IImagenService;
 import com.example.buensaborback.services.IUnidadMedidaService;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ArticuloManufactuadoServiceImpl extends BaseServiceImpl<ArticuloManufacturado,Long> implements IArticuloManufacturadoService {
+public class ArticuloManufactuadoServiceImpl extends ArticuloServiceImpl<ArticuloManufacturado,Long> implements IArticuloManufacturadoService {
     @Autowired
     private IImagenService imagenService;
     @Autowired

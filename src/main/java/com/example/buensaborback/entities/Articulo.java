@@ -16,12 +16,14 @@ import java.util.Set;
 @SuperBuilder
 //@Inheritance(strategy = InheritanceType.JOINED)
 //Genera UNA TABLA para cada CLASE que HEREDA de esta
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
 
 //Le cambié el abstract
-public abstract class Articulo extends Base {
-
+public abstract class Articulo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     protected String denominacion;
     protected Double precioVenta;
 

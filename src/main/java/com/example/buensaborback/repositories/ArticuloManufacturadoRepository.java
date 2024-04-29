@@ -1,6 +1,9 @@
 package com.example.buensaborback.repositories;
 
 import com.example.buensaborback.entities.ArticuloManufacturado;
+import org.springframework.stereotype.Repository;
 
-public interface ArticuloManufacturadoRepository extends BaseRepository<ArticuloManufacturado,Long> {
+import java.io.Serializable;
+@Repository
+public interface ArticuloManufacturadoRepository extends ArticuloRepository<ArticuloManufacturado,Long> {
 }

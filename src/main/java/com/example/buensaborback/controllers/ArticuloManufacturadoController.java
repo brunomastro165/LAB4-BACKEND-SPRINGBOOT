@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/articulosManufacturados")
 @CrossOrigin("*")
-public class ArticuloManufacturadoController extends BaseControllerImpl<ArticuloManufacturado,Long, ArticuloManufactuadoServiceImpl> {
+public class ArticuloManufacturadoController extends ArticuloControllerImpl<ArticuloManufacturado,Long, ArticuloManufactuadoServiceImpl> {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticuloManufacturadoController.class);
     public ArticuloManufacturadoController(ArticuloManufactuadoServiceImpl service) {

@@ -1,5 +1,6 @@
 package com.example.buensaborback.controllers;
 
+import com.example.buensaborback.entities.Articulo;
 import com.example.buensaborback.entities.ArticuloInsumo;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.ArticuloInsumoServiceImpl;
@@ -13,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/articulosInsumos")
 @CrossOrigin("*")
-public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,Long, ArticuloInsumoServiceImpl> {
+public class ArticuloInsumoController extends ArticuloControllerImpl<ArticuloInsumo,Long, ArticuloInsumoServiceImpl> {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticuloInsumoController.class);
     public ArticuloInsumoController(ArticuloInsumoServiceImpl service) {
