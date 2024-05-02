@@ -1,5 +1,9 @@
 package com.example.buensaborback.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,7 +22,9 @@ import java.util.Set;
 //Genera UNA TABLA para cada CLASE que HEREDA de esta
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 //Le cambié el abstract
 public abstract class Articulo {
     @Id

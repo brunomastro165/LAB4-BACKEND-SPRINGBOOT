@@ -261,6 +261,8 @@ public class BuenSaborBackApplication {
 					promocion(promocion).
 					url("img").
 					build();
+			articuloInsumo.setUnidadMedida(unidadMedida);
+			articuloInsumoRepository.save(articuloInsumo);
 			imagenRepository.save(i1);
 			sucursal.getPromociones().add(promocion);
 			sucursalRepository.save(sucursal);
