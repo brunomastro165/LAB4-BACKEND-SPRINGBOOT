@@ -1,6 +1,5 @@
 package com.example.buensaborback.entities;
 
-import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -17,7 +16,7 @@ import java.util.Set;
 @SuperBuilder
 //@Inheritance(strategy = InheritanceType.JOINED)
 //Genera UNA TABLA para cada CLASE que HEREDA de esta
-
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Articulo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

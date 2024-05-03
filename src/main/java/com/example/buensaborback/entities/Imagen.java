@@ -1,6 +1,4 @@
 package com.example.buensaborback.entities;
-
-import com.example.buensaborback.entities.Base;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

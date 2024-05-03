@@ -1,6 +1,4 @@
 package com.example.buensaborback.entities;
-
-import com.example.buensaborback.entities.Base;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -12,8 +10,6 @@ import lombok.*;
 @ToString
 @Builder
 public class Usuario extends Base {
-
     private String auth0Id;
     private String username;
-
 }
