@@ -13,7 +13,7 @@ import lombok.*;
 @Entity
 @ToString
 @Builder
-@JsonIgnoreProperties({"articulo","cliende","promocion"})
+@JsonIgnoreProperties({"articulo","cliente","promocion"})
 public class Imagen extends Base {
 
     private String url;
