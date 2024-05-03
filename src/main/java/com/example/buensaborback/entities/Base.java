@@ -18,9 +18,6 @@ import java.io.Serializable;
 @ToString
 @Setter
 @SuperBuilder
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public abstract class Base implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,7 @@ package com.example.buensaborback.entities;
 import com.example.buensaborback.entities.enums.Estado;
 import com.example.buensaborback.entities.enums.FormaPago;
 import com.example.buensaborback.entities.enums.TipoEnvio;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
+@JsonIgnoreProperties({"domicilio","sucursal","factura","cliente",})
 public class Pedido extends Base {
 
     private LocalTime horaEstimadaFinalizacion;

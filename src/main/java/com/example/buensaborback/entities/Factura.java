@@ -2,6 +2,7 @@ package com.example.buensaborback.entities;
 
 import com.example.buensaborback.entities.Base;
 import com.example.buensaborback.entities.enums.FormaPago;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @Entity
 @ToString
 @Builder
+@JsonIgnoreProperties({"pedidoId"})
 public class Factura extends Base {
 
     private LocalDate fechaFacturacion;

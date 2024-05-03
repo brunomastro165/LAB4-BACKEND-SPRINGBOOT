@@ -1,6 +1,7 @@
 package com.example.buensaborback.entities;
 
 import com.example.buensaborback.entities.enums.TipoPromocion;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @ToString
 @Builder
+@JsonIgnoreProperties({"articulos","imagenes"})
 public class Promocion extends Base {
 
     private String denominacion;

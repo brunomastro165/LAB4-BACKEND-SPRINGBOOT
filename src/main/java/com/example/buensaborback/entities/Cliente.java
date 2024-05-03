@@ -1,5 +1,6 @@
 package com.example.buensaborback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @Entity
 @ToString
 @Builder
+@JsonIgnoreProperties({"usuario","imagen","pedido","domicilios"})
 public class Cliente extends Base {
 
     private String nombre;
@@ -30,8 +32,6 @@ public class Cliente extends Base {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cliente")
     @Builder.Default
     private Set<Pedido> pedidos = new HashSet<>();
-
-
     //Revisar
 
 

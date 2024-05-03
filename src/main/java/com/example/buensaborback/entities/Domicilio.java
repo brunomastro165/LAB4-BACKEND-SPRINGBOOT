@@ -1,5 +1,6 @@
 package com.example.buensaborback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import lombok.*;
 @Entity
 @ToString
 @Builder
+@JsonIgnoreProperties({"localidad"})
 public class Domicilio extends Base {
 
     private String calle;

@@ -1,5 +1,6 @@
 package com.example.buensaborback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @ToString
 @Builder
+@JsonIgnoreProperties({"domicilio","empresa","categorias","promociones"})
 public class Sucursal extends Base {
 
     private String nombre;
