@@ -1,5 +1,5 @@
 package com.example.buensaborback.controllers;
-
+/*
 import com.example.buensaborback.entities.Articulo;
 import com.example.buensaborback.entities.ArticuloInsumo;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
@@ -40,3 +40,4 @@ public class ArticuloInsumoController extends ArticuloControllerImpl<ArticuloIns
     }
 
 }
+*/

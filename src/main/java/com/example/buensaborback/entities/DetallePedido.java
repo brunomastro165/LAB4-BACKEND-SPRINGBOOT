@@ -1,30 +1,24 @@
 package com.example.buensaborback.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @ToString
 @Builder
-@JsonIgnoreProperties({"articulo","pedidoId"})
-public class DetallePedido extends Base {
-
+//@Audited
+public class DetallePedido extends Base{
     private Integer cantidad;
     private Double subTotal;
 
     @ManyToOne
-    @JoinColumn(name = "articuloId")
     private Articulo articulo;
-
-    @ManyToOne
-    @JoinColumn(name = "pedidoId")
-    private Pedido pedido;
 
 }

@@ -1,11 +1,8 @@
 package com.example.buensaborback.services.impl;
-
-import com.example.buensaborback.entities.Articulo;
+/*
 import com.example.buensaborback.services.IArticuloInsumoService;
-import com.example.buensaborback.services.IImagenService;
 import com.example.buensaborback.services.IUnidadMedidaService;
 import com.example.buensaborback.entities.ArticuloInsumo;
-import com.example.buensaborback.entities.Imagen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +13,6 @@ import java.util.stream.Collectors;
 @Service
 public class ArticuloInsumoServiceImpl extends ArticuloServiceImpl<ArticuloInsumo,Long> implements IArticuloInsumoService {
 
-    @Autowired
-    private IImagenService imagenService;
     @Autowired
     private IUnidadMedidaService unidadMedidaService;
 
@@ -53,3 +48,4 @@ public class ArticuloInsumoServiceImpl extends ArticuloServiceImpl<ArticuloInsum
     }
 
 }
+*/

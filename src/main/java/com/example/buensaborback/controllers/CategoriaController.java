@@ -1,5 +1,5 @@
 package com.example.buensaborback.controllers;
-
+/*
 import com.example.buensaborback.entities.Categoria;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.CategoriaServiceImpl;
@@ -45,3 +45,4 @@ public class CategoriaController extends BaseControllerImpl<Categoria,Long, Cate
     }
 
 }
+*/

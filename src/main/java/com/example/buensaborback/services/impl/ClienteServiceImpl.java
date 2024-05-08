@@ -1,5 +1,5 @@
 package com.example.buensaborback.services.impl;
-
+/*
 import com.example.buensaborback.entities.Cliente;
 import com.example.buensaborback.entities.Domicilio;
 import com.example.buensaborback.entities.Pedido;
@@ -86,3 +86,4 @@ public class ClienteServiceImpl extends BaseServiceImpl<Cliente,Long> implements
         return update(cliente);
     }
 }
+*/

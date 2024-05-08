@@ -1,5 +1,5 @@
 package com.example.buensaborback.services.impl;
-
+/*
 import com.example.buensaborback.services.ICategoriaService;
 import com.example.buensaborback.services.IDomicilioService;
 import com.example.buensaborback.services.IPromocionService;
@@ -78,3 +78,4 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal,Long> implemen
         return update(sucursal);
     }
 }
+*/

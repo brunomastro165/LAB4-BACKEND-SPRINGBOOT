@@ -1,5 +1,5 @@
 package com.example.buensaborback.controllers;
-
+/*
 import com.example.buensaborback.entities.ArticuloManufacturado;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.ArticuloManufactuadoServiceImpl;
@@ -39,3 +39,4 @@ public class ArticuloManufacturadoController extends ArticuloControllerImpl<Arti
     }
 
 }
+*/

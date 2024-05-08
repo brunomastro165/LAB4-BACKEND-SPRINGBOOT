@@ -1,8 +1,6 @@
 package com.example.buensaborback.services.impl;
-
-import com.example.buensaborback.services.IImagenService;
+/*
 import com.example.buensaborback.services.IPromocionService;
-import com.example.buensaborback.entities.Imagen;
 import com.example.buensaborback.entities.Promocion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,3 +53,4 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion,Long> implem
     }
 
 }
+*/

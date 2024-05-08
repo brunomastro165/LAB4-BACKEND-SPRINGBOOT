@@ -14,13 +14,11 @@ import lombok.*;
 @Entity
 @ToString
 @Builder
-@JsonIgnoreProperties("pais")
 public class Provincia extends Base {
 
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "paisId")
     private Pais pais;
 
 }

@@ -1,19 +1,23 @@
 package com.example.buensaborback.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @ToString
 @Builder
-@JsonIgnoreProperties({"localidad"})
-public class Domicilio extends Base {
-
+//@Audited
+public class Domicilio extends Base{
     private String calle;
     private Integer numero;
     private Integer cp;
@@ -21,7 +25,9 @@ public class Domicilio extends Base {
     private Integer nroDpto;
 
     @ManyToOne
-    @JoinColumn(name="localidadId")
+    @NotAudited
     private Localidad localidad;
 
+
 }
+

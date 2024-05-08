@@ -1,28 +1,32 @@
 package com.example.buensaborback.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @ToString
 @Builder
-@JsonIgnoreProperties({"sucursales"})
-public class Empresa extends Base {
+//@Audited
+public class Empresa extends Base{
 
     private String nombre;
     private String razonSocial;
     private Integer cuil;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empresa")
+    @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+    @ToString.Exclude
     @Builder.Default
-    private Set<Sucursal> sucursales = new HashSet<>();
-
+    private Set<Sucursal> Sucursales= new HashSet<>();
 }
+

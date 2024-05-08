@@ -1,5 +1,5 @@
 package com.example.buensaborback.controllers;
-
+/*
 import com.example.buensaborback.entities.Promocion;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.PromocionServiceImpl;
@@ -32,3 +32,4 @@ public class PromocionController extends BaseControllerImpl<Promocion, Long, Pro
         return ResponseEntity.ok(service.removerImagenes(id,imagenesIds));
     }
 }
+*/

@@ -1,15 +1,17 @@
 package com.example.buensaborback.entities;
+
 import jakarta.persistence.Entity;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @ToString
 @Builder
-public class Usuario extends Base {
-    private String auth0Id;
-    private String userName;
+public class ImagenArticulo extends Base{
+
+    private String url;
+
 }

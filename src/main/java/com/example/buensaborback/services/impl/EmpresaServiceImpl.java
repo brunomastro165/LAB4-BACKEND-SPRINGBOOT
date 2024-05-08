@@ -1,5 +1,5 @@
 package com.example.buensaborback.services.impl;
-
+/*
 import com.example.buensaborback.services.IEmpresaService;
 import com.example.buensaborback.services.ISucursalService;
 import com.example.buensaborback.entities.Empresa;
@@ -47,3 +47,4 @@ public class EmpresaServiceImpl extends BaseServiceImpl<Empresa,Long> implements
         return update(empresa);
     }
 }
+*/

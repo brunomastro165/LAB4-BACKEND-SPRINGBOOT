@@ -3,23 +3,22 @@ package com.example.buensaborback.entities;
 import com.example.buensaborback.entities.enums.Estado;
 import com.example.buensaborback.entities.enums.FormaPago;
 import com.example.buensaborback.entities.enums.TipoEnvio;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 @Builder
-@JsonIgnoreProperties({"domicilio","sucursal","factura","cliente",})
-public class Pedido extends Base {
+//@Audited
+public class Pedido extends Base{
 
     private LocalTime horaEstimadaFinalizacion;
     private Double total;
@@ -35,15 +34,23 @@ public class Pedido extends Base {
     @ManyToOne
     private Sucursal sucursal;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "pedido")
+    @OneToOne
     private Factura factura;
 
     @ManyToOne
-    @JoinColumn(name = "clienteId")
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "pedido")
+    @OneToMany(cascade = CascadeType.ALL)
+    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
+    //DE ESTA MANERA PONE EL FOREIGN KEY 'pedido_id' EN LA TABLA DE LOS MANY
+    @JoinColumn(name = "pedido_id")
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
     private Set<DetallePedido> detallePedidos = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "empleado_id")
+    private Empleado empleado;
 }
+

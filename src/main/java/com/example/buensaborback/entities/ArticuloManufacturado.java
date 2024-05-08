@@ -20,8 +20,9 @@ public class ArticuloManufacturado extends Articulo {
     private Integer tiempoEstimadoMinutos;
     private String preparacion;
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "articuloManufacturadoId")
+
+    @OneToMany
+    @JoinColumn(name = "articuloManufacturado_id")
     @Builder.Default
     private Set<ArticuloManufacturadoDetalle> articuloManufacturadoDetalles = new HashSet<>();
 

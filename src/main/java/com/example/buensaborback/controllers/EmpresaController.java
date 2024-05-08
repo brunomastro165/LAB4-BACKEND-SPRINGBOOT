@@ -1,5 +1,5 @@
 package com.example.buensaborback.controllers;
-
+/*
 import com.example.buensaborback.entities.Empresa;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.EmpresaServiceImpl;
@@ -31,3 +31,4 @@ public class EmpresaController extends BaseControllerImpl<Empresa,Long, EmpresaS
         return ResponseEntity.ok(service.removerSucursales(id,sucursalesIds));
     }
 }
+*/

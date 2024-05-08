@@ -1,5 +1,5 @@
 package com.example.buensaborback.services.impl;
-
+/*
 import com.example.buensaborback.services.IArticuloInsumoService;
 import com.example.buensaborback.services.IArticuloManufacturadoService;
 import com.example.buensaborback.services.ICategoriaService;
@@ -70,3 +70,4 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria,Long> implem
         return update(categoria);
     }
 }
+*/

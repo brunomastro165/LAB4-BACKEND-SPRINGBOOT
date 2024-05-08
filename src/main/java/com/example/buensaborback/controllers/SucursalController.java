@@ -1,5 +1,5 @@
 package com.example.buensaborback.controllers;
-
+/*
 import com.example.buensaborback.entities.Sucursal;
 import com.example.buensaborback.controllers.base.BaseControllerImpl;
 import com.example.buensaborback.services.impl.SucursalServiceImpl;
@@ -51,3 +51,4 @@ public class SucursalController extends BaseControllerImpl<Sucursal,Long, Sucurs
     }
 
 }
+*/

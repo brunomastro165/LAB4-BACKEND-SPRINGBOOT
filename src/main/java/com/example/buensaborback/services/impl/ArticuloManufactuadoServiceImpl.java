@@ -1,11 +1,8 @@
 package com.example.buensaborback.services.impl;
-
-import com.example.buensaborback.entities.Articulo;
+/*
 import com.example.buensaborback.services.IArticuloManufacturadoService;
-import com.example.buensaborback.services.IImagenService;
 import com.example.buensaborback.services.IUnidadMedidaService;
 import com.example.buensaborback.entities.ArticuloManufacturado;
-import com.example.buensaborback.entities.Imagen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,3 +48,4 @@ public class ArticuloManufactuadoServiceImpl extends ArticuloServiceImpl<Articul
         return update(articulo);
     }
 }
+*/

@@ -1,32 +1,32 @@
 package com.example.buensaborback.entities;
+
 import com.example.buensaborback.entities.enums.FormaPago;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @ToString
 @Builder
-@JsonIgnoreProperties({"pedidoId"})
-public class Factura extends Base {
-
-    private LocalDate fechaFacturacion;
+//@Audited
+public class Factura extends Base{
+    private LocalDate fechaFcturacion;
     private Integer mpPaymentId;
     private Integer mpMerchantOrderId;
     private String mpPreferenceId;
     private String mpPaymentType;
     private FormaPago formaPago;
     private Double totalVenta;
-    @OneToOne
-    @JoinColumn(name = "pedidoId")
-    private Pedido pedido;
+
 
 }
+
