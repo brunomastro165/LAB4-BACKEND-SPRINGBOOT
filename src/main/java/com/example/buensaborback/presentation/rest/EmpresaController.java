@@ -3,12 +3,14 @@ package com.example.buensaborback.presentation.rest;
 import com.example.buensaborback.business.facade.impl.EmpresaFacadeImpl;
 import com.example.buensaborback.domain.dtos.EmpresaDTO;
 import com.example.buensaborback.domain.dtos.shortDTO.EmpresaShortDTO;
+import com.example.buensaborback.domain.dtos.shortDTO.SucursalShortDTO;
 import com.example.buensaborback.domain.entities.Empresa;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -16,6 +18,15 @@ import java.util.List;
 public class EmpresaController extends BaseControllerImpl<Empresa, EmpresaDTO, Long, EmpresaFacadeImpl> {
     public EmpresaController(EmpresaFacadeImpl facade) {
         super(facade);
+    }
+
+    @GetMapping("/{id}/sucursales")
+    public ResponseEntity<Set<SucursalShortDTO>> getSucursalesByEmpresaId(@PathVariable Long id) {
+        try {
+            return facade.getSucursalesByEmpresaId(id);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}/short")
