@@ -1,6 +1,8 @@
 package com.example.buensaborback.repositories;
 
-import com.example.buensaborback.entities.Provincia;
+import com.example.buensaborback.domain.entities.Provincia;
+import org.springframework.stereotype.Repository;
 
-public interface ProvinciaRepository extends BaseRepository<Provincia,Long> {
+@Repository
+public interface ProvinciaRepository extends BaseRepository<Provincia, Long> {
 }

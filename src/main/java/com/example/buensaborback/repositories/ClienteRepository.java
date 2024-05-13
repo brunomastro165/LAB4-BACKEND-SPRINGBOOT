@@ -1,7 +1,8 @@
 package com.example.buensaborback.repositories;
 
-import com.example.buensaborback.entities.Cliente;
+import com.example.buensaborback.domain.entities.Cliente;
+import org.springframework.stereotype.Repository;
 
-
-public interface ClienteRepository extends BaseRepository<Cliente,Long> {
+@Repository
+public interface ClienteRepository extends BaseRepository<Cliente, Long> {
 }

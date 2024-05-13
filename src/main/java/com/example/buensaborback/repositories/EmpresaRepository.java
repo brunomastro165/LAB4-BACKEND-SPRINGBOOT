@@ -1,6 +1,12 @@
 package com.example.buensaborback.repositories;
 
-import com.example.buensaborback.entities.Empresa;
+import com.example.buensaborback.domain.entities.Empresa;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-public interface EmpresaRepository extends BaseRepository<Empresa,Long> {
+@Repository
+public interface EmpresaRepository extends BaseRepository<Empresa, Long> {
+    @Query("SELECT e FROM Empresa e LEFT JOIN FETCH e.sucursales WHERE e.id = :id")
+    Empresa findWithSucursalesById(@Param("id") Long id);
 }

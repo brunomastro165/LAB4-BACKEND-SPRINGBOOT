@@ -1,6 +1,8 @@
 package com.example.buensaborback.repositories;
 
-import com.example.buensaborback.entities.Localidad;
+import com.example.buensaborback.domain.entities.Localidad;
+import org.springframework.stereotype.Repository;
 
-public interface LocalidadRepository extends BaseRepository<Localidad,Long> {
+@Repository
+public interface LocalidadRepository extends BaseRepository<Localidad, Long> {
 }

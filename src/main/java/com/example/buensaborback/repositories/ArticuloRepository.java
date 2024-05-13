@@ -1,12 +1,8 @@
 package com.example.buensaborback.repositories;
 
-import com.example.buensaborback.entities.Articulo;
-import com.example.buensaborback.entities.Base;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
+import com.example.buensaborback.domain.entities.Articulo;
+import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-
-@NoRepositoryBean
-public interface ArticuloRepository <E extends Articulo, ID extends Serializable> extends JpaRepository<E, ID> {
+@Repository
+public interface ArticuloRepository extends BaseRepository<Articulo, Long> {
 }
