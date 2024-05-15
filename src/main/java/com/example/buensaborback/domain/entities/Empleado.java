@@ -1,13 +1,11 @@
 package com.example.buensaborback.domain.entities;
 
 import com.example.buensaborback.domain.enums.Rol;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.NotAudited;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,33 +14,40 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 //@Audited
-public class Empleado extends Base {
-    private Rol tipoEmpleado;
-    private String nombre;
-    private String apellido;
-    private String telefono;
-    private String email;
-    private LocalDate fechaNacimiento;
+public class Empleado extends Base{
+    protected String nombre;
+    protected String apellido;
+    protected String telefono;
+    protected String email;
 
     @OneToOne
-    private UsuarioEmpleado usuarioEmpleado;
+    protected UsuarioEmpleado usuario;
 
     @OneToOne
     @NotAudited
-    private ImagenEmpleado imagenEmpleado;
+    protected ImagenEmpleado imagenPersona;
 
+    @ManyToMany
+    //SE AGREGA EL JOIN TABLE PARA QUE JPA CREE LA TABLA INTERMEDIA EN UNA RELACION MANY TO MANY
+    @JoinTable(name = "cliente_domicilio",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "domicilio_id"))
+    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
+    @Builder.Default
+    protected Set<Domicilio> domicilios = new HashSet<>();
+
+
+    private Rol tipoEmpleado;
 
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
-    @JsonManagedReference
-    private Set<Pedido> pedidos = new HashSet<>();
+    private Set<Pedido> pedidos= new HashSet<>();
 
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "sucursal_id")
-    @JsonBackReference
     private Sucursal sucursal;
 }

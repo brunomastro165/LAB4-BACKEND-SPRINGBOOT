@@ -1,19 +1,19 @@
 package com.example.buensaborback.presentation.base;
 
 import com.example.buensaborback.business.facade.base.BaseFacadeImpl;
-import com.example.buensaborback.domain.dtos.BaseDTO;
+import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.entities.Base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Controller
-public abstract class BaseControllerImpl<E extends Base, D extends BaseDTO, ID extends Serializable, F extends BaseFacadeImpl<E, D, ID>> implements BaseController<D, ID> {
+public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, DE, ID extends Serializable, F extends BaseFacadeImpl<E, D, DC, DE, ID>> implements BaseController<D, DC, DE, ID> {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseControllerImpl.class);
     protected F facade;
@@ -22,48 +22,34 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDTO, ID e
         this.facade = facade;
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> getAll() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(facade.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
-        }
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOne(@PathVariable ID id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
-        }
+    public ResponseEntity<D> getById(@PathVariable ID id) {
+        logger.info("INICIO GET BY ID {}", id);
+        return ResponseEntity.ok(facade.getById(id));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> save(@RequestBody D entity) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(facade.save(entity));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
-        }
+    @GetMapping
+    public ResponseEntity<List<D>> getAll() {
+        logger.info("INICIO GET ALL");
+        return ResponseEntity.ok(facade.getAll());
+    }
+
+    @PostMapping()
+    public ResponseEntity<D> create(@RequestBody DC entity) {
+        logger.info("INICIO CREATE {}", entity.getClass());
+        return ResponseEntity.ok(facade.createNew(entity));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable ID id, @RequestBody D entity) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, entity));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
-        }
+    public ResponseEntity<D> edit(@RequestBody DE entity, @PathVariable ID id) {
+        logger.info("INICIO EDIT {}", entity.getClass());
+        return ResponseEntity.ok(facade.update(entity, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable ID id) {
-        try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(facade.delete(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
-        }
+    public ResponseEntity<?> deleteById(@PathVariable ID id) {
+        logger.info("INICIO DELETE BY ID");
+        facade.deleteById(id);
+        return ResponseEntity.ok(null);
     }
 }

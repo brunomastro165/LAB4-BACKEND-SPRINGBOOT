@@ -2,86 +2,59 @@ package com.example.buensaborback.business.facade.base;
 
 import com.example.buensaborback.business.mapper.BaseMapper;
 import com.example.buensaborback.business.services.base.BaseService;
-import com.example.buensaborback.domain.dtos.BaseDTO;
+import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.entities.Base;
-import jakarta.transaction.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class BaseFacadeImpl<E extends Base, D extends BaseDTO, ID extends Serializable> implements BaseFacade<D, ID> {
+public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, ID extends Serializable> implements BaseFacade<D, DC, DE, ID> {
 
     protected BaseService<E, ID> baseService;
-    protected BaseMapper<E, D> baseMapper;
+    protected BaseMapper<E, D, DC, DE> baseMapper;
 
-    public BaseFacadeImpl(BaseService<E, ID> baseService, BaseMapper<E, D> baseMapper) {
+    public BaseFacadeImpl(BaseService<E, ID> baseService, BaseMapper<E, D, DC, DE> baseMapper) {
         this.baseService = baseService;
         this.baseMapper = baseMapper;
     }
 
-    @Override
-    @Transactional
-    public List<D> findAll() throws Exception {
-        try {
-            var entities = baseService.findAll();
-            return entities
-                    .stream()
-                    .map(baseMapper::toDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
+    public D createNew(DC request) {
+        // Convierte a entidad
+        var entityToCreate = baseMapper.toEntityCreate(request);
+        // Graba una entidad
+        var entityCreated = baseService.create(entityToCreate);
+        // convierte a Dto para devolver
+        return baseMapper.toDTO(entityCreated);
     }
 
-    @Override
-    @Transactional
-    public D findById(ID id) throws Exception {
-        try {
-            var entity = baseService.findById(id);
-            return baseMapper.toDTO(entity);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
+    public D getById(ID id) {
+        // Busca una entidad por id
+        var entity = baseService.getById(id);
+        // convierte la entidad a DTO
+        return baseMapper.toDTO(entity);
     }
 
-    @Override
-    @Transactional
-    public D save(D request) throws Exception {
-        try {
-            var entityToCreate = baseMapper.toEntity(request);
-            var entityCreated = baseService.save(entityToCreate);
-            return baseMapper.toDTO(entityCreated);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
+    public List<D> getAll() {
+        // trae una lista de entidades
+        var entities = baseService.getAll();
+        //  devuelve una lista de DTO
+        return entities
+                .stream()
+                .map(baseMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional
-    public D update(ID id, D request) throws Exception {
-        try {
-            var entityToUpdate = baseMapper.toEntity(request);
-            var entityUpdated = baseService.update(id, entityToUpdate);
-            return baseMapper.toDTO(entityUpdated);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public void deleteById(ID id) {
+        var entity = baseService.getById(id);
+        baseService.deleteById(id);
     }
 
-    @Override
-    @Transactional
-    public boolean delete(ID id) throws Exception {
-        try {
-            //Agregar estructura else-if como en el service
-            var entity = baseService.findById(id);
-            baseService.delete(id);
-            return true;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public D update(DE request, ID id) {
+        var entityToUpdate = baseService.getById(id);
+        var entityUpdatedByMapper = baseMapper.toUpdate(entityToUpdate, request);
+        var entityUpdatedByService = baseService.update(entityUpdatedByMapper, id);
+        return baseMapper.toDTO(entityUpdatedByService);
     }
+
 }

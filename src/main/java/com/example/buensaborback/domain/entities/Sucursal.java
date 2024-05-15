@@ -1,11 +1,9 @@
 package com.example.buensaborback.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -17,19 +15,18 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-@Builder
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@SuperBuilder
 //@Audited
-public class Sucursal extends Base {
+public class Sucursal extends  Base{
 
     private String nombre;
+    @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
     private LocalTime horarioApertura;
+    @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
     private LocalTime horarioCierre;
-    private boolean casaMatriz;
+    private Boolean esCasaMatriz;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Domicilio domicilio;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
@@ -39,7 +36,6 @@ public class Sucursal extends Base {
             inverseJoinColumns = @JoinColumn(name = "sucursal_id"))
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    @JsonManagedReference
     private Set<Promocion> promociones = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -51,16 +47,12 @@ public class Sucursal extends Base {
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    @JsonManagedReference
     private Set<Categoria> categorias = new HashSet<>();
 
-
-    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @Builder.Default
-    @JsonManagedReference
     private Set<Empleado> empleados = new HashSet<>();
 
     @ManyToOne
-    @JsonBackReference
     private Empresa empresa;
 }

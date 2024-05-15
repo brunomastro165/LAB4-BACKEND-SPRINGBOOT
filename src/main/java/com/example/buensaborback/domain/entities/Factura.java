@@ -3,6 +3,7 @@ package com.example.buensaborback.domain.entities;
 import com.example.buensaborback.domain.enums.FormaPago;
 import jakarta.persistence.Entity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
@@ -12,9 +13,9 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 //@Audited
-public class Factura extends Base {
+public class Factura extends Base{
     private LocalDate fechaFcturacion;
     private Integer mpPaymentId;
     private Integer mpMerchantOrderId;

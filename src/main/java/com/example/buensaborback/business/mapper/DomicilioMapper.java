@@ -1,18 +1,14 @@
 package com.example.buensaborback.business.mapper;
 
-import com.example.buensaborback.domain.dtos.DomicilioDTO;
+import com.example.buensaborback.business.services.LocalidadService;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.entities.Domicilio;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring")
-public interface DomicilioMapper extends BaseMapper<Domicilio, DomicilioDTO> {
-    DomicilioDTO toDTO(Domicilio source);
-
-    Domicilio toEntity(DomicilioDTO source);
-
-    List<DomicilioDTO> toDTOsList(List<Domicilio> source);
-
-    List<Domicilio> toEntitiesList(List<DomicilioDTO> source);
+@Mapper(componentModel = "spring", uses = {LocalidadService.class})
+public interface DomicilioMapper extends BaseMapper<Domicilio, DomicilioDto, DomicilioCreateDto, DomicilioCreateDto> {
+    @Mapping(target = "localidad", source = "idLocalidad", qualifiedByName = "getById")
+    Domicilio toEntityCreate(DomicilioCreateDto source);
 }

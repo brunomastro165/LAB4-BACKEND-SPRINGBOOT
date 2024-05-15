@@ -1,11 +1,13 @@
 package com.example.buensaborback.domain.entities;
 
+
+
 import com.example.buensaborback.domain.enums.Estado;
 import com.example.buensaborback.domain.enums.FormaPago;
 import com.example.buensaborback.domain.enums.TipoEnvio;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,9 +20,9 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 //@Audited
-public class Pedido extends Base {
+public class Pedido extends Base{
 
     private LocalTime horaEstimadaFinalizacion;
     private Double total;
@@ -41,7 +43,6 @@ public class Pedido extends Base {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonBackReference
     private Cliente cliente;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -54,6 +55,5 @@ public class Pedido extends Base {
 
     @ManyToOne
     @JoinColumn(name = "empleado_id")
-    @JsonBackReference
     private Empleado empleado;
 }

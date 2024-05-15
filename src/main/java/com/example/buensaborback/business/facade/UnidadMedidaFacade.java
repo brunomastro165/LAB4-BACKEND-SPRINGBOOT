@@ -1,7 +1,8 @@
 package com.example.buensaborback.business.facade;
 
 import com.example.buensaborback.business.facade.base.BaseFacade;
-import com.example.buensaborback.domain.dtos.UnidadMedidaDTO;
+import com.example.buensaborback.domain.dto.UnidadMedida.UnidadMedidaCreateDto;
+import com.example.buensaborback.domain.dto.UnidadMedida.UnidadMedidaDto;
 
-public interface UnidadMedidaFacade extends BaseFacade<UnidadMedidaDTO, Long> {
+public interface UnidadMedidaFacade extends BaseFacade<UnidadMedidaDto, UnidadMedidaCreateDto, UnidadMedidaCreateDto, Long> {
 }

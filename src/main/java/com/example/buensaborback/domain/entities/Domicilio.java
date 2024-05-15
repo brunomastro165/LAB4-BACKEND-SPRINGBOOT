@@ -1,10 +1,12 @@
 package com.example.buensaborback.domain.entities;
 
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.NotAudited;
+
 
 @Entity
 @AllArgsConstructor
@@ -12,9 +14,9 @@ import org.hibernate.envers.NotAudited;
 @Setter
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 //@Audited
-public class Domicilio extends Base {
+public class Domicilio extends Base{
     private String calle;
     private Integer numero;
     private Integer cp;
@@ -22,6 +24,7 @@ public class Domicilio extends Base {
     private Integer nroDpto;
 
     @ManyToOne
+    @JoinColumn(name = "localidad_id")
     @NotAudited
     private Localidad localidad;
 

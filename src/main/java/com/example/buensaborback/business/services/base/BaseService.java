@@ -1,18 +1,20 @@
 package com.example.buensaborback.business.services.base;
 
 import com.example.buensaborback.domain.entities.Base;
+import org.mapstruct.Named;
 
 import java.io.Serializable;
 import java.util.List;
 
 public interface BaseService<E extends Base, ID extends Serializable> {
-    public List<E> findAll() throws Exception;
+    public E create(E request);
 
-    public E findById(ID id) throws Exception;
+    public List<E> getAll();
 
-    public E save(E entity) throws Exception;
+    public void deleteById(ID id);
 
-    public E update(ID id, E entity) throws Exception;
+    public E update(E request, ID id);
 
-    public boolean delete(ID id) throws Exception;
+    @Named("getById")// Esta notacion califica al metodo para luego se utilizado en clase mappper
+    public E getById(ID id);
 }

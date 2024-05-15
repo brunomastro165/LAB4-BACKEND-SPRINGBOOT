@@ -1,18 +1,18 @@
 package com.example.buensaborback.business.facade.base;
 
-import com.example.buensaborback.domain.dtos.BaseDTO;
+import com.example.buensaborback.domain.dto.BaseDto;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface BaseFacade<D extends BaseDTO, ID extends Serializable> {
-    public List<D> findAll() throws Exception;
+public interface BaseFacade<D extends BaseDto, DC, DE, ID extends Serializable> {
+    public D createNew(DC request);
 
-    public D findById(ID id) throws Exception;
+    public D getById(Long id);
 
-    public D save(D request) throws Exception;
+    public List<D> getAll();
 
-    public D update(ID id, D request) throws Exception;
+    public void deleteById(Long id);
 
-    public boolean delete(ID id) throws Exception;
+    public D update(DE request, Long id);
 }

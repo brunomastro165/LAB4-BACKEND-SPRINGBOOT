@@ -1,18 +1,14 @@
 package com.example.buensaborback.business.mapper;
 
-import com.example.buensaborback.domain.dtos.ArticuloManufacturadoDetalleDTO;
+import com.example.buensaborback.business.services.ArticuloInsumoService;
+import com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring")
-public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDTO> {
-    ArticuloManufacturadoDetalleDTO toDTO(ArticuloManufacturadoDetalle source);
-
-    ArticuloManufacturadoDetalle toEntity(ArticuloManufacturadoDetalleDTO source);
-
-    List<ArticuloManufacturadoDetalleDTO> toDTOsList(List<ArticuloManufacturadoDetalle> source);
-
-    List<ArticuloManufacturadoDetalle> toEntitiesList(List<ArticuloManufacturadoDetalleDTO> source);
+@Mapper(componentModel = "spring", uses = {ArticuloInsumoService.class})
+public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto, ArticuloManufacturadoDetalleCreateDto, ArticuloManufacturadoDetalleCreateDto> {
+    @Mapping(target = "articuloInsumo", source = "idArticuloInsumo", qualifiedByName = "getById")
+    ArticuloManufacturadoDetalle toEntityCreate(ArticuloManufacturadoDetalleCreateDto source);
 }

@@ -1,28 +1,16 @@
 package com.example.buensaborback.business.mapper;
 
-import com.example.buensaborback.domain.dtos.SucursalDTO;
-import com.example.buensaborback.domain.dtos.shortDTO.SucursalShortDTO;
+import com.example.buensaborback.business.services.EmpresaService;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalCreateDto;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalEditDto;
 import com.example.buensaborback.domain.entities.Sucursal;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring")
-public interface SucursalMapper extends BaseMapper<Sucursal, SucursalDTO> {
-    SucursalDTO toDTO(Sucursal source);
-
-    Sucursal toEntity(SucursalDTO source);
-
-    List<SucursalDTO> toDTOsList(List<Sucursal> source);
-
-    List<Sucursal> toEntitiesList(List<SucursalDTO> source);
-
-    // Métodos para SucursalShortDTO
-    SucursalShortDTO toShortDTO(Sucursal source);
-
-    Sucursal toEntityFromShortDTO(SucursalShortDTO source);
-
-    List<SucursalShortDTO> toShortDTOsList(List<Sucursal> source);
-
-    List<Sucursal> toEntitiesListFromShortDTOs(List<SucursalShortDTO> source);
+@Mapper(componentModel = "spring", uses = {DomicilioMapper.class, EmpresaService.class})
+public interface SucursalMapper extends BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto> {
+    //qualifiedByName ="getById" apunta al metodo con @Named de EmpresaService con valor getById
+    @Mapping(target = "empresa", source = "idEmpresa", qualifiedByName = "getById")
+    public Sucursal toEntityCreate(SucursalCreateDto source);
 }

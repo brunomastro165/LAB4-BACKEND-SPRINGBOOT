@@ -1,20 +1,19 @@
 package com.example.buensaborback.presentation.base;
 
-import com.example.buensaborback.domain.dtos.BaseDTO;
+import com.example.buensaborback.domain.dto.BaseDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Serializable;
+import java.util.List;
 
-public interface BaseController<D extends BaseDTO, ID extends Serializable> {
-    public ResponseEntity<?> getAll();
+public interface BaseController<D extends BaseDto, DC, DE, ID extends Serializable> {
+    ResponseEntity<D> getById(ID id);
 
-    public ResponseEntity<?> getOne(@PathVariable ID id);
+    ResponseEntity<List<D>> getAll();
 
-    public ResponseEntity<?> save(@RequestBody D entity);
+    ResponseEntity<D> create(DC entity);
 
-    public ResponseEntity<?> update(@PathVariable ID id, @RequestBody D entity);
+    ResponseEntity<D> edit(DE entity, ID id);
 
-    public ResponseEntity<?> delete(@PathVariable ID id);
+    ResponseEntity<?> deleteById(ID id);
 }

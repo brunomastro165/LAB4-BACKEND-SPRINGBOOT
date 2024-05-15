@@ -1,7 +1,8 @@
 package com.example.buensaborback.business.facade;
 
 import com.example.buensaborback.business.facade.base.BaseFacade;
-import com.example.buensaborback.domain.dtos.ArticuloManufacturadoDTO;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 
-public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufacturadoDTO, Long> {
+public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoCreateDto, Long> {
 }

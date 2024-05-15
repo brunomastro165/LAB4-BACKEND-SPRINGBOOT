@@ -1,6 +1,6 @@
 package com.example.buensaborback.presentation.advise;
 
-import com.example.buensaborback.domain.dtos.ErrorDTO;
+import com.example.buensaborback.domain.dto.ErrorDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,11 @@ public class AdviceController {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorDTO> handleEmptyInput(Exception e) {
+    public ResponseEntity<ErrorDto> handleEmptyInput(Exception e) {
         String errorMsg = e.getClass().getSimpleName() + " : " + e.getMessage();
         logger.error(errorMsg);
         return ResponseEntity.internalServerError()
-                .body(ErrorDTO.builder()
+                .body(ErrorDto.builder()
                         .errorMsg(e.getMessage())
                         .errorClass(e.getClass().getSimpleName())
                         .build());

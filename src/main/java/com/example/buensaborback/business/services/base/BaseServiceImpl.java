@@ -2,79 +2,60 @@ package com.example.buensaborback.business.services.base;
 
 import com.example.buensaborback.domain.entities.Base;
 import com.example.buensaborback.repositories.BaseRepository;
-import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 
+@Service
 public abstract class BaseServiceImpl<E extends Base, ID extends Serializable> implements BaseService<E, ID> {
 
+    private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
+
+    @Autowired
     protected BaseRepository<E, ID> baseRepository;
 
-    public BaseServiceImpl(BaseRepository<E, ID> baseRepository) {
-        this.baseRepository = baseRepository;
+    @Override
+    public E create(E request) {
+        var newEntity = baseRepository.save(request);
+        logger.info("Creada entidad {}", newEntity);
+        return newEntity;
     }
 
     @Override
-    @Transactional
-    public List<E> findAll() throws Exception {
-        try {
-            List<E> entities = baseRepository.findAll();
-            return entities;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public E getById(ID id) {
+        var entity = baseRepository.getById(id);
+        logger.info("Obtenida entidad {}", entity);
+        return entity;
     }
 
     @Override
-    @Transactional
-    public E findById(ID id) throws Exception {
-        try {
-            Optional<E> entityOptional = baseRepository.findById(id);
-            return entityOptional.get();
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public List<E> getAll() {
+        var entities = baseRepository.getAll();
+        logger.info("Obtenidas entidades {}", entities);
+        return entities;
     }
 
     @Override
-    @Transactional
-    public E save(E entity) throws Exception {
-        try {
-            entity = baseRepository.save(entity);
-            return entity;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public void deleteById(ID id) {
+        var entity = getById(id);
+        baseRepository.delete(entity);
+        logger.info("Borrada logicamente entidad {}", entity);
     }
 
     @Override
-    @Transactional
-    public E update(ID id, E entity) throws Exception {
-        try {
-            Optional<E> entityOptional = baseRepository.findById(id);
-            E e = entityOptional.get();
-            e = baseRepository.save(entity);
-            return e;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+    public E update(E request, ID id) {
+        var optionalEntity = baseRepository.findById((ID) request.getId());
+        if (optionalEntity.isEmpty()) {
+            logger.error("No se encontro una entidad con el id " + request.getId());
+            throw new RuntimeException("No se encontro una entidad con el id " + request.getId());
         }
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(ID id) throws Exception {
-        try {
-            if (baseRepository.existsById(id)) {
-                baseRepository.deleteById(id);
-                return true;
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        var newEntity = baseRepository.save(request);
+        logger.info("Actualizada entidad {}", newEntity);
+        return newEntity;
     }
 }

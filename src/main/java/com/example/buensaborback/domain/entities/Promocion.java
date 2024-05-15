@@ -1,11 +1,9 @@
 package com.example.buensaborback.domain.entities;
 
 import com.example.buensaborback.domain.enums.TipoPromocion;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
@@ -19,12 +17,9 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-@Builder
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@SuperBuilder
 //@Audited
-public class Promocion extends Base {
+public class Promocion  extends Base{
     private String denominacion;
     private LocalDate fechaDesde;
     private LocalDate fechaHasta;
@@ -35,13 +30,14 @@ public class Promocion extends Base {
     private TipoPromocion tipoPromocion;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
-    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
-    //DE ESTA MANERA PONE EL FOREIGN KEY 'pedido_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "promocion_id")
+    @ManyToMany
+    //SE AGREGA EL JOIN TABLE PARA QUE JPA CREE LA TABLA INTERMEDIA EN UNA RELACION MANY TO MANY
+    @JoinTable(name = "promocion_articulo",
+            joinColumns = @JoinColumn(name = "promocion_id"),
+            inverseJoinColumns = @JoinColumn(name = "articulo_id"))
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    private Set<PromocionDetalle> promocionDetalles = new HashSet<>();
+    private Set<Articulo> articulos = new HashSet<>();
 
     @OneToMany
     //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
@@ -50,12 +46,14 @@ public class Promocion extends Base {
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
     @NotAudited
-    private Set<ImagenPromocion> imagenes = new HashSet<>();
+    private Set<ImagenArticulo> imagenes = new HashSet<>();
 
 
-    @ManyToMany(mappedBy = "promociones")
-    @JsonBackReference
+    @ManyToMany (mappedBy = "promociones")
     private Set<Sucursal> sucursales = new HashSet<>();
 
-
+    @OneToMany
+    @JoinColumn(name="promocion_id")
+    @Builder.Default
+    private Set<PromocionDetalle> detalles= new HashSet<>();
 }

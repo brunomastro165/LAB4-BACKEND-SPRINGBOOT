@@ -3,16 +3,17 @@ package com.example.buensaborback.domain.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@Builder
 @Entity
+@SuperBuilder
 //@Audited
-public class ArticuloManufacturadoDetalle extends Base {
+public class ArticuloManufacturadoDetalle extends Base{
     private Integer cantidad;
 
     @ManyToOne

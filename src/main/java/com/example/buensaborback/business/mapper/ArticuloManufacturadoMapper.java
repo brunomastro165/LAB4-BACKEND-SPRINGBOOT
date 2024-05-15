@@ -1,18 +1,20 @@
 package com.example.buensaborback.business.mapper;
 
-import com.example.buensaborback.domain.dtos.ArticuloManufacturadoDTO;
+import com.example.buensaborback.business.services.ArticuloManufacturadoDetalleService;
+import com.example.buensaborback.business.services.UnidadMedidaService;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
-import java.util.List;
+@Mapper(componentModel = "spring", uses = {ArticuloManufacturadoDetalleService.class, UnidadMedidaService.class})
+public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoCreateDto> {
 
-@Mapper(componentModel = "spring")
-public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDTO> {
-    ArticuloManufacturadoDTO toDTO(ArticuloManufacturado source);
-
-    ArticuloManufacturado toEntity(ArticuloManufacturadoDTO source);
-
-    List<ArticuloManufacturadoDTO> toDTOsList(List<ArticuloManufacturado> source);
-
-    List<ArticuloManufacturado> toEntitiesList(List<ArticuloManufacturadoDTO> source);
+    @Mappings({
+            @Mapping(source = "idsArticuloManufacturadoDetalles", target = "articuloManufacturadoDetalles", qualifiedByName = "getById"),
+            @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
+    })
+    public ArticuloManufacturado toEntityCreate(ArticuloManufacturadoCreateDto source);
 }

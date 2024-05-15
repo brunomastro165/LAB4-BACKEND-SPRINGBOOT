@@ -1,39 +1,22 @@
 package com.example.buensaborback;
 
-import com.example.buensaborback.domain.entities.*;
-import com.example.buensaborback.domain.enums.*;
 import com.example.buensaborback.repositories.*;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Optional;
-import java.util.Random;
 
 
 @SpringBootApplication
 public class BuenSaborBackApplication {
     private static final Logger logger = LoggerFactory.getLogger(BuenSaborBackApplication.class);
 
+
     @Autowired
     private ClienteRepository clienteRepository;
     @Autowired
-    private ImagenClienteRepository imagenPersonaRepository;
-    @Autowired
     private PromocionDetalleRepository promocionDetalleRepository;
-
-    @Autowired
-    private UsuarioEmpleadoRepository usuarioEmpleadoRepository;
-
-    @Autowired
-    private UsuarioClienteRepository usuarioClienteRepository;
 
     @Autowired
     private PaisRepository paisRepository;
@@ -79,9 +62,9 @@ public class BuenSaborBackApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BuenSaborBackApplication.class, args);
-        logger.info("Estoy activo");
+        logger.info("Estoy activo en el main");
     }
-
+/*
     @Bean
     @Transactional
     CommandLineRunner init(ClienteRepository clienteRepository,
@@ -552,7 +535,7 @@ public class BuenSaborBackApplication {
                     .denominacion("Categoria de prueba")
                     .build();
             categoriaRepository.save(categoria);
-			/*
+
 			//PRUEBA LAZY -> FALLA
 			var empresaRepo = empresaRepository.findById(2L);
 			if(empresaRepo.isPresent()){
@@ -563,7 +546,7 @@ public class BuenSaborBackApplication {
 					empresaRepo.get().getSucursales().add(sucursalRepo2.get());
 					empresaRepository.save(empresaRepo.get());
 				}
-			}*/
+			}
             var categoriaRep = categoriaRepository.findWithSucursalesById(6L);//CON FINDBYID NO SE PUEDE AÑADIR SUCURSALES POR LAZY
             var empresaRepo = empresaRepository.findWithSucursalesById(2L);
             Sucursal sucursalRepo = sucursalRepository.findWithEmpleadosById(3L);//CON FINDBYID NO SE PUEDE AÑADIR EMPLEADOS POR LAZY
@@ -611,7 +594,9 @@ public class BuenSaborBackApplication {
             logger.info("{}", sucursalMarDelPlata);
             logger.info("----------------Pedido ---------------------");
             logger.info("{}", pedido);
+
+
         };
-    }
+    }*/
 
 }

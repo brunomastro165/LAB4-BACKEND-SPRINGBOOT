@@ -1,19 +1,21 @@
 package com.example.buensaborback.domain.entities;
 
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
-@Builder
+@SuperBuilder
 //@Audited
-public class UnidadMedida extends Base {
+public class UnidadMedida extends Base{
 
     private String denominacion;
-
 
 }
