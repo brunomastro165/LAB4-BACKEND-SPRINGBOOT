@@ -36,12 +36,14 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
 
     @PostMapping()
     public ResponseEntity<D> create(@RequestBody DC entity) {
+        System.out.println("Estoy en controller");
         logger.info("INICIO CREATE {}", entity.getClass());
         return ResponseEntity.ok(facade.createNew(entity));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<D> edit(@RequestBody DE entity, @PathVariable ID id) {
+
         logger.info("INICIO EDIT {}", entity.getClass());
         return ResponseEntity.ok(facade.update(entity, id));
     }

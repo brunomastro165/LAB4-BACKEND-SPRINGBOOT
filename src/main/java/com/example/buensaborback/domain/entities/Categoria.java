@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @ToString
 @SuperBuilder
-public class Categoria extends Base{
+public class Categoria extends Base {
 
     private String denominacion;
     private boolean esInsumo;

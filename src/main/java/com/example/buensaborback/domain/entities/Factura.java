@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @ToString
 @SuperBuilder
 //@Audited
-public class Factura extends Base{
+public class Factura extends Base {
     private LocalDate fechaFcturacion;
     private Integer mpPaymentId;
     private Integer mpMerchantOrderId;

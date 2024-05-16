@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 @SuperBuilder
-public class Pais extends Base{
+public class Pais extends Base {
     private String nombre;
 
 

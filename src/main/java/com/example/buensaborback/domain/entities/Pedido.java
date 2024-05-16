@@ -1,7 +1,6 @@
 package com.example.buensaborback.domain.entities;
 
 
-
 import com.example.buensaborback.domain.enums.Estado;
 import com.example.buensaborback.domain.enums.FormaPago;
 import com.example.buensaborback.domain.enums.TipoEnvio;
@@ -22,7 +21,7 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 //@Audited
-public class Pedido extends Base{
+public class Pedido extends Base {
 
     private LocalTime horaEstimadaFinalizacion;
     private Double total;

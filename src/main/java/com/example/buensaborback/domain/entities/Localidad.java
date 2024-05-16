@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 @SuperBuilder
-public class Localidad extends Base{
+public class Localidad extends Base {
     private String nombre;
 
     @ManyToOne

@@ -16,7 +16,7 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 //@Audited
-public class Cliente extends Base{
+public class Cliente extends Base {
 
     protected String nombre;
     protected String apellido;

@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @SuperBuilder
 //@Audited
-public class Empleado extends Base{
+public class Empleado extends Base {
     protected String nombre;
     protected String apellido;
     protected String telefono;
@@ -44,7 +44,7 @@ public class Empleado extends Base{
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
-    private Set<Pedido> pedidos= new HashSet<>();
+    private Set<Pedido> pedidos = new HashSet<>();
 
     @ManyToOne
     @ToString.Exclude

@@ -17,7 +17,7 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 //@Audited
-public class Sucursal extends  Base{
+public class Sucursal extends Base {
 
     private String nombre;
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
@@ -49,7 +49,7 @@ public class Sucursal extends  Base{
     @Builder.Default
     private Set<Categoria> categorias = new HashSet<>();
 
-    @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<Empleado> empleados = new HashSet<>();
 

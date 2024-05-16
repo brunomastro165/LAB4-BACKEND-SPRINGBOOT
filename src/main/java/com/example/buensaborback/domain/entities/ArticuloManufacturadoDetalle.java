@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @SuperBuilder
 //@Audited
-public class ArticuloManufacturadoDetalle extends Base{
+public class ArticuloManufacturadoDetalle extends Base {
     private Integer cantidad;
 
     @ManyToOne

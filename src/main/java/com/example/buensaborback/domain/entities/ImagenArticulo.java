@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 @SuperBuilder
-public class ImagenArticulo extends Base{
+public class ImagenArticulo extends Base {
 
     private String url;
 

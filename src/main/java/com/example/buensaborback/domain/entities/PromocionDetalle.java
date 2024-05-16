@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 //@Audited
-public class PromocionDetalle extends Base{
+public class PromocionDetalle extends Base {
     private String detalle;
 
     @ManyToOne

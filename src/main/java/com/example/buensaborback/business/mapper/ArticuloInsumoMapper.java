@@ -5,7 +5,6 @@ import com.example.buensaborback.domain.dto.Insumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.Insumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {UnidadMedidaService.class})
 public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoCreateDto> {

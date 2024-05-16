@@ -62,14 +62,12 @@ public class BuenSaborBackApplication {
 
     @Autowired
     private PedidoRepository pedidoRepository;
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
+
     public static void main(String[] args) {
         SpringApplication.run(BuenSaborBackApplication.class, args);
         logger.info("Estoy activo en el main");
     }
+
 /*
     @Bean
     @Transactional

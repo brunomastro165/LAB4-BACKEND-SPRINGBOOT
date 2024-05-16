@@ -16,7 +16,7 @@ import org.hibernate.envers.NotAudited;
 @ToString
 @SuperBuilder
 //@Audited
-public class Domicilio extends Base{
+public class Domicilio extends Base {
     private String calle;
     private Integer numero;
     private Integer cp;

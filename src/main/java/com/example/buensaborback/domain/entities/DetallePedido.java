@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 //@Audited
-public class DetallePedido extends Base{
+public class DetallePedido extends Base {
     private Integer cantidad;
     private Double subTotal;
 
