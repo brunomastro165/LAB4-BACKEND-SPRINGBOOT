@@ -1,14 +1,15 @@
-FROM alpine:latest as build
 
-RUN apk update
-RUN apk add openjdk17
+# Usar una imagen base de OpenJDK
+FROM openjdk:8
 
-COPY . .
-RUN chmod +x ./gradlew
-RUN ./gradlew bootJar --no-daemon
-
-FROM openjdk:17-alpine
+# Exponer el puerto 8080
 EXPOSE 8080
-COPY --from=build ./build/libs/buen-sabor-0.0.1-SNAPSHOT-plain.jar ./app.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Crear un directorio para la aplicación
+RUN mkdir -p /app/
+
+# Agregar el archivo JAR de la aplicación al directorio
+ADD build/libs/buen-sabor-0.0.1-SNAPSHOT.jar /app/buen-sabor-0.0.1-SNAPSHOT.jar
+
+# Comando para ejecutar la aplicación
+ENTRYPOINT ["java", "-jar", "/app/buen-sabor-0.0.1-SNAPSHOT.jar "]
