@@ -9,6 +9,5 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {UnidadMedidaService.class})
 public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoCreateDto> {
-    @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
     ArticuloInsumo toEntityCreate(ArticuloInsumoCreateDto source);
 }

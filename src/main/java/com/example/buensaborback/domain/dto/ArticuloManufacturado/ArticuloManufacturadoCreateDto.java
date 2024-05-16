@@ -1,6 +1,8 @@
 package com.example.buensaborback.domain.dto.ArticuloManufacturado;
 
 
+import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
+import com.example.buensaborback.domain.entities.UnidadMedida;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,6 @@ public class ArticuloManufacturadoCreateDto {
     private Integer tiempoEstimadoMinutos;
     private Double precioVenta;
     private String preparacion;
-    private Long idUnidadMedida;
-    private Set<Long> idsArticuloManufacturadoDetalles;
+    private UnidadMedida UnidadMedida;
+    private Set<ArticuloManufacturadoDetalle> ArticuloManufacturadoDetalles;
 }
