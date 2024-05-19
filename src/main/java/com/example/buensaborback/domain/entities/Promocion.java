@@ -1,7 +1,10 @@
 package com.example.buensaborback.domain.entities;
 
 import com.example.buensaborback.domain.enums.TipoPromocion;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.NotAudited;

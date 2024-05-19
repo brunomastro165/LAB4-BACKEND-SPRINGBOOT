@@ -12,5 +12,5 @@ import org.mapstruct.Mapping;
 public interface SucursalMapper extends BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto> {
     //qualifiedByName ="getById" apunta al metodo con @Named de EmpresaService con valor getById
     @Mapping(target = "empresa", source = "idEmpresa", qualifiedByName = "getById")
-    public Sucursal toEntityCreate(SucursalCreateDto source);
+    Sucursal toEntityCreate(SucursalCreateDto source);
 }

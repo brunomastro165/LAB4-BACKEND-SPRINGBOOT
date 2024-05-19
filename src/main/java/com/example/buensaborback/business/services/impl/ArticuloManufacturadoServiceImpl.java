@@ -7,23 +7,23 @@ import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
 import com.example.buensaborback.repositories.ArticuloManufacturadoDetalleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloManufacturado, Long> implements ArticuloManufacturadoService {
     @Autowired
     ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
+
     @Override
-    public ArticuloManufacturado create(ArticuloManufacturado articuloManufacturado){
+    public ArticuloManufacturado create(ArticuloManufacturado articuloManufacturado) {
         var detalles = articuloManufacturado.getArticuloManufacturadoDetalles();
 
 
         var newEntity = baseRepository.save(articuloManufacturado);
-        for (ArticuloManufacturadoDetalle detalle:detalles) {
+        for (ArticuloManufacturadoDetalle detalle : detalles) {
             try {
                 System.out.println(detalle);
                 articuloManufacturadoDetalleRepository.save(detalle);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 

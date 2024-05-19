@@ -23,7 +23,6 @@ public abstract class Articulo extends Base {
     protected Double precioVenta;
 
 
-
     @OneToMany    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
     //DE ESTA MANERA PONE EL FOREIGN KEY 'cliente_id' EN LA TABLA DE LOS MANY
     @JoinColumn(name = "articulo_id")

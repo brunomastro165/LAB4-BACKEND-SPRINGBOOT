@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, DE, ID extends Serializable, F extends BaseFacadeImpl<E, D, DC, DE, ID>> implements BaseController<D, DC, DE, ID> {
@@ -33,6 +34,27 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         logger.info("INICIO GET ALL");
         return ResponseEntity.ok(facade.getAll());
     }
+
+    @GetMapping("/eliminados")
+    public ResponseEntity<List<D>> getEliminados() {
+        logger.info("INICIO GET ELIMINADOS");
+        List<D> allElements = facade.getAll();
+        List<D> filteredElements = allElements.stream()
+                .filter(a -> !a.isEliminado())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredElements);
+    }
+
+    @GetMapping("/noEliminados")
+    public ResponseEntity<List<D>> getNoEliminados() {
+        logger.info("INICIO GET NO ELIMINADOS");
+        List<D> allElements = facade.getAll();
+        List<D> filteredElements = allElements.stream()
+                .filter(a -> a.isEliminado())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredElements);
+    }
+
 
     @PostMapping()
     public ResponseEntity<D> create(@RequestBody DC entity) {

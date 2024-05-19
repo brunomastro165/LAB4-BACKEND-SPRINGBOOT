@@ -5,9 +5,11 @@ import com.example.buensaborback.domain.dto.Insumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.Insumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -16,4 +18,15 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
+
+    @GetMapping("/buscar/{searchString}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString) {
+        List<ArticuloInsumoDto> allArticulos = facade.getAll();
+        List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
+                .filter(a -> a.getDenominacion().contains(searchString) && a.isEliminado())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredArticulos);
+    }
+
+
 }

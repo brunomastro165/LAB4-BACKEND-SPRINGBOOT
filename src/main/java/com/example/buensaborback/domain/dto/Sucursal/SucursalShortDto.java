@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ShortSucursal extends BaseDto {
+public class SucursalShortDto extends BaseDto {
     private String nombre;
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
     private LocalTime horarioApertura;
