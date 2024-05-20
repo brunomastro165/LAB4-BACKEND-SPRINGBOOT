@@ -10,4 +10,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ImagenEmpleadoCreateDto extends BaseDto {
+    private String url;
 }
