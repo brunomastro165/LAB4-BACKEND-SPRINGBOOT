@@ -17,4 +17,5 @@ public class ArticuloInsumoCreateDto extends ArticuloCreateDto {
     private Integer stockMinimo;
     private Integer stockMaximo;
     private Boolean esParaElaborar;
+
 }

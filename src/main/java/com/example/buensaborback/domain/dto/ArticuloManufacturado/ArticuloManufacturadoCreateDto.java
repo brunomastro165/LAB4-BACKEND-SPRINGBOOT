@@ -20,4 +20,5 @@ public class ArticuloManufacturadoCreateDto extends ArticuloCreateDto {
     private Integer tiempoEstimadoMinutos;
     private String preparacion;
     private Set<ArticuloManufacturadoDetalleCreateDto> articuloManufacturadoDetalles;
+
 }

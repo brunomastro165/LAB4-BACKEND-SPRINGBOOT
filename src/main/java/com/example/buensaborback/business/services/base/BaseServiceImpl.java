@@ -22,6 +22,7 @@ public abstract class BaseServiceImpl<E extends Base, ID extends Serializable> i
     @Override
     public E create(E request) {
         System.out.println("Estoy en service");
+        System.out.println(request);
         var newEntity = baseRepository.save(request);
         logger.info("Creada entidad {}", newEntity);
         return newEntity;

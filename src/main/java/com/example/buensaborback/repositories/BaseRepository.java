@@ -44,8 +44,9 @@ public interface BaseRepository<E extends Base, ID extends Serializable> extends
     }
 
     default List<E> getAll() {
-        logger.info("EJECUTANDO GET ALL PERSONALIZADO");
-        var entities = findAll().stream().filter(e -> !e.isEliminado()).toList();
+        logger.info("EJECUTANDO GET ALL SIN FILTRO");
+        var entities = findAll().stream().toList();
         return entities;
     }
+
 }
