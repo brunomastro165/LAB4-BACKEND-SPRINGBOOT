@@ -1,6 +1,7 @@
 package com.example.buensaborback.domain.dto.Sucursal;
 
 import com.example.buensaborback.domain.dto.BaseDto;
+import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.dto.Empresa.EmpresaDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +27,5 @@ public class SucursalDto extends BaseDto {
     private Boolean esCasaMatriz;
     private DomicilioDto domicilio;
     private EmpresaDto empresa;
+    private Set<CategoriaDto> categorias;
 }

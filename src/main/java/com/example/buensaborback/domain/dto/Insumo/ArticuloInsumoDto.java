@@ -1,7 +1,6 @@
 package com.example.buensaborback.domain.dto.Insumo;
 
-import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.UnidadMedida.UnidadMedidaDto;
+import com.example.buensaborback.domain.dto.Articulo.ArticuloDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticuloInsumoDto extends BaseDto {
-    private String denominacion;
-    private Double precioVenta;
-    private UnidadMedidaDto unidadMedida;
+public class ArticuloInsumoDto extends ArticuloDto {
     private Double precioCompra;
     private Integer stockActual;
     private Integer stockMinimo;

@@ -7,7 +7,9 @@ import com.example.buensaborback.business.services.base.BaseService;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.entities.Categoria;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CategoriaFacadeImpl extends BaseFacadeImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaCreateDto, Long> implements CategoriaFacade {
     public CategoriaFacadeImpl(BaseService<Categoria, Long> baseService, BaseMapper<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaCreateDto> baseMapper) {
         super(baseService, baseMapper);

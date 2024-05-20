@@ -1,9 +1,6 @@
 package com.example.buensaborback.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -35,7 +32,7 @@ public class Categoria extends Base {
     private Set<Articulo> articulos = new HashSet<>();
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
     //DE ESTA MANERA PONE EL FOREIGN KEY 'categoria_id' EN LA TABLA DE LOS MANY
     @JoinColumn(name = "categoria_id")

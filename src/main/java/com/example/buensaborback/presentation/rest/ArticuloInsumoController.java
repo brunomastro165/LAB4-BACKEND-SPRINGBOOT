@@ -23,7 +23,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getDenominacion().contains(searchString) && a.isEliminado())
+                .filter(a -> a.getDenominacion().contains(searchString) && !a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }

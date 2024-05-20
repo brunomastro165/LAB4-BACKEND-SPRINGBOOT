@@ -40,7 +40,7 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         logger.info("INICIO GET ELIMINADOS");
         List<D> allElements = facade.getAll();
         List<D> filteredElements = allElements.stream()
-                .filter(a -> !a.isEliminado())
+                .filter(a -> a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredElements);
     }
@@ -50,7 +50,7 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         logger.info("INICIO GET NO ELIMINADOS");
         List<D> allElements = facade.getAll();
         List<D> filteredElements = allElements.stream()
-                .filter(a -> a.isEliminado())
+                .filter(a -> !a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredElements);
     }
