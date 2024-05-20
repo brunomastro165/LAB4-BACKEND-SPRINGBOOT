@@ -7,7 +7,9 @@ import com.example.buensaborback.business.services.base.BaseService;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteCreateDto;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import com.example.buensaborback.domain.entities.UsuarioCliente;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioClienteFacadeImpl extends BaseFacadeImpl<UsuarioCliente, UsuarioClienteDto, UsuarioClienteCreateDto, UsuarioClienteCreateDto, Long> implements UsuarioClienteFacade {
     public UsuarioClienteFacadeImpl(BaseService<UsuarioCliente, Long> baseService, BaseMapper<UsuarioCliente, UsuarioClienteDto, UsuarioClienteCreateDto, UsuarioClienteCreateDto> baseMapper) {
         super(baseService, baseMapper);

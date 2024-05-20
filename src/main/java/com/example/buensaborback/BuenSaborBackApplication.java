@@ -59,6 +59,10 @@ public class BuenSaborBackApplication {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+    @Autowired
+    private FacturaRepository facturaRepository;
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(BuenSaborBackApplication.class, args);

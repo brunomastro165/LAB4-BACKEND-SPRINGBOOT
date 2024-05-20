@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class ImagenClienteDto extends BaseDto {
+    private String url;
 }
