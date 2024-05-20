@@ -5,10 +5,8 @@ import com.example.buensaborback.business.facade.DetallePedidoFacade;
 import com.example.buensaborback.business.facade.base.BaseFacadeImpl;
 import com.example.buensaborback.business.mapper.BaseMapper;
 import com.example.buensaborback.business.services.base.BaseService;
-
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoCreateDto;
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoDto;
-
 import com.example.buensaborback.domain.entities.DetallePedido;
 
 public class DetallePedidoFacadeImpl extends BaseFacadeImpl<DetallePedido, DetallePedidoDto, DetallePedidoCreateDto, DetallePedidoCreateDto, Long> implements DetallePedidoFacade {

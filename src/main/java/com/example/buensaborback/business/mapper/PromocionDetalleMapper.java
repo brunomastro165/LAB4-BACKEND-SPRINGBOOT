@@ -1,4 +1,10 @@
 package com.example.buensaborback.business.mapper;
 
-public interface PromocionDetalleMapper {
+import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleCreateDto;
+import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto;
+import com.example.buensaborback.domain.entities.PromocionDetalle;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface PromocionDetalleMapper extends BaseMapper<PromocionDetalle, PromocionDetalleDto, PromocionDetalleCreateDto, PromocionDetalleCreateDto> {
 }

@@ -2,7 +2,6 @@ package com.example.buensaborback.domain.dto.DetallePedido;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.entities.Articulo;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

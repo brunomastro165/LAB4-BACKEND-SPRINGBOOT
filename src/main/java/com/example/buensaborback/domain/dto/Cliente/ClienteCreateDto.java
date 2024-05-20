@@ -5,12 +5,14 @@ import com.example.buensaborback.domain.entities.Domicilio;
 import com.example.buensaborback.domain.entities.ImagenCliente;
 import com.example.buensaborback.domain.entities.Pedido;
 import com.example.buensaborback.domain.entities.UsuarioCliente;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.envers.NotAudited;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor

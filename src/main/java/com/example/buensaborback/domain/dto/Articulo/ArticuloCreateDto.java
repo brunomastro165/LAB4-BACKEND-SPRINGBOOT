@@ -1,9 +1,6 @@
 package com.example.buensaborback.domain.dto.Articulo;
 
 import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.dto.UnidadMedida.UnidadMedidaCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

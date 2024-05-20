@@ -3,9 +3,10 @@ package com.example.buensaborback.domain.dto.Empleado;
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.entities.*;
 import com.example.buensaborback.domain.enums.Rol;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.envers.NotAudited;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
