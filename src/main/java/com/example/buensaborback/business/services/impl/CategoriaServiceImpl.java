@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> implements CategoriaService {
+
 }
