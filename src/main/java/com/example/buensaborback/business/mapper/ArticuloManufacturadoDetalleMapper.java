@@ -17,7 +17,7 @@ public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloM
 
     ArticuloManufacturadoDetalleMapper INSTANCE = Mappers.getMapper(ArticuloManufacturadoDetalleMapper.class);
 
-    // Utiliza la anotación @Mapping para especificar el mapeo entre los campos del DTO y la entidad,
-    // y utiliza el servicio ArticuloInsumoService para obtener el artículo de insumo a partir del ID.
+
+
 
 }

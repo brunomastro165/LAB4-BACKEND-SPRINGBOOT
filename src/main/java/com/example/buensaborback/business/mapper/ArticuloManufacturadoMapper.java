@@ -13,7 +13,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = {ArticuloManufacturadoDetalleMapper.class, UnidadMedidaService.class, ImagenArticuloMapper.class})
+@Mapper(componentModel = "spring", uses = {ArticuloManufacturadoDetalleMapper.class, UnidadMedidaService.class, ImagenArticuloMapper.class, CategoriaService.class})
 public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto> {
 
     // Esta es una instancia estática de la interfaz, que se utiliza para obtener una instancia del Mapper.
@@ -22,6 +22,8 @@ public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufact
     // Este método define la transformación de un ArticuloManufacturadoCreateDto a una entidad ArticuloManufacturado.
     // Utiliza la anotación @Mappings para especificar múltiples mapeos entre los campos del DTO y la entidad.
 
+    @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
+    ArticuloManufacturado toEntityCreate(ArticuloManufacturadoCreateDto source);
 
 }
 
