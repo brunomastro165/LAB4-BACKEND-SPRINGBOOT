@@ -18,12 +18,7 @@ public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, Articul
     ArticuloInsumoMapper INSTANCE = Mappers.getMapper(ArticuloInsumoMapper.class);
     // Utiliza la anotación @Mapping para especificar el mapeo entre los campos del DTO y la entidad,
     // y utiliza el servicio UnidadMedidaService para obtener la unidad de medida a partir del ID.
-    @Mapping(target = "unidadMedida", source = "idUnidadMedida",qualifiedByName = "getById")
-    @Mapping(target = "eliminado", constant = "true")
-    ArticuloInsumo toEntityCreate(ArticuloInsumoCreateDto source);
 
-    @Mapping(target = "unidadMedida", source = "idUnidadMedida", qualifiedByName = "getById")
-    ArticuloInsumo toUpdate(@MappingTarget ArticuloInsumo entity, ArticuloInsumoEditDto source);
 
 
 }

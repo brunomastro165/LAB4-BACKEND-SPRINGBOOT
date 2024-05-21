@@ -2,6 +2,7 @@ package com.example.buensaborback.domain.dto.Articulo;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.UnidadMedida.UnidadMedidaCreateDto;
+import com.example.buensaborback.domain.dto.UnidadMedida.UnidadMedidaDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,6 @@ public class ArticuloCreateDto extends BaseDto {
     private String denominacion;
     private Double precioVenta;
     //protected Set<ImagenArticuloDto> imagenes = new HashSet<>();
-    private Long idUnidadMedida;
+    private UnidadMedidaCreateDto UnidadMedida;
     private Long idCategoria;
 }

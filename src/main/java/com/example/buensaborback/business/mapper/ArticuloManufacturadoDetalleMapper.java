@@ -19,10 +19,5 @@ public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloM
 
     // Utiliza la anotación @Mapping para especificar el mapeo entre los campos del DTO y la entidad,
     // y utiliza el servicio ArticuloInsumoService para obtener el artículo de insumo a partir del ID.
-    @Mapping(target = "articuloInsumo", source = "idArticuloInsumo", qualifiedByName = "getById")
-    ArticuloManufacturadoDetalle toEntityCreate(ArticuloManufacturadoDetalleCreateDto source);
 
-    @Named("toEntityCreateSetDetalle") //Se asigno el metodo con la anotacion @Named de mapstruct para luego ser usado en ArticuloManufacturadoMapper
-    @Mapping(target = "articuloInsumo", source = "idArticuloInsumo", qualifiedByName = "getById")
-    Set<ArticuloManufacturadoDetalle> toEntityCreateSet(Set<ArticuloManufacturadoDetalleCreateDto> dtos);
 }
