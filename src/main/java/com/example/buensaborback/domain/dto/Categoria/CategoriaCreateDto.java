@@ -21,4 +21,6 @@ public class CategoriaCreateDto {
     private Set<Long> idSucursales;
 
     private boolean esInsumo;
+
+
 }
