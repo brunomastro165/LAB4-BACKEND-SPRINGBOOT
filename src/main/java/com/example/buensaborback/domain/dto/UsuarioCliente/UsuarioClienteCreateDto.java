@@ -11,4 +11,5 @@ import lombok.Setter;
 //@NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioClienteCreateDto extends BaseDto {
+    private String userName;
 }
