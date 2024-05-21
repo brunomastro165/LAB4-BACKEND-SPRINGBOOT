@@ -27,5 +27,4 @@ public class SucursalDto extends BaseDto {
     private Boolean esCasaMatriz;
     private DomicilioDto domicilio;
     private EmpresaDto empresa;
-    private Set<CategoriaDto> categorias;
 }

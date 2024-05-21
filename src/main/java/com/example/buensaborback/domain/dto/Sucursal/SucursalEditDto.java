@@ -22,5 +22,4 @@ public class SucursalEditDto {
     private LocalTime horarioCierre;
     private Boolean esCasaMatriz;
     private Long idEmpresa;
-    private Set<CategoriaDto> categorias;
 }

@@ -9,9 +9,9 @@ import com.example.buensaborback.domain.entities.Sucursal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {DomicilioMapper.class, EmpresaService.class, CategoriaService.class})
-public interface SucursalMapper extends BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto> {
+@Mapper(componentModel = "spring", uses = {DomicilioMapper.class, EmpresaService.class} )
+public interface SucursalMapper extends BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto>{
     //qualifiedByName ="getById" apunta al metodo con @Named de EmpresaService con valor getById
     @Mapping(target = "empresa", source = "idEmpresa", qualifiedByName = "getById")
-    Sucursal toEntityCreate(SucursalCreateDto source);
+    public Sucursal toEntityCreate(SucursalCreateDto source);
 }
