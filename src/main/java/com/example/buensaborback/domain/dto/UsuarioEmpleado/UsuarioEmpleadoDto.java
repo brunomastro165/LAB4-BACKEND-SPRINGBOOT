@@ -11,4 +11,6 @@ import lombok.Setter;
 //@NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioEmpleadoDto extends BaseDto {
+    private Long id;
+    private String userName;
 }
