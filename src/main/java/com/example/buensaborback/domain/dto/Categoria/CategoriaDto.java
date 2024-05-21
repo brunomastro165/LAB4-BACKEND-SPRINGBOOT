@@ -1,23 +1,35 @@
 package com.example.buensaborback.domain.dto.Categoria;
 
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.Insumo.ArticuloInsumoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalCreateDto;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalShortDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoriaDto extends BaseDto {
     private String denominacion;
+
     private boolean esInsumo;
-    private Set<ArticuloManufacturadoCreateDto> articulosManufacturados;
-    private Set<ArticuloInsumoCreateDto> articulosInsumos;
+
+    private Set<SucursalShortDto> sucursales;
+
     private Set<CategoriaShortDto> subCategorias;
+
+    private Set<ArticuloInsumoDto> insumos;
+
+    private Set<ArticuloManufacturadoDto> articulosManufacturados;
+
 }

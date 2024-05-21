@@ -1,18 +1,14 @@
 package com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle;
 
-import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticuloManufacturadoDetalleDto extends BaseDto {
+public class ArticuloManufacturadoDetalleEditDto {
     private Integer cantidad;
-    private ArticuloInsumoDto articuloInsumo;
 }

@@ -15,6 +15,6 @@ public class ArticuloCreateDto extends BaseDto {
     private String denominacion;
     private Double precioVenta;
     //protected Set<ImagenArticuloDto> imagenes = new HashSet<>();
-    private UnidadMedidaCreateDto unidadMedida;
+    private Long idUnidadMedida;
     private Long idCategoria;
 }
