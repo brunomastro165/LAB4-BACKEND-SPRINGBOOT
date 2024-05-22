@@ -13,7 +13,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = {ArticuloManufacturadoDetalleMapper.class, UnidadMedidaService.class, ImagenArticuloMapper.class, CategoriaService.class})
+@Mapper(componentModel = "spring", uses = {ImagenArticuloMapper.class, CategoriaService.class})
 public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto> {
 
     // Esta es una instancia estática de la interfaz, que se utiliza para obtener una instancia del Mapper.
