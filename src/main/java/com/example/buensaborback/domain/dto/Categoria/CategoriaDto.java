@@ -20,6 +20,8 @@ public class CategoriaDto extends BaseDto {
 
     private boolean esInsumo;
 
+    private boolean esPadre;
+
     private Set<SucursalShortDto> sucursales;
 
     private Set<CategoriaShortDto> subCategorias;
