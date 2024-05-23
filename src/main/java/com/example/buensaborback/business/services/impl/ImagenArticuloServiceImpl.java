@@ -1,11 +1,12 @@
 package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.CloudinaryService;
+import com.example.buensaborback.business.services.ImageService;
 import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.ImageRepository;
-import org.mapstruct.Named;
+import com.example.buensaborback.repositories.ImagenArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Primary
@@ -23,9 +22,10 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
     @Autowired
-    private ImageRepository<ImagenArticulo, UUID> imageRepository;
+    private ImagenArticuloRepository imageRepository;
     @Autowired
     private ArticuloRepository articuloRepository;
+
     @Override
     protected ImagenArticulo createImageInstance() {
         return new ImagenArticulo();
@@ -46,9 +46,6 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
                 image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
 
 
-
-
-
                 // Guardar la entidad Image en la base de datos
                 imageRepository.save(image);
 
@@ -63,6 +60,34 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante el proceso de subida
             return null;
+        }
+    }
+    @Override
+    public ResponseEntity<Map<String, Object>> getImageById(Long id) {
+        try {
+            // Consultar la imagen desde la base de datos
+            Optional<ImagenArticulo> optionalImage = imageRepository.findByIdArticulo(id);
+
+            // Verificar si la imagen existe
+            if (optionalImage.isPresent()) {
+                ImagenArticulo image = optionalImage.get();
+
+                // Convertir la imagen en un mapa de atributos para devolver como JSON
+                Map<String, Object> imageMap = new HashMap<>();
+                imageMap.put("id", image.getId());
+                imageMap.put("name", image.getName());
+                imageMap.put("url", image.getUrl());
+
+                // Devolver la imagen como ResponseEntity con estado OK (200)
+                return ResponseEntity.ok(imageMap);
+            } else {
+                // Devolver un error (404) si la imagen no se encuentra
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Devolver un error interno del servidor (500) si ocurre alguna excepción
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

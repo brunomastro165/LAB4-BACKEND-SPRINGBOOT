@@ -28,28 +28,6 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImpl facade) {
         super(facade);
     }
-    @Autowired
-    ImagenArticuloService imagenArticuloService;
-    ArticuloManufacturadoFacadeImpl articuloManufacturadoFacadeImpl;
-    ImagenArticuloServiceImpl imagenArticuloServiceImpl;
-/*
-    @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArticuloManufacturadoDto> Create(
-            @RequestPart("articuloManufacturado") String articuloManufacturadoJson,
-            @RequestPart("imagen") MultipartFile[] files) {
-        // Convertir el JSON de articuloInsumo a ArticuloInsumoDTO
-        ArticuloManufacturadoCreateDto articuloManufacturadoCreateDto = articuloManufacturadoFacadeImpl.mapperJson(articuloManufacturadoJson);
-        // Subir las imágenes y obtener las URLs
-        List<String> imageUrls = imagenArticuloServiceImpl.uploadImages(files);
-        // Asignar las URLs de las imágenes al DTO
-        articuloManufacturadoCreateDto.setImagenes(imageUrls);
-        // Crear el ArticuloInsumo
-        ArticuloManufacturadoDto createdArticulo = articuloManufacturadoFacadeImpl.createNew(articuloManufacturadoCreateDto);
-
-        return ResponseEntity.ok(createdArticulo);
-
-    }
-*/
 
 
 }

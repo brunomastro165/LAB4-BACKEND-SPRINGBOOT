@@ -22,12 +22,12 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
     private ImageService<E,ID> imageService; // Inyección de dependencia del servicio ImageService
 
     // Método POST para subir imágenes
-    @PostMapping("/uploads")
+    @PostMapping("/uploads/{id}")
     public ResponseEntity<String> uploadImages(
-            @RequestParam(value = "uploads", required = true) MultipartFile[] files) {
+            @RequestParam(value = "uploads", required = true) MultipartFile[] files,@PathVariable Long id) {
         try {
 
-            return imageService.uploadImages(files,null); // Llama al método del servicio para subir imágenes
+            return imageService.uploadImages(files,id); // Llama al método del servicio para subir imágenes
         } catch (Exception e) {
             e.printStackTrace();
             return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica
@@ -51,7 +51,7 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>>  getById(@PathVariable UUID id) {
+    public ResponseEntity<Map<String, Object>>  getById(@PathVariable Long id) {
         try {
             return imageService.getImageById(id); // Llama al método del servicio para obtener todas las imágenes
         } catch (Exception e) {

@@ -16,10 +16,10 @@ public interface ImageService<E extends Image, ID extends Serializable> {
     ResponseEntity<List<Map<String, Object>>> getAllImages();
 
     // Método para subir imágenes al sistema
-    ResponseEntity<String> uploadImages(MultipartFile[] files,Long id);
+    ResponseEntity<String> uploadImages(MultipartFile[] files, Long id);
 
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, UUID uuid);
 
-    ResponseEntity<Map<String, Object>> getImageById(UUID id);
+    ResponseEntity<Map<String, Object>> getImageById(Long id);
 }

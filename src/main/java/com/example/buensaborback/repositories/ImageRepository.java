@@ -13,4 +13,5 @@ public interface ImageRepository<E extends Image, ID extends Serializable> exten
     void deleteById(UUID id);
 
     Optional<E> findById(UUID id);
+
 }

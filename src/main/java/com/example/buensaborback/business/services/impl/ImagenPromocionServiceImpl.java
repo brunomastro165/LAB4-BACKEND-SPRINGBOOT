@@ -3,14 +3,10 @@ package com.example.buensaborback.business.services.impl;
 import com.example.buensaborback.business.services.ImagenPromocionService;
 import com.example.buensaborback.domain.entities.ImagenPromocion;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
+
 @Primary
 @Service
 public class ImagenPromocionServiceImpl extends ImageServiceImpl<ImagenPromocion, UUID> implements ImagenPromocionService {

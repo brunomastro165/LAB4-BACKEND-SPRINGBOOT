@@ -24,10 +24,10 @@ public abstract class ImageServiceImpl<E extends Image, ID extends Serializable>
     private ImageRepository<E, ID> imageRepository; // Repositorio para interactuar con la base de datos de imágenes
 
     @Override
-    public ResponseEntity<Map<String, Object>> getImageById(UUID id) {
+    public ResponseEntity<Map<String, Object>> getImageById(Long id) {
         try {
             // Consultar la imagen desde la base de datos
-            Optional<E> optionalImage = imageRepository.findById(id);
+            Optional<E> optionalImage = null;
 
             // Verificar si la imagen existe
             if (optionalImage.isPresent()) {
@@ -81,7 +81,7 @@ public abstract class ImageServiceImpl<E extends Image, ID extends Serializable>
     // Método para subir imágenes a Cloudinary y guardar los detalles en la base de datos
     @Override
     @Named("uploadImages")
-    public ResponseEntity<String> uploadImages(MultipartFile[] files,Long id) {
+    public ResponseEntity<String> uploadImages(MultipartFile[] files, Long id) {
         List<String> urls = new ArrayList<>();
 
         try {

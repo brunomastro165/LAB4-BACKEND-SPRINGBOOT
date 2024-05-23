@@ -5,9 +5,14 @@ import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufa
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
+import com.example.buensaborback.domain.entities.ImagenArticulo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {CategoriaService.class})
 public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto> {
@@ -20,6 +25,8 @@ public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufact
 
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
     ArticuloManufacturado toEntityCreate(ArticuloManufacturadoCreateDto source);
+
+
 
 }
 

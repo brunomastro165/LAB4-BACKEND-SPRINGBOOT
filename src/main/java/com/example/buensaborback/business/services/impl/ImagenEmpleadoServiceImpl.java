@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
 @Primary
 @Service
 public class ImagenEmpleadoServiceImpl extends ImageServiceImpl<ImagenEmpleado, UUID> implements ImagenEmpleadoService {

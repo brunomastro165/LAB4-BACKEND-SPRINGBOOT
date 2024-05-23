@@ -2,6 +2,7 @@ package com.example.buensaborback.presentation.base;
 
 import com.example.buensaborback.domain.entities.Image;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,11 +12,12 @@ import java.util.Map;
 
 public interface BaseImagenController <E extends Image, ID extends Serializable>{
     public ResponseEntity<String> uploadImages(
-            @RequestParam(value = "uploads", required = true) MultipartFile[] files);
+            @RequestParam(value = "uploads", required = true) MultipartFile[] files,Long id);
 
     public ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,
             @RequestParam(value = "uuid", required = true) String uuidString);
 
     public ResponseEntity<List<Map<String, Object>>> getAll();
+    public ResponseEntity<Map<String, Object>>  getById(@PathVariable Long id);
 }

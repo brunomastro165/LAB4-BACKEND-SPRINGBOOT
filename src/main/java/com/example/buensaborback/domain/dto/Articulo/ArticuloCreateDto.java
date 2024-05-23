@@ -20,7 +20,6 @@ import java.util.Set;
 public class ArticuloCreateDto extends BaseDto {
     private String denominacion;
     private Double precioVenta;
-    //private List<String> imagenes;
     private UnidadMedidaCreateDto UnidadMedida;
     private Long idCategoria;
 }
