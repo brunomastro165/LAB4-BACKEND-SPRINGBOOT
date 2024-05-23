@@ -1,19 +1,16 @@
 package com.example.buensaborback.presentation.rest;
 
-import com.example.buensaborback.business.facade.impl.ImagenPromocionFacadeImpl;
-import com.example.buensaborback.domain.dto.ImagenPromocion.ImagenPromocionCreateDto;
-import com.example.buensaborback.domain.dto.ImagenPromocion.ImagenPromocionDto;
+import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.domain.entities.ImagenPromocion;
-import com.example.buensaborback.presentation.base.BaseControllerImpl;
+import com.example.buensaborback.presentation.base.BaseImagenControllerImpl;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/imagenPromocion")
-public class ImagenPromocionController extends BaseControllerImpl<ImagenPromocion, ImagenPromocionDto, ImagenPromocionCreateDto, ImagenPromocionCreateDto, Long, ImagenPromocionFacadeImpl> {
-    public ImagenPromocionController(ImagenPromocionFacadeImpl facade) {
-        super(facade);
-    }
+public class ImagenPromocionController extends BaseImagenControllerImpl<ImagenPromocion, UUID>  {
 }

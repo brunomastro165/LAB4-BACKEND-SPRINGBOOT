@@ -33,6 +33,12 @@ dependencies {
     implementation 'org.json:json:20210307'
     annotationProcessor 'org.projectlombok:lombok', 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
+    //CLOUDINARY
+    // https://mvnrepository.com/artifact/com.cloudinary/cloudinary
+    implementation 'com.cloudinary:cloudinary-http44:1.36.0'
+    implementation 'com.cloudinary:cloudinary-taglib:1.36.0'
+    implementation 'io.github.cdimascio:dotenv-java:2.2.4'
+
     //SPRING WEB
     implementation 'org.springframework.boot:spring-boot-starter-web'
 

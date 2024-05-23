@@ -63,7 +63,6 @@ public class BuenSaborBackApplication {
     private FacturaRepository facturaRepository;
 
 
-
     public static void main(String[] args) {
         SpringApplication.run(BuenSaborBackApplication.class, args);
         logger.info("Estoy activo en el main");

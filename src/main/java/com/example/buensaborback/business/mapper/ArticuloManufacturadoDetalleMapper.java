@@ -6,18 +6,12 @@ import com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle.Articul
 import com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleEditDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Set;
-
 @Mapper(componentModel = "spring", uses = {ArticuloInsumoService.class})
-public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto,ArticuloManufacturadoDetalleCreateDto, ArticuloManufacturadoDetalleEditDto>{
+public interface ArticuloManufacturadoDetalleMapper extends BaseMapper<ArticuloManufacturadoDetalle, ArticuloManufacturadoDetalleDto, ArticuloManufacturadoDetalleCreateDto, ArticuloManufacturadoDetalleEditDto> {
 
     ArticuloManufacturadoDetalleMapper INSTANCE = Mappers.getMapper(ArticuloManufacturadoDetalleMapper.class);
-
-
 
 
 }

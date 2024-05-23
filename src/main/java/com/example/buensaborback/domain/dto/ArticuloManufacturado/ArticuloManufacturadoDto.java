@@ -16,7 +16,6 @@ import java.util.Set;
 public class ArticuloManufacturadoDto extends ArticuloDto {
 
     private Integer tiempoEstimadoMinutos;
-    private Double precioVenta;
     private String preparacion;
     private Set<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalles;
 }

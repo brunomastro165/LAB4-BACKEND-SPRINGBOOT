@@ -8,13 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class ArticuloInsumoEditDto {
+public class ArticuloInsumoEditDto extends ArticuloInsumoCreateDto{
 
-    private Double precioVenta;
-    private Long idUnidadMedida;
-    private Double precioCompra;
-    private Integer stockActual;
-    private Integer stockMaximo;
-    private Integer stockMinimo;
+
 }

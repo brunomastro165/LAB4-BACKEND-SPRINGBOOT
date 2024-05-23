@@ -1,10 +1,10 @@
 package com.example.buensaborback.business.mapper;
 
 import com.example.buensaborback.business.services.SucursalService;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
-import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
@@ -17,12 +17,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {SucursalService.class, ArticuloInsumoMapper.class, ArticuloManufacturadoMapper.class, SucursalMapper.class})
-public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto,CategoriaCreateDto, CategoriaEditDto> {
+public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto> {
     // Esta es una instancia estática de la interfaz, que se utiliza para obtener una instancia del Mapper.
     CategoriaMapper INSTANCE = Mappers.getMapper(CategoriaMapper.class);
 
     // Este método define la transformación de un CategoriaCreateDto a una entidad Categoria.
-    @Mapping(target = "sucursales", source = "idSucursales",qualifiedByName = "getById")
+    @Mapping(target = "sucursales", source = "idSucursales", qualifiedByName = "getById")
     Categoria toEntityCreate(CategoriaCreateDto source);
 
 

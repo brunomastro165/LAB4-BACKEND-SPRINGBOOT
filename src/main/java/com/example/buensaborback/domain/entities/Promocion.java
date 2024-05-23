@@ -39,7 +39,7 @@ public class Promocion extends Base {
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
     @NotAudited
-    private Set<ImagenArticulo> imagenes = new HashSet<>();
+    private Set<ImagenPromocion> imagenes = new HashSet<>();
 
 
     @ManyToMany(mappedBy = "promociones")

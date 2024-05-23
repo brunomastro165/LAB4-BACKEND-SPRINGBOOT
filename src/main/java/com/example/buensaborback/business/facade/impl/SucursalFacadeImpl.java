@@ -18,15 +18,14 @@ import java.util.List;
 
 @Service
 public class SucursalFacadeImpl extends BaseFacadeImpl<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto, Long> implements Sucursalfacade {
-    public SucursalFacadeImpl(BaseService<Sucursal, Long> baseService, BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto> baseMapper) {
-        super(baseService, baseMapper);
-    }
     @Autowired
     CategoriaMapper categoriaMapper;
-
     @Autowired
     SucursalService sucursalService;
 
+    public SucursalFacadeImpl(BaseService<Sucursal, Long> baseService, BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto> baseMapper) {
+        super(baseService, baseMapper);
+    }
 
     public List<CategoriaDto> findAllCategoriasByIdSucursal(Long idSucursal) {
         return categoriaMapper.toDTOsList(sucursalService.findCategoriasBySucursalId(idSucursal));

@@ -36,7 +36,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
     }
 
     @Override
-    public Categoria create(Categoria request){
+    public Categoria create(Categoria request) {
         // Se obtienen las sucursales asociadas a la categoría.
         Set<Sucursal> sucursales = request.getSucursales();
         // Asignamos la categoría a cada sucursal y las guardamos

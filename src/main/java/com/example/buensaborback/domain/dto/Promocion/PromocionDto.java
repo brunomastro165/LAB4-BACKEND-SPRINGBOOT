@@ -2,10 +2,8 @@ package com.example.buensaborback.domain.dto.Promocion;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
-import com.example.buensaborback.domain.enums.TipoPromocion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;

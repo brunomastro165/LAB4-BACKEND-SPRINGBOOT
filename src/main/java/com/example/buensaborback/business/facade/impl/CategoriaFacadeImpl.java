@@ -14,19 +14,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaFacadeImpl extends BaseFacadeImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long> implements CategoriaFacade {
+    @Autowired
+    private CategoriaService categoriaService;
+
     public CategoriaFacadeImpl(BaseService<Categoria, Long> baseService, BaseMapper<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto> baseMapper) {
         super(baseService, baseMapper);
     }
-    @Autowired
-    private CategoriaService categoriaService;
+
     @Override
     public CategoriaDto addInsumo(Long idCategoria, Long idInsumo) {
-        return baseMapper.toDTO(categoriaService.addArticulo(idCategoria,idInsumo));
+        return baseMapper.toDTO(categoriaService.addArticulo(idCategoria, idInsumo));
     }
 
     @Override
     public CategoriaDto addManufacturado(Long idCategoria, Long idManufacturado) {
-        return baseMapper.toDTO(categoriaService.addArticulo(idCategoria,idManufacturado));
+        return baseMapper.toDTO(categoriaService.addArticulo(idCategoria, idManufacturado));
     }
 
     @Override

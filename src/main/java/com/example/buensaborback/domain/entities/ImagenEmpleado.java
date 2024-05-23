@@ -5,11 +5,9 @@ import lombok.*;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString
 @Builder
-public class ImagenEmpleado extends Base {
-    private String url;
+public class ImagenEmpleado extends Image {
 }
