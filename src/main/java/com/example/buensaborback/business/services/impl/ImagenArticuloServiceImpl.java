@@ -1,11 +1,10 @@
 package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.CloudinaryService;
-import com.example.buensaborback.business.services.ImageService;
 import com.example.buensaborback.business.services.ImagenArticuloService;
+import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.repositories.ArticuloRepository;
-import com.example.buensaborback.repositories.ImageRepository;
 import com.example.buensaborback.repositories.ImagenArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -31,7 +30,7 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
         return new ImagenArticulo();
     }
 
-    public List<String> uploadImages(MultipartFile[] files) {
+    public ResponseEntity<String> uploadImages(MultipartFile[] files,Long id) {
         List<String> urls = new ArrayList<>();
 
         try {
@@ -44,6 +43,7 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
                 ImagenArticulo image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
                 image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
+                image.setArticulo(articuloRepository.getById(id));
 
 
                 // Guardar la entidad Image en la base de datos
@@ -54,14 +54,15 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
             }
 
             // Convertir la lista de URLs a un objeto JSON y devolver como ResponseEntity con estado OK (200)
-            return urls;
+            return new ResponseEntity<>("{\"status\":\"OK\", \"urls\":" + urls + "}", HttpStatus.OK);
 
         } catch (Exception e) {
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante el proceso de subida
-            return null;
+            return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
         }
     }
+
     @Override
     public ResponseEntity<Map<String, Object>> getImageById(Long id) {
         try {

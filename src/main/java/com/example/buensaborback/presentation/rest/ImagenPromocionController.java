@@ -1,6 +1,5 @@
 package com.example.buensaborback.presentation.rest;
 
-import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.domain.entities.ImagenPromocion;
 import com.example.buensaborback.presentation.base.BaseImagenControllerImpl;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,5 +11,5 @@ import java.util.UUID;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/imagenPromocion")
-public class ImagenPromocionController extends BaseImagenControllerImpl<ImagenPromocion, UUID>  {
+public class ImagenPromocionController extends BaseImagenControllerImpl<ImagenPromocion, UUID> {
 }

@@ -1,24 +1,14 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ArticuloManufacturadoFacadeImpl;
-import com.example.buensaborback.business.services.ImagenArticuloService;
-import com.example.buensaborback.business.services.impl.ImagenArticuloServiceImpl;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
-import com.example.buensaborback.domain.dto.ImageModel;
-import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")

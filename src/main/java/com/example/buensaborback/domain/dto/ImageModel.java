@@ -1,12 +1,12 @@
 package com.example.buensaborback.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.*;
 
-@Data // Anotación Lombok para generar automáticamente getters, setters, equals, hashCode y toString
+@NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class ImageModel {
     private String name;
-    private String url; // Objeto MultipartFile que representa el archivo de imagen
+    private String url;
 }
