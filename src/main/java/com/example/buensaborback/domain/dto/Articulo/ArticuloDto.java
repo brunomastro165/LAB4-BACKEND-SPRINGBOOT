@@ -19,7 +19,7 @@ import java.util.Set;
 public class ArticuloDto extends BaseDto {
     private String denominacion;
     private Double precioVenta;
-    //private Set<String> imagenes = new HashSet<>();
+ //   private Set<String> imagenes = new HashSet<>();
     private UnidadMedidaDto unidadMedida;
     private CategoriaDto categoria;
 }

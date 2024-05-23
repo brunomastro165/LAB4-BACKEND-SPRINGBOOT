@@ -6,9 +6,10 @@ import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufa
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin("*")
@@ -17,4 +18,10 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImpl facade) {
         super(facade);
     }
+    /*@PostMapping()
+    public ResponseEntity<ArticuloManufacturadoDto> create(@RequestBody ArticuloManufacturadoCreateDto entity) {
+        return ResponseEntity.ok(facade.createNew(entity));
+    }
+
+     */
 }

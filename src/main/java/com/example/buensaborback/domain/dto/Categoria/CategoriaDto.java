@@ -27,5 +27,6 @@ public class CategoriaDto extends BaseDto {
     private Set<ArticuloInsumoDto> insumos;
 
     private Set<ArticuloManufacturadoDto> articulosManufacturados;
+    private boolean esPadre;
 
 }
