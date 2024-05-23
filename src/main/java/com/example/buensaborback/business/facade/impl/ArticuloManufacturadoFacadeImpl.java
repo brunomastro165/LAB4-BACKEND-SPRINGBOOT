@@ -3,11 +3,16 @@ package com.example.buensaborback.business.facade.impl;
 import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
 import com.example.buensaborback.business.facade.base.BaseFacadeImpl;
 import com.example.buensaborback.business.mapper.BaseMapper;
+import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.business.services.base.BaseService;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,4 +20,15 @@ public class ArticuloManufacturadoFacadeImpl extends BaseFacadeImpl<ArticuloManu
     public ArticuloManufacturadoFacadeImpl(BaseService<ArticuloManufacturado, Long> baseService, BaseMapper<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto> baseMapper) {
         super(baseService, baseMapper);
     }
+    public ArticuloManufacturadoCreateDto mapperJson(String articuloManufacturadoJson) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArticuloManufacturadoCreateDto articuloManufacturadoDTO = null;
+        try {
+            articuloManufacturadoDTO = objectMapper.readValue(articuloManufacturadoJson, ArticuloManufacturadoCreateDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return articuloManufacturadoDTO;
+    }
+
 }

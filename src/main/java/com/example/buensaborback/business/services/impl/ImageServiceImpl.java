@@ -5,6 +5,7 @@ import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImageService;
 import com.example.buensaborback.domain.entities.Image;
 import com.example.buensaborback.repositories.ImageRepository;
+import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +80,8 @@ public abstract class ImageServiceImpl<E extends Image, ID extends Serializable>
 
     // Método para subir imágenes a Cloudinary y guardar los detalles en la base de datos
     @Override
-    public ResponseEntity<String> uploadImages(MultipartFile[] files) {
+    @Named("uploadImages")
+    public ResponseEntity<String> uploadImages(MultipartFile[] files,Long id) {
         List<String> urls = new ArrayList<>();
 
         try {
@@ -94,6 +96,7 @@ public abstract class ImageServiceImpl<E extends Image, ID extends Serializable>
                 E image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
                 image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
+
 
                 // Verificar si la URL de la imagen es nula (indicativo de fallo en la subida)
                 if (image.getUrl() == null) {

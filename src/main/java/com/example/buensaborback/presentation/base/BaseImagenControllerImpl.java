@@ -26,7 +26,8 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files) {
         try {
-            return imageService.uploadImages(files); // Llama al método del servicio para subir imágenes
+
+            return imageService.uploadImages(files,null); // Llama al método del servicio para subir imágenes
         } catch (Exception e) {
             e.printStackTrace();
             return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica

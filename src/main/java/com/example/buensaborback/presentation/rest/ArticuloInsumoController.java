@@ -1,13 +1,21 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
+import com.example.buensaborback.business.facade.impl.ArticuloManufacturadoFacadeImpl;
+import com.example.buensaborback.business.services.ImagenArticuloService;
+import com.example.buensaborback.business.services.impl.ImagenArticuloServiceImpl;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +27,8 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
-
+    @Autowired
+    ImagenArticuloService imagenArticuloService;
     @GetMapping("/buscar/{searchString}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
@@ -28,6 +37,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
+
 
 
 }

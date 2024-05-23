@@ -25,6 +25,8 @@ public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, 
         var entityToCreate = baseMapper.toEntityCreate(request);
         // Graba una entidad
         var entityCreated = baseService.create(entityToCreate);
+        entityCreated.getId();
+        System.out.println(entityCreated);
         // convierte a Dto para devolver
         return baseMapper.toDTO(entityCreated);
     }
