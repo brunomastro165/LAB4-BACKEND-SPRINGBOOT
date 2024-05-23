@@ -1,15 +1,18 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.CategoriaFacadeImpl;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
+import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.entities.Categoria;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +23,29 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
     }
-
+    public List<ArticuloInsumoDto> getArticuloSubCategoria(Long idSub){
+        List<ArticuloInsumoDto> insumos = new ArrayList<>();
+        var categoria = facade.getById(idSub);
+        for (ArticuloInsumoDto insumo:
+                categoria.getInsumos()) {
+            insumos.add(insumo);
+        }
+        if(!categoria.getSubCategorias().isEmpty()){
+            for (CategoriaShortDto subCategoria:
+                 categoria.getSubCategorias()) {
+                List<ArticuloInsumoDto> ins = getArticuloSubCategoria(subCategoria.getId());
+                for (ArticuloInsumoDto i:
+                     ins) {
+                    insumos.add(i);
+                }
+            }
+        }
+        return insumos;
+    }
+    @GetMapping("/getInsumos/{idCategoria}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria){
+        return ResponseEntity.ok(getArticuloSubCategoria(idCategoria));
+    }
     @GetMapping("/insumo")
     public ResponseEntity<List<CategoriaDto>> getCategoriasInsumo() {
         List<CategoriaDto> todasLasCategorias = facade.getAll();
