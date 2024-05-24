@@ -26,14 +26,17 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         super(facade);
     }
 
-    @GetMapping("/buscar/{searchString}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString) {
+    @GetMapping("/buscar/{searchString}/{idSucursal}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getDenominacion().contains(searchString) && !a.isEliminado())
+                .filter(a -> a.getDenominacion().contains(searchString)
+                        && !a.isEliminado()
+                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
+
 
 
 }

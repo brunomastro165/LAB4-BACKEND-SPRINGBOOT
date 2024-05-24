@@ -19,6 +19,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
     @Autowired
     SucursalService sucursalService;
 
+
     @Override
     public Categoria addArticulo(Long idCategoria, Long idArticulo) {
         var categoria = baseRepository.getById(idCategoria);
