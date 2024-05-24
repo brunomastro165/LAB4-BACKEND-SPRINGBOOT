@@ -18,6 +18,7 @@ public class Categoria extends Base {
 
     private String denominacion;
     private boolean esInsumo;
+    private boolean esPadre;
 
     @ManyToMany(mappedBy = "categorias")
     @Builder.Default
