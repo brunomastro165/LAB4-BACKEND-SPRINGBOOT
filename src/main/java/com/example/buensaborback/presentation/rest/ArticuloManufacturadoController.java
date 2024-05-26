@@ -26,7 +26,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArticuloManufacturadoDto> create(@RequestParam("entity") ArticuloManufacturadoCreateDto entity, @RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<ArticuloManufacturadoDto> create(@RequestPart("entity") ArticuloManufacturadoCreateDto entity, @RequestPart("files") MultipartFile[] files) {
         System.out.println("Estoy en controller");
         ArticuloManufacturadoDto articulo = facade.createNew(entity);
         articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));

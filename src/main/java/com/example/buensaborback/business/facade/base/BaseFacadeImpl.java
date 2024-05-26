@@ -21,11 +21,11 @@ public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, 
 
     public D createNew(DC request) {
         System.out.println("EstoyEnFacade");
+        System.out.println(request);
         // Convierte a entidad
         var entityToCreate = baseMapper.toEntityCreate(request);
         // Graba una entidad
         var entityCreated = baseService.create(entityToCreate);
-        entityCreated.getId();
         System.out.println(entityCreated);
         // convierte a Dto para devolver
         return baseMapper.toDTO(entityCreated);
