@@ -2,10 +2,7 @@ package com.example.buensaborback.domain.entities;
 
 import com.example.buensaborback.domain.enums.TipoPromocion;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.NotAudited;
@@ -47,7 +44,7 @@ public class Promocion extends Base {
 
     @ManyToMany(mappedBy = "promociones")
     private Set<Sucursal> sucursales = new HashSet<>();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "promocion_id")
     @Builder.Default
     private Set<PromocionDetalle> detalles = new HashSet<>();

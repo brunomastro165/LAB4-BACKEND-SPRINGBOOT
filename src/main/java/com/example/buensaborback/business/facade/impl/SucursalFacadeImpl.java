@@ -4,9 +4,11 @@ import com.example.buensaborback.business.facade.Sucursalfacade;
 import com.example.buensaborback.business.facade.base.BaseFacadeImpl;
 import com.example.buensaborback.business.mapper.BaseMapper;
 import com.example.buensaborback.business.mapper.CategoriaMapper;
+import com.example.buensaborback.business.mapper.PromocionMapper;
 import com.example.buensaborback.business.services.SucursalService;
 import com.example.buensaborback.business.services.base.BaseService;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
+import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalCreateDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalEditDto;
@@ -22,6 +24,8 @@ public class SucursalFacadeImpl extends BaseFacadeImpl<Sucursal, SucursalDto, Su
     CategoriaMapper categoriaMapper;
     @Autowired
     SucursalService sucursalService;
+    @Autowired
+    PromocionMapper promocionMapper;
 
     public SucursalFacadeImpl(BaseService<Sucursal, Long> baseService, BaseMapper<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto> baseMapper) {
         super(baseService, baseMapper);
@@ -29,6 +33,9 @@ public class SucursalFacadeImpl extends BaseFacadeImpl<Sucursal, SucursalDto, Su
 
     public List<CategoriaDto> findAllCategoriasByIdSucursal(Long idSucursal) {
         return categoriaMapper.toDTOsList(sucursalService.findCategoriasBySucursalId(idSucursal));
+    }
+    public List<PromocionDto> findAllPromocionesByIdSucursal(Long idSucursal) {
+        return promocionMapper.toDTOsList(sucursalService.findPromocionesBySucursalId(idSucursal));
     }
 
 

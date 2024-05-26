@@ -19,6 +19,8 @@ import java.util.Set;
 public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> implements PromocionService {
     @Autowired
     PromocionDetalleRepository promocionDetalleRepository;
+    //Esto ya anda con el cascade ALL
+    /*
     @Override
     public Promocion create(Promocion promocion) {
         System.out.println("hola puto");
@@ -42,5 +44,7 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
         var newEntity = baseRepository.save(promocion);
         return newEntity;
     }
+
+     */
 
 }
