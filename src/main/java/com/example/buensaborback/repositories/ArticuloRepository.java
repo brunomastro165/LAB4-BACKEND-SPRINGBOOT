@@ -2,7 +2,6 @@ package com.example.buensaborback.repositories;
 
 
 import com.example.buensaborback.domain.entities.Articulo;
-import com.example.buensaborback.domain.entities.ImagenArticulo;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

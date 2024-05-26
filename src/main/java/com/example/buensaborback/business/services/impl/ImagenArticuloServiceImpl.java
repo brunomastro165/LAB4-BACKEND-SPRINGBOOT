@@ -2,7 +2,7 @@ package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImagenArticuloService;
-import com.example.buensaborback.domain.entities.ArticuloManufacturado;
+import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.ImagenArticuloRepository;
@@ -30,15 +30,13 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
         return new ImagenArticulo();
     }
 
-    public ResponseEntity<String> uploadImages(MultipartFile[] files,Long id) {
-        List<String> urls = new ArrayList<>();
+    public List<ImagenArticuloDto> uploadImagesA(MultipartFile[] files, Long id) {
+        List<ImagenArticuloDto> urls = new ArrayList<>();
 
         try {
             // Iterar sobre cada archivo recibido
             for (MultipartFile file : files) {
                 // Verificar si el archivo está vacío
-
-
                 // Crear una entidad Image y establecer su nombre y URL (subida a Cloudinary)
                 ImagenArticulo image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
@@ -48,18 +46,20 @@ public class ImagenArticuloServiceImpl extends ImageServiceImpl<ImagenArticulo, 
 
                 // Guardar la entidad Image en la base de datos
                 imageRepository.save(image);
-
+                ImagenArticuloDto img = new ImagenArticuloDto();
+                img.setName(image.getName());
+                img.setUrl(image.getUrl());
                 // Agregar la URL de la imagen a la lista de URLs subidas
-                urls.add(image.getUrl());
+                urls.add(img);
             }
 
             // Convertir la lista de URLs a un objeto JSON y devolver como ResponseEntity con estado OK (200)
-            return new ResponseEntity<>("{\"status\":\"OK\", \"urls\":" + urls + "}", HttpStatus.OK);
+            return urls;
 
         } catch (Exception e) {
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante el proceso de subida
-            return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
+            return null;
         }
     }
 

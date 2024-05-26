@@ -23,29 +23,32 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
     }
-    public List<ArticuloInsumoDto> getArticuloSubCategoria(Long idSub){
+
+    public List<ArticuloInsumoDto> getArticuloSubCategoria(Long idSub) {
         List<ArticuloInsumoDto> insumos = new ArrayList<>();
         var categoria = facade.getById(idSub);
-        for (ArticuloInsumoDto insumo:
+        for (ArticuloInsumoDto insumo :
                 categoria.getInsumos()) {
             insumos.add(insumo);
         }
-        if(!categoria.getSubCategorias().isEmpty()){
-            for (CategoriaShortDto subCategoria:
-                 categoria.getSubCategorias()) {
+        if (!categoria.getSubCategorias().isEmpty()) {
+            for (CategoriaShortDto subCategoria :
+                    categoria.getSubCategorias()) {
                 List<ArticuloInsumoDto> ins = getArticuloSubCategoria(subCategoria.getId());
-                for (ArticuloInsumoDto i:
-                     ins) {
+                for (ArticuloInsumoDto i :
+                        ins) {
                     insumos.add(i);
                 }
             }
         }
         return insumos;
     }
+
     @GetMapping("/getInsumos/{idCategoria}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria){
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria) {
         return ResponseEntity.ok(getArticuloSubCategoria(idCategoria));
     }
+
     @GetMapping("/insumo")
     public ResponseEntity<List<CategoriaDto>> getCategoriasInsumo() {
         List<CategoriaDto> todasLasCategorias = facade.getAll();

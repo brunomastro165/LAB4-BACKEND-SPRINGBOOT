@@ -7,10 +7,11 @@ import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import com.example.buensaborback.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +20,9 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 @RequestMapping("/ArticuloInsumo")
 public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoEditDto, Long, ArticuloInsumoFacadeImpl> {
+
     @Autowired
-    ImagenArticuloService imagenArticuloService;
+    private ImagenArticuloService imageService;
 
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
@@ -37,6 +39,14 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         return ResponseEntity.ok(filteredArticulos);
     }
 
+    @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ArticuloInsumoDto> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart("files") MultipartFile[] files) {
+        System.out.println("Estoy en controller");
+        ArticuloInsumoDto articulo = facade.createNew(entity);
+        articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
+
+        return ResponseEntity.ok(articulo);
+    }
 
 
 }

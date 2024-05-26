@@ -6,9 +6,9 @@ import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
 
 public interface CategoriaFacade extends BaseFacade<CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long> {
-    public CategoriaDto addInsumo(Long idCategoria, Long idInsumo);
+    CategoriaDto addInsumo(Long idCategoria, Long idInsumo);
 
-    public CategoriaDto addManufacturado(Long idCategoria, Long idManufacturado);
+    CategoriaDto addManufacturado(Long idCategoria, Long idManufacturado);
 
-    public CategoriaDto addSubCategoria(Long idCategoria, CategoriaCreateDto subCategoria);
+    CategoriaDto addSubCategoria(Long idCategoria, CategoriaCreateDto subCategoria);
 }

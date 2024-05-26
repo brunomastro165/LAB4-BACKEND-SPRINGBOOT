@@ -7,6 +7,6 @@ import com.example.buensaborback.domain.entities.Sucursal;
 import java.util.List;
 
 public interface SucursalService extends BaseService<Sucursal, Long> {
-    public List<Categoria> findCategoriasBySucursalId(Long idSucursal);
+    List<Categoria> findCategoriasBySucursalId(Long idSucursal);
 }
 

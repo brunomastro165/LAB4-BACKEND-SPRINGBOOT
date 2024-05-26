@@ -2,26 +2,17 @@ package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImagenClienteService;
-import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.domain.entities.ImagenCliente;
-import com.example.buensaborback.repositories.ImagenArticuloRepository;
 import com.example.buensaborback.repositories.ImagenClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.UUID;
 
 @Service
 @Primary
 public class ImagenClienteServiceImpl extends ImageServiceImpl<ImagenCliente, UUID> implements ImagenClienteService {
-    @Override
-    protected ImagenCliente createImageInstance() {
-        return new ImagenCliente();
-    }
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
     @Autowired
@@ -87,4 +78,9 @@ public class ImagenClienteServiceImpl extends ImageServiceImpl<ImagenCliente, UU
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         */
+
+    @Override
+    protected ImagenCliente createImageInstance() {
+        return new ImagenCliente();
+    }
 }

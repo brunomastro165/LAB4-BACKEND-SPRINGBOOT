@@ -9,10 +9,10 @@ import java.util.UUID;
 public interface CloudinaryService {
 
     // Método para subir un archivo a Cloudinary
-    public default String uploadFile(MultipartFile file) {
+    default String uploadFile(MultipartFile file) {
         return null; // Implementación por defecto que retorna null
     }
 
     // Método para eliminar una imagen de Cloudinary
-    public ResponseEntity<String> deleteImage(String publicId, UUID uuid);
+    ResponseEntity<String> deleteImage(String publicId, UUID uuid);
 }

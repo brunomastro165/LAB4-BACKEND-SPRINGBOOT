@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface BaseImagenController<E extends Image, ID extends Serializable> {
-    public ResponseEntity<String> uploadImages(
+    ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files, Long id);
 
-    public ResponseEntity<String> deleteById(
+    ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,
             @RequestParam(value = "uuid", required = true) String uuidString);
 
-    public ResponseEntity<List<Map<String, Object>>> getAll();
+    ResponseEntity<List<Map<String, Object>>> getAll();
 
-    public ResponseEntity<Map<String, Object>> getById(@PathVariable Long id);
+    ResponseEntity<Map<String, Object>> getById(@PathVariable Long id);
 }
