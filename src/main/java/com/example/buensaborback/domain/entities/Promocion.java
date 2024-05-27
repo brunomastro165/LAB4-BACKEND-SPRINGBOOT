@@ -43,6 +43,7 @@ public class Promocion extends Base {
 
 
     @ManyToMany(mappedBy = "promociones")
+    @Builder.Default
     private Set<Sucursal> sucursales = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "promocion_id")
