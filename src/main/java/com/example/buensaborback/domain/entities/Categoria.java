@@ -21,8 +21,6 @@ public class Categoria extends Base {
     private boolean esInsumo;
     private boolean esPadre;
 
-    private boolean esPadre;
-
     @ManyToMany(mappedBy = "categorias")
     @Builder.Default
     private Set<Sucursal> sucursales = new HashSet<>();

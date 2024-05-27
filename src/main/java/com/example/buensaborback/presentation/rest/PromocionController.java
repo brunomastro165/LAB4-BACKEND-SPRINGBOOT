@@ -3,6 +3,7 @@ package com.example.buensaborback.presentation.rest;
 import com.example.buensaborback.business.facade.impl.PromocionFacadeImpl;
 import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
+import com.example.buensaborback.business.mapper.PromocionMapper;
 import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.business.services.ImagenPromocionService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
@@ -14,6 +15,7 @@ import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
 import com.example.buensaborback.domain.dto.Promocion.PromocionEditDto;
 import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleCreateDto;
 import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalShortDto;
 import com.example.buensaborback.domain.entities.*;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.*;
@@ -45,6 +47,10 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
     private ArticuloManufacturadoMapper articuloManufacturadoMapper;
     @Autowired
     private ArticuloInsumoMapper articuloInsumoMapper;
+    @Autowired
+    private SucursalRepository sucursalRepository;
+    @Autowired
+    private PromocionMapper promocionMapper;
 
     public PromocionController(PromocionFacadeImpl facade) {
         super(facade);
@@ -137,9 +143,13 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
             promocionDetalleRepository.save(aux);
             i++;
         }
-
         promocion.setImagenes(imageService.uploadImagesP(files, promocion.getId()));
-
+        Promocion p = promocionMapper.toEntity(promocion);
+        for (SucursalShortDto sucursalDto : promocion.getSucursales()) {
+            Sucursal sucursal = sucursalRepository.getById(sucursalDto.getId());
+            sucursal.getPromociones().add(p);
+            sucursalRepository.save(sucursal);
+        }
         return ResponseEntity.ok(promocion);
     }
 

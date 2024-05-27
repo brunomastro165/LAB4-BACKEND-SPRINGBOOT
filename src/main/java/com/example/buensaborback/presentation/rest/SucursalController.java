@@ -42,7 +42,7 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
     public ResponseEntity<List<CategoriaDto>> getCategorias(@PathVariable Long idSucursal) {
         return ResponseEntity.ok(facade.findAllCategoriasByIdSucursal(idSucursal));
     }
-    @GetMapping("/getCategorias/{idSucursal}")
+    @GetMapping("/getPromociones/{idSucursal}")
     public ResponseEntity<List<PromocionDto>> getPromociones(@PathVariable Long idSucursal) {
         return ResponseEntity.ok(facade.findAllPromocionesByIdSucursal(idSucursal));
     }

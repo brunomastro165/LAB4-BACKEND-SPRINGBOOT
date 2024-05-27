@@ -5,8 +5,10 @@ import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
+import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
+import com.example.buensaborback.repositories.ArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +25,21 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
     @Autowired
     private ImagenArticuloService imageService;
+    @Autowired
+    private ArticuloRepository articuloRepository;
 
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
+    }
+    @GetMapping("/getArticulos")
+    public ResponseEntity<List<Articulo>> getAllArticulos() {
+        List<Articulo> articulos = articuloRepository.getAll();
+        for (Articulo articulo:
+             articulos) {
+            articulo.setCategoria(null);
+            articulo.setImagenes(null);
+        }
+        return ResponseEntity.ok(articulos);
     }
 
     @GetMapping("/buscar/{searchString}/{idSucursal}")
@@ -44,7 +58,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         System.out.println("Estoy en controller");
         ArticuloInsumoDto articulo = facade.createNew(entity);
         articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
-
         return ResponseEntity.ok(articulo);
     }
 
