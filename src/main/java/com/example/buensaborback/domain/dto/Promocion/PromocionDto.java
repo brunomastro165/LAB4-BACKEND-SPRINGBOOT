@@ -30,6 +30,5 @@ public class PromocionDto extends BaseDto {
     private Double precioPromocional;
     private List<ImagenPromocionDto> imagenes;
     private Set<SucursalShortDto> sucursales;
-
     private Set<PromocionDetalleDto> detalles;
 }

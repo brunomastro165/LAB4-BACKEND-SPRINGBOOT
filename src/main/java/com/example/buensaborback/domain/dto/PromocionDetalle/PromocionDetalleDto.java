@@ -16,5 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class PromocionDetalleDto extends BaseDto {
     private Integer cantidad;
-    private Long idArticulo;
+    private ArticuloInsumoDto insumos;
+
+    private ArticuloManufacturadoDto articulosManufacturados;
 }
