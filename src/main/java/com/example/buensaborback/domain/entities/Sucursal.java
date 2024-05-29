@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.NotAudited;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -55,4 +56,11 @@ public class Sucursal extends Base {
 
     @ManyToOne
     private Empresa empresa;
+
+    @OneToMany
+    @JoinColumn(name = "sucursal_id")
+    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
+    @Builder.Default
+    @NotAudited
+    private Set<ImagenSucursal> imagenes = new HashSet<>();
 }

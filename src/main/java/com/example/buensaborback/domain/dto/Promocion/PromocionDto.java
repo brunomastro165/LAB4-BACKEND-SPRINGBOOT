@@ -2,11 +2,9 @@ package com.example.buensaborback.domain.dto.Promocion;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.ImagenPromocion.ImagenPromocionDto;
-import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleCreateDto;
 import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto;
-import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalShortDto;
-import com.example.buensaborback.domain.entities.ImagenPromocion;
+import com.example.buensaborback.domain.enums.TipoPromocion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,4 +29,6 @@ public class PromocionDto extends BaseDto {
     private List<ImagenPromocionDto> imagenes;
     private Set<SucursalShortDto> sucursales;
     private Set<PromocionDetalleDto> detalles;
+    private String descripcionDescuento;
+    private TipoPromocion tipoPromocion;
 }

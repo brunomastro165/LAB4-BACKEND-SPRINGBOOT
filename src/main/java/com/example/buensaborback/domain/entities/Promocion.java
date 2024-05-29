@@ -49,4 +49,5 @@ public class Promocion extends Base {
     @JoinColumn(name = "promocion_id")
     @Builder.Default
     private Set<PromocionDetalle> detalles = new HashSet<>();
+
 }

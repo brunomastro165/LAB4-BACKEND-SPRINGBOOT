@@ -9,6 +9,7 @@ import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
+import com.example.buensaborback.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +26,41 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
     @Autowired
     private ImagenArticuloService imageService;
+
     @Autowired
     private ArticuloRepository articuloRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
-    @GetMapping("/getArticulos")
-    public ResponseEntity<List<Articulo>> getAllArticulos() {
+
+    @GetMapping("/getArticulosCategoria/{idCategoria}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorCategorias(@PathVariable Long idCategoria) {
+        List<ArticuloInsumoDto> allArticulos = facade.getAll();
+        List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
+                .filter(a -> a.getCategoria().equals(categoriaRepository.getById(idCategoria))
+                        && !a.isEliminado())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredArticulos);
+    }
+
+    @GetMapping("/getArticulos/{searchString}/{idSucursal}")
+    public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal) {
         List<Articulo> articulos = articuloRepository.getAll();
-        for (Articulo articulo:
-             articulos) {
+        for (Articulo articulo :
+                articulos) {
             articulo.setCategoria(null);
             articulo.setImagenes(null);
         }
-        return ResponseEntity.ok(articulos);
+        List<Articulo> filteredArticulos = articulos.stream()
+                .filter(a -> a.getDenominacion().contains(searchString)
+                        && !a.isEliminado()
+                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredArticulos);
     }
 
     @GetMapping("/buscar/{searchString}/{idSucursal}")
