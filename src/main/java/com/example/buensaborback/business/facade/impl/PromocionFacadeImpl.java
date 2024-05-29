@@ -19,4 +19,6 @@ public class PromocionFacadeImpl extends BaseFacadeImpl<Promocion, PromocionDto,
     public PromocionFacadeImpl(BaseService<Promocion, Long> baseService, BaseMapper<Promocion, PromocionDto, PromocionCreateDto, PromocionEditDto> baseMapper) {
         super(baseService, baseMapper);
     }
+
+
 }
