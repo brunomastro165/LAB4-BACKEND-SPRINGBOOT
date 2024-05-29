@@ -1,6 +1,7 @@
 package com.example.buensaborback.domain.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -12,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 public class ImagenEmpresa extends Image {
+    @ManyToOne
     private Empresa empresa;
 }
