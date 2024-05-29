@@ -20,6 +20,7 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
     public List<Categoria> findCategoriasBySucursalId(Long idSucursal) {
         return sucursalRepository.findWithCategoriasById(idSucursal).getCategorias().stream().toList();
     }
+
     @Override
     public List<Promocion> findPromocionesBySucursalId(Long idSucursal) {
         return sucursalRepository.findWithPromocionesById(idSucursal).getPromociones().stream().toList();

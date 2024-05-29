@@ -4,12 +4,9 @@ import com.example.buensaborback.business.facade.impl.PromocionFacadeImpl;
 import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
 import com.example.buensaborback.business.mapper.PromocionMapper;
-import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.business.services.ImagenPromocionService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
-import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Promocion.PromocionCreateDto;
 import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
 import com.example.buensaborback.domain.dto.Promocion.PromocionEditDto;
@@ -18,9 +15,11 @@ import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto
 import com.example.buensaborback.domain.dto.Sucursal.SucursalShortDto;
 import com.example.buensaborback.domain.entities.*;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import com.example.buensaborback.repositories.*;
+import com.example.buensaborback.repositories.ArticuloRepository;
+import com.example.buensaborback.repositories.PromocionDetalleRepository;
+import com.example.buensaborback.repositories.PromocionRepository;
+import com.example.buensaborback.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,13 +54,14 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
     public PromocionController(PromocionFacadeImpl facade) {
         super(facade);
     }
+
     @GetMapping("")
     public ResponseEntity<List<PromocionDto>> getAll() {
         // Obtén todas las promociones con el facade
         List<PromocionDto> promociones = facade.getAll();
 
         for (PromocionDto promo : promociones) {
-            if(!promo.isEliminado() && promocionRepository.getById(promo.getId()).getDetalles() != null) {
+            if (!promo.isEliminado() && promocionRepository.getById(promo.getId()).getDetalles() != null) {
                 // Crea un array de detalles
 
                 Set<PromocionDetalle> detalles = promocionRepository.getById(promo.getId()).getDetalles();
@@ -107,15 +107,15 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
             Articulo articulo = articuloRepository.getById(detalle.getArticulo().getId());
             System.out.println(articulo);
             if (articulo instanceof ArticuloManufacturado) {
-                System.out.println("El detalle:"+detalle.getId()+" tiene un articuloManufacturado");
+                System.out.println("El detalle:" + detalle.getId() + " tiene un articuloManufacturado");
                 ArticuloManufacturadoDto dto = articuloManufacturadoMapper.toDTO((ArticuloManufacturado) articulo);
                 newDetalles.add(new PromocionDetalleDto(detalle.getCantidad(), null, dto));
             } else if (articulo instanceof ArticuloInsumo) {
-                System.out.println("El detalle:"+detalle.getId()+" tiene un articuloInsumo");
+                System.out.println("El detalle:" + detalle.getId() + " tiene un articuloInsumo");
                 ArticuloInsumoDto insumoDto = articuloInsumoMapper.toDTO((ArticuloInsumo) articulo);
                 newDetalles.add(new PromocionDetalleDto(detalle.getCantidad(), insumoDto, null));
-            }else{
-                System.out.println("El detalle:"+detalle.getId()+" no tiene articulo asignado");
+            } else {
+                System.out.println("El detalle:" + detalle.getId() + " no tiene articulo asignado");
             }
         }
         promo.setDetalles(newDetalles);
@@ -131,13 +131,13 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         PromocionDto promocion = facade.createNew(entity);
         Set<PromocionDetalle> detalles = promocionRepository.getById(promocion.getId()).getDetalles();
         List<PromocionDetalle> detalles2 = new ArrayList<>();
-        for (PromocionDetalle detalle:
-             detalles) {
+        for (PromocionDetalle detalle :
+                detalles) {
             detalles2.add(detalle);
         }
         int i = 0;
-        for (PromocionDetalleCreateDto detalle:
-             entity.getDetalles()) {
+        for (PromocionDetalleCreateDto detalle :
+                entity.getDetalles()) {
             PromocionDetalle aux = promocionDetalleRepository.getById(detalles2.get(i).getId());
             aux.setArticulo(articuloRepository.getById(detalle.getIdArticulo()));
             promocionDetalleRepository.save(aux);

@@ -7,11 +7,7 @@ import com.example.buensaborback.business.services.base.BaseService;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
-import com.example.buensaborback.domain.dto.Promocion.PromocionCreateDto;
-import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
-import com.example.buensaborback.domain.dto.Promocion.PromocionEditDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
-import com.example.buensaborback.domain.entities.Promocion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 

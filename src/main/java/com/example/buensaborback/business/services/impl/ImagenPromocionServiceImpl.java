@@ -2,13 +2,8 @@ package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImagenPromocionService;
-import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.dto.ImagenPromocion.ImagenPromocionDto;
-import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.domain.entities.ImagenPromocion;
-import com.example.buensaborback.domain.entities.Promocion;
-import com.example.buensaborback.repositories.ArticuloRepository;
-import com.example.buensaborback.repositories.ImagenArticuloRepository;
 import com.example.buensaborback.repositories.ImagenPromocionRepository;
 import com.example.buensaborback.repositories.PromocionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +24,12 @@ public class ImagenPromocionServiceImpl extends ImageServiceImpl<ImagenPromocion
     private ImagenPromocionRepository imageRepository;
     @Autowired
     private PromocionRepository promocionRepository;
+
     @Override
     protected ImagenPromocion createImageInstance() {
         return new ImagenPromocion();
     }
+
     public List<ImagenPromocionDto> uploadImagesP(MultipartFile[] files, Long id) {
         List<ImagenPromocionDto> urls = new ArrayList<>();
 

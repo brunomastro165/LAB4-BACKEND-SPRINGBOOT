@@ -1,19 +1,11 @@
 package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.PromocionService;
-import com.example.buensaborback.business.services.SucursalService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
-import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleCreateDto;
-import com.example.buensaborback.domain.entities.*;
-import com.example.buensaborback.repositories.ArticuloRepository;
+import com.example.buensaborback.domain.entities.Promocion;
 import com.example.buensaborback.repositories.PromocionDetalleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> implements PromocionService {

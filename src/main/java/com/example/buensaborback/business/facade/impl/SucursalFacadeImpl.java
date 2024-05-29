@@ -34,6 +34,7 @@ public class SucursalFacadeImpl extends BaseFacadeImpl<Sucursal, SucursalDto, Su
     public List<CategoriaDto> findAllCategoriasByIdSucursal(Long idSucursal) {
         return categoriaMapper.toDTOsList(sucursalService.findCategoriasBySucursalId(idSucursal));
     }
+
     public List<PromocionDto> findAllPromocionesByIdSucursal(Long idSucursal) {
         return promocionMapper.toDTOsList(sucursalService.findPromocionesBySucursalId(idSucursal));
     }
