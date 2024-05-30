@@ -4,6 +4,7 @@ import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImagenSucursalService;
 import com.example.buensaborback.domain.dto.ImagenSucursal.ImagenSucursalDto;
 import com.example.buensaborback.domain.entities.ImagenSucursal;
+import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.repositories.ImagenSucursalRepository;
 import com.example.buensaborback.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,13 @@ public class ImagenSucursalServiceImpl extends ImageServiceImpl<ImagenSucursal, 
                 // Crear una entidad Image y establecer su nombre y URL (subida a Cloudinary)
                 ImagenSucursal image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
-                image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
-                image.setSucursal(sucursalRepository.getById(id));
 
 
                 // Guardar la entidad Image en la base de datos
                 imageRepository.save(image);
+                Sucursal sucursal = sucursalRepository.getById(id);
+                sucursal.getImagenes().add(image);
+                sucursalRepository.save(sucursal);
                 ImagenSucursalDto img = new ImagenSucursalDto();
                 img.setName(image.getName());
                 img.setUrl(image.getUrl());

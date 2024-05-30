@@ -2,11 +2,14 @@ package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
 import com.example.buensaborback.business.services.ImagenArticuloService;
+import com.example.buensaborback.domain.dto.Articulo.ArticuloCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
+import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
+import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.CategoriaRepository;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,37 +54,58 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @GetMapping("/getArticulos/{searchString}/{idSucursal}")
     public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal) {
         List<Articulo> articulos = articuloRepository.getAll();
-        for (Articulo articulo :
-                articulos) {
-            articulo.setCategoria(null);
-            articulo.setImagenes(null);
-        }
         List<Articulo> filteredArticulos = articulos.stream()
-                .filter(a -> a.getDenominacion().contains(searchString)
+                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
                         && !a.isEliminado()
+                        && a.getCategoria() != null
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(filteredArticulos);
+        List<Articulo> articulosResponse = new ArrayList<>();
+
+        // Establece la categoría e imágenes en null después de filtrar
+        for (Articulo articulo : filteredArticulos) {
+            ArticuloInsumo articuloInsumo = new ArticuloInsumo();
+            articuloInsumo.setUnidadMedida(articulo.getUnidadMedida());
+            articuloInsumo.setPrecioCompra(articulo.getPrecioVenta());
+            articuloInsumo.setDenominacion(articulo.getDenominacion());
+            articuloInsumo.setId(articulo.getId());
+            articuloInsumo.setEliminado(articulo.isEliminado());
+            articulosResponse.add(articuloInsumo);
+        }
+
+        return ResponseEntity.ok(articulosResponse);
     }
+
 
     @GetMapping("/buscar/{searchString}/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getDenominacion().contains(searchString)
+                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
                         && !a.isEliminado()
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
 
+
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArticuloInsumoDto> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart("files") MultipartFile[] files) {
+    public ResponseEntity<ArticuloInsumoDto> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         System.out.println("Estoy en controller");
+
         ArticuloInsumoDto articulo = facade.createNew(entity);
-        articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
+        List<ImagenArticuloDto> imagenes = imageService.uploadImagesA(files, articulo.getId());
+        for (ImagenArticuloDto imagen:
+                imagenes) {
+            articulo.getImagenes().add(imagen);
+        }
+        ArticuloInsumoCreateDto articuloActualizado = entity;
+        articuloActualizado.setId(articulo.getId());
+        articulo = facade.createNew(articuloActualizado);
+
         return ResponseEntity.ok(articulo);
     }
+
 
 
 }

@@ -7,12 +7,9 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString
 @SuperBuilder
 public class ImagenSucursal extends Image {
-    @ManyToOne
-    private Sucursal sucursal;
 }

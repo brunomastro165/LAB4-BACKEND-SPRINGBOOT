@@ -59,7 +59,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
     public ResponseEntity<List<PromocionDto>> getAll() {
         // Obtén todas las promociones con el facade
         List<PromocionDto> promociones = facade.getAll();
-
+/*
         for (PromocionDto promo : promociones) {
             if (!promo.isEliminado() && promocionRepository.getById(promo.getId()).getDetalles() != null) {
                 // Crea un array de detalles
@@ -89,6 +89,8 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
             }
         }
 
+
+ */
         return ResponseEntity.ok(promociones);
     }
 
