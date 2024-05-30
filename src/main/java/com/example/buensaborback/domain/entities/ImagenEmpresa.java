@@ -13,6 +13,4 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 public class ImagenEmpresa extends Image {
-    @ManyToOne
-    private Empresa empresa;
 }

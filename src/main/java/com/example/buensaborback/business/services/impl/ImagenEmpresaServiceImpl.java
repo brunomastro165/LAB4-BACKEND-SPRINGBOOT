@@ -3,7 +3,9 @@ package com.example.buensaborback.business.services.impl;
 import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImagenEmpresaService;
 import com.example.buensaborback.domain.dto.ImagenEmpresa.ImagenEmpresaDto;
+import com.example.buensaborback.domain.entities.Empresa;
 import com.example.buensaborback.domain.entities.ImagenEmpresa;
+import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.repositories.EmpresaRepository;
 import com.example.buensaborback.repositories.ImagenEmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +43,13 @@ public class ImagenEmpresaServiceImpl extends ImageServiceImpl<ImagenEmpresa, UU
                 ImagenEmpresa image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
                 image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
-                image.setEmpresa(empresaRepository.getById(id));
 
 
                 // Guardar la entidad Image en la base de datos
                 imageRepository.save(image);
+                Empresa empresa = empresaRepository.getById(id);
+                empresa.getImagenes().add(image);
+                empresaRepository.save(empresa);
                 ImagenEmpresaDto img = new ImagenEmpresaDto();
                 img.setName(image.getName());
                 img.setUrl(image.getUrl());

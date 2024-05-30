@@ -7,12 +7,9 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString
 @SuperBuilder
 public class ImagenPromocion extends Image {
-    @ManyToOne
-    private Promocion promocion;
 }

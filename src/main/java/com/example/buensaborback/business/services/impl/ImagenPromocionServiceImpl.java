@@ -4,6 +4,8 @@ import com.example.buensaborback.business.services.CloudinaryService;
 import com.example.buensaborback.business.services.ImagenPromocionService;
 import com.example.buensaborback.domain.dto.ImagenPromocion.ImagenPromocionDto;
 import com.example.buensaborback.domain.entities.ImagenPromocion;
+import com.example.buensaborback.domain.entities.Promocion;
+import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.repositories.ImagenPromocionRepository;
 import com.example.buensaborback.repositories.PromocionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +43,13 @@ public class ImagenPromocionServiceImpl extends ImageServiceImpl<ImagenPromocion
                 ImagenPromocion image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
                 image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
-                image.setPromocion(promocionRepository.getById(id));
 
 
                 // Guardar la entidad Image en la base de datos
                 imageRepository.save(image);
+                Promocion promocion = promocionRepository.getById(id);
+                promocion.getImagenes().add(image);
+                promocionRepository.save(promocion);
                 ImagenPromocionDto img = new ImagenPromocionDto();
                 img.setName(image.getName());
                 img.setUrl(image.getUrl());
