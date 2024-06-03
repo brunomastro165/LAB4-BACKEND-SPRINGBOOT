@@ -8,6 +8,8 @@ import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.entities.Categoria;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
+import com.example.buensaborback.repositories.CategoriaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,5 +82,18 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     @PutMapping("/addSubCategoria/{idCategoria}")
     public ResponseEntity<CategoriaDto> addSubCategoria(@PathVariable Long idCategoria, @RequestBody CategoriaCreateDto subCategoria) {
         return ResponseEntity.status(HttpStatus.CREATED).body(facade.addSubCategoria(idCategoria, subCategoria));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        CategoriaDto categoria = facade.getById(id);
+        if(!categoria.getSubCategorias().isEmpty()){
+            for (CategoriaShortDto categoriaShort:
+            categoria.getSubCategorias()) {
+                deleteById(categoriaShort.getId());
+            }
+        }
+        facade.deleteById(id);
+        return ResponseEntity.ok(null);
     }
 }
