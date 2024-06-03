@@ -2,14 +2,12 @@ package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
 import com.example.buensaborback.business.services.ImagenArticuloService;
-import com.example.buensaborback.domain.dto.Articulo.ArticuloCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
 import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
-import com.example.buensaborback.domain.entities.ImagenArticulo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.CategoriaRepository;
@@ -95,7 +93,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
         ArticuloInsumoDto articulo = facade.createNew(entity);
         List<ImagenArticuloDto> imagenes = imageService.uploadImagesA(files, articulo.getId());
-        for (ImagenArticuloDto imagen:
+        for (ImagenArticuloDto imagen :
                 imagenes) {
             articulo.getImagenes().add(imagen);
         }
@@ -105,7 +103,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
         return ResponseEntity.ok(articulo);
     }
-
 
 
 }

@@ -28,7 +28,7 @@ public class Cliente extends Base {
 
     @OneToOne
     @NotAudited
-    protected ImagenCliente imagenPersona;
+    protected ImagenCliente imagenCliente;
 
     @ManyToMany
     //SE AGREGA EL JOIN TABLE PARA QUE JPA CREE LA TABLA INTERMEDIA EN UNA RELACION MANY TO MANY

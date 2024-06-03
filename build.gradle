@@ -22,46 +22,54 @@ repositories {
 }
 
 dependencies {
+    // SPRING BOOT OAUTH2 RESOURCE SERVER
+    // OJO ESTO HACE QUE TE CIERRE EL SWAGGER CON USUARIO Y CONTRASEÑA
+    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.1.0'
+
+    // SPRING BOOT DATA JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // SPRING BOOT WEB
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // LOMBOK
     compileOnly 'org.projectlombok:lombok'
+
+    // SPRING BOOT DEVTOOLS
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // MYSQL CONNECTOR
     runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    implementation 'org.json:json:20210307'
+
+    // LOMBOK AND MAPSTRUCT PROCESSOR
     annotationProcessor 'org.projectlombok:lombok', 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-    //CLOUDINARY
-    // https://mvnrepository.com/artifact/com.cloudinary/cloudinary
+    // SPRING BOOT TEST
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // MAPSTRUCT
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+
+    // JSON
+    implementation 'org.json:json:20210307'
+
+    // CLOUDINARY
     implementation 'com.cloudinary:cloudinary-http44:1.36.0'
     implementation 'com.cloudinary:cloudinary-taglib:1.36.0'
+
+    // DOTENV-JAVA
     implementation 'io.github.cdimascio:dotenv-java:2.2.4'
 
-    //SPRING WEB
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    //LOMBOK
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-
-    //H2 DATABASE
+    // H2 DATABASE
     runtimeOnly 'com.h2database:h2'
 
-
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    //MAPSTRUCT
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-
-    annotationProcessor 'org.projectlombok:lombok', 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-
-    //OPEN API
+    // OPEN API
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // HIBERNATE ENVERS
     implementation 'org.hibernate.orm:hibernate-envers:6.4.4.Final'
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()

@@ -32,12 +32,9 @@ public class Pedido extends Base {
     private LocalDate fechaPedido;
 
     @ManyToOne
-    private Domicilio domicilio;
-
-    @ManyToOne
     private Sucursal sucursal;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Factura factura;
 
     @ManyToOne
@@ -50,7 +47,7 @@ public class Pedido extends Base {
     @JoinColumn(name = "pedido_id")
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    private Set<DetallePedido> detallePedidos = new HashSet<>();
+    private Set<DetallePedido> detallesPedido = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "empleado_id")

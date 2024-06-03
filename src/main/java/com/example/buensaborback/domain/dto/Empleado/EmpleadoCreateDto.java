@@ -1,7 +1,8 @@
 package com.example.buensaborback.domain.dto.Empleado;
 
 import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.entities.*;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
+import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.enums.Rol;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,20 +23,11 @@ public class EmpleadoCreateDto extends BaseDto {
     private String email;
 
 
-    private UsuarioEmpleado usuario;
-
-
-    private ImagenEmpleado imagenPersona;
-
-
-    private Set<Domicilio> domicilios = new HashSet<>();
+    private Set<DomicilioCreateDto> domicilios = new HashSet<>();
 
 
     private Rol tipoEmpleado;
 
 
-    private Set<Pedido> pedidos = new HashSet<>();
-
-
-    private Sucursal sucursal;
+    private SucursalDto sucursal;
 }

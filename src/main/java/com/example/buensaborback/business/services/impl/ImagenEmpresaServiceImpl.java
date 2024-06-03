@@ -5,7 +5,6 @@ import com.example.buensaborback.business.services.ImagenEmpresaService;
 import com.example.buensaborback.domain.dto.ImagenEmpresa.ImagenEmpresaDto;
 import com.example.buensaborback.domain.entities.Empresa;
 import com.example.buensaborback.domain.entities.ImagenEmpresa;
-import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.repositories.EmpresaRepository;
 import com.example.buensaborback.repositories.ImagenEmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
