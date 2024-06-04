@@ -51,8 +51,10 @@ public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, 
     }
 
     public void deleteById(ID id) {
-        var entity = baseService.getById(id);
         baseService.deleteById(id);
+    }
+    public void activateById(ID id){
+        baseService.activateById(id);
     }
 
     public D update(DE request, ID id) {

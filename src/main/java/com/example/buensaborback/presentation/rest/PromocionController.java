@@ -5,6 +5,7 @@ import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
 import com.example.buensaborback.business.mapper.PromocionMapper;
 import com.example.buensaborback.business.services.ImagenPromocionService;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
@@ -62,6 +63,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         List<PromocionDto> promociones = facade.getAll();
         for (PromocionDto promo : promociones) {
             if (!promo.isEliminado() && promocionRepository.getById(promo.getId()).getDetalles() != null) {
+
                 // Crea un array de detalles
 
                 Set<PromocionDetalle> detalles = promocionRepository.getById(promo.getId()).getDetalles();
@@ -120,12 +122,13 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         return ResponseEntity.ok(promo);
     }
 
-    /*
+
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<PromocionDto> edit(@RequestPart("entity") PromocionCreateDto entity,
                                              @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
 
         PromocionDto promocion = facade.createNew(entity);
+
         List<ImagenPromocionDto> imagenes = imageService.uploadImagesP(files, id);
         for (ImagenPromocionDto imagen :
                 imagenes) {
@@ -134,41 +137,53 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         PromocionCreateDto promocionActualizada = entity;
         promocionActualizada.setId(id);
         promocion = facade.createNew(promocionActualizada);
+        Promocion p = promocionMapper.toEntity(promocion);
+        for (PromocionDetalleCreateDto detalle : entity.getDetalles()) {
+            PromocionDetalle aux = new PromocionDetalle();
+            aux.setArticulo(articuloRepository.getById(detalle.getIdArticulo()));
+            p.getDetalles().add(aux);
+        }
 
+        promocionRepository.save(p);
 
         return ResponseEntity.ok(promocion);
     }
-     */
+
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<PromocionDto> createOrUpdate(@RequestPart("entity") PromocionCreateDto entity,
-                                                       @RequestPart("files") MultipartFile[] files) {
+    public ResponseEntity<PromocionDto> create(@RequestPart("entity") PromocionCreateDto entity,
+                                               @RequestPart("files") MultipartFile[] files) {
         try {
             PromocionDto promocion = facade.createNew(entity);
-            Set<PromocionDetalle> detalles = promocionRepository.getById(promocion.getId()).getDetalles();
-            List<PromocionDetalle> detalles2 = new ArrayList<>(detalles);
+            Promocion p = promocionRepository.getById(promocion.getId());
+            List<PromocionDetalleCreateDto> detalles = new ArrayList<>();
+            for (PromocionDetalleCreateDto detalle:
+            entity.getDetalles()) {
+                detalles.add(detalle);
+            }
             int i = 0;
-            for (PromocionDetalleCreateDto detalle : entity.getDetalles()) {
-                PromocionDetalle aux = promocionDetalleRepository.getById(detalles2.get(i).getId());
-                aux.setArticulo(articuloRepository.getById(detalle.getIdArticulo()));
-                promocionDetalleRepository.save(aux);
+            for (PromocionDetalle detalle : p.getDetalles()) {
+                System.out.println("puta");
+                promocionDetalleRepository.getById(detalle.getId()).
+                        setArticulo(articuloRepository.getById(detalles.get(i).getIdArticulo()));
                 i++;
             }
-            List<ImagenPromocionDto> imagenes = imageService.uploadImagesP(files, promocion.getId());
-            for (ImagenPromocionDto imagen : imagenes) {
-                promocion.getImagenes().add(imagen);
-            }
-            Promocion p = promocionMapper.toEntity(promocion);
+            promocion.setImagenes(imageService.uploadImagesP(files, promocion.getId()));
+
             for (SucursalShortDto sucursalDto : promocion.getSucursales()) {
                 Sucursal sucursal = sucursalRepository.getById(sucursalDto.getId());
                 sucursal.getPromociones().add(p);
                 sucursalRepository.save(sucursal);
             }
+
+            promocionRepository.save(p);
+
             return ResponseEntity.ok(promocion);
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
 

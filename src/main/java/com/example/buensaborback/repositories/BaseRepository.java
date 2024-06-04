@@ -22,6 +22,24 @@ public interface BaseRepository<E extends Base, ID extends Serializable> extends
         entity.setEliminado(true);
         save(entity);
     }
+    default E getEliminadoById(ID id){
+        logger.info("EJECUTANDO GEY BY ID SOBREESCRITO");
+        var optionalEntity = findById(id);
+
+        if (optionalEntity.isEmpty()) {
+            String errMsg = "La entidad con el id " + id + "no se encuentra borrada logicamente";
+            logger.error(errMsg);
+            throw new RuntimeException(errMsg);
+        }
+
+        var entity = optionalEntity.get();
+        if (!entity.isEliminado()) {
+            String errMsg = "La entidad del tipo " + entity.getClass().getSimpleName() + " con el id " + id + "no se encuentra borrada logicamente";
+            logger.error(errMsg);
+            throw new RuntimeException(errMsg);
+        }
+        return entity;
+    }
 
     @Override
     default E getById(ID id) {

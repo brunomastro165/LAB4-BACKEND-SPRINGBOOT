@@ -13,6 +13,8 @@ public interface BaseService<E extends Base, ID extends Serializable> {
 
     void deleteById(ID id);
 
+    void activateById(ID id);
+
     E update(E request, ID id);
 
     @Named("getById")

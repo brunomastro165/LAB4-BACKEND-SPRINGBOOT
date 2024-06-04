@@ -2,6 +2,7 @@ package com.example.buensaborback.presentation.base;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface BaseController<D extends BaseDto, DC, DE, ID extends Serializab
     ResponseEntity<D> edit(DE entity, ID id);
 
     ResponseEntity<?> deleteById(ID id);
+
+    ResponseEntity<?> activateById(@PathVariable ID id);
 }

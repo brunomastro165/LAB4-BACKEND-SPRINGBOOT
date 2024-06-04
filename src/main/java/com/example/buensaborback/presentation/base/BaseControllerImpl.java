@@ -82,4 +82,10 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         facade.deleteById(id);
         return ResponseEntity.ok(null);
     }
+    @PostMapping("/activate/{id}")
+    public ResponseEntity<?> activateById(@PathVariable ID id) {
+        logger.info("INICIO DELETE BY ID");
+        facade.activateById(id);
+        return ResponseEntity.ok(null);
+    }
 }
