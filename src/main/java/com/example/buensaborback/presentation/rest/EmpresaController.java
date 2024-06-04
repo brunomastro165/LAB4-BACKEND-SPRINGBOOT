@@ -8,6 +8,7 @@ import com.example.buensaborback.domain.dto.Empresa.EmpresaLargeDto;
 import com.example.buensaborback.domain.entities.Empresa;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,15 @@ public class EmpresaController extends BaseControllerImpl<Empresa, EmpresaDto, E
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmpresaDto> create(@RequestPart("entity") EmpresaCreateDto entity, @RequestPart("files") MultipartFile[] files) {
-        System.out.println("Estoy en controller");
-        EmpresaDto empresa = facade.createNew(entity);
-        empresa.setImagenes(imageService.uploadImagesE(files, empresa.getId()));
-        return ResponseEntity.ok(empresa);
+        try {
+            System.out.println("Estoy en controller");
+            EmpresaDto empresa = facade.createNew(entity);
+            empresa.setImagenes(imageService.uploadImagesE(files, empresa.getId()));
+            return ResponseEntity.ok(empresa);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/sucursales/{idEmpresa}")

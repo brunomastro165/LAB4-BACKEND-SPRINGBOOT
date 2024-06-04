@@ -12,6 +12,7 @@ import com.example.buensaborback.domain.dto.Sucursal.SucursalEditDto;
 import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,15 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SucursalDto> create(@RequestPart("entity") SucursalCreateDto entity, @RequestPart("files") MultipartFile[] files) {
-        System.out.println("Estoy en controller");
-        SucursalDto sucursal = facade.createNew(entity);
-        sucursal.setImagenes(imageService.uploadImagesS(files, sucursal.getId()));
-        return ResponseEntity.ok(sucursal);
+        try {
+            System.out.println("Estoy en controller");
+            SucursalDto sucursal = facade.createNew(entity);
+            sucursal.setImagenes(imageService.uploadImagesS(files, sucursal.getId()));
+            return ResponseEntity.ok(sucursal);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/getInsumos/{idSucursal}")

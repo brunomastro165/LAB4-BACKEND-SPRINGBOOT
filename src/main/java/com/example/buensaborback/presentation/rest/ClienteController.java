@@ -7,6 +7,7 @@ import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
 import com.example.buensaborback.domain.entities.Cliente;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,16 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClienteDto> create(@RequestPart("entity") ClienteCreateDto entity, @RequestPart("file") MultipartFile file) {
-        System.out.println("Estoy en controller");
-        ClienteDto cliente = facade.createNew(entity);
-        cliente.setImagenCliente(imageService.uploadImagesC(file, cliente.getId()));
-        return ResponseEntity.ok(cliente);
+        try {
+            System.out.println("Estoy en controller");
+            ClienteDto cliente = facade.createNew(entity);
+            cliente.setImagenCliente(imageService.uploadImagesC(file, cliente.getId()));
+            return ResponseEntity.ok(cliente);
+        } catch (Exception e) {
+                // Aquí puedes manejar la excepción como prefieras.
+                // Por ejemplo, puedes registrar el error y devolver una respuesta de error al cliente.
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
     }
 }

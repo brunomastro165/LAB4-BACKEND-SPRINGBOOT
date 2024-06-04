@@ -5,6 +5,7 @@ import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.entities.Base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -58,9 +59,14 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
 
     @PostMapping()
     public ResponseEntity<D> create(@RequestBody DC entity) {
-        System.out.println("Estoy en controller");
-        logger.info("INICIO CREATE {}", entity.getClass());
-        return ResponseEntity.ok(facade.createNew(entity));
+        try {
+            System.out.println("Estoy en controller");
+            logger.info("INICIO CREATE {}", entity.getClass());
+            return ResponseEntity.ok(facade.createNew(entity));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")

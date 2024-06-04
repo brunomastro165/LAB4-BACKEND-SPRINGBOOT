@@ -4,11 +4,12 @@ import com.example.buensaborback.business.mapper.BaseMapper;
 import com.example.buensaborback.business.services.base.BaseService;
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.entities.Base;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Transactional
 public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, ID extends Serializable> implements BaseFacade<D, DC, DE, ID> {
 
     protected BaseService<E, ID> baseService;

@@ -15,6 +15,7 @@ import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.DetallePedidoRepository;
 import com.example.buensaborback.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -111,23 +112,28 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @PostMapping()
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoCreateDto entity) {
-        PedidoDto pedido = facade.createNew(entity);
+        try {
+            PedidoDto pedido = facade.createNew(entity);
 
-        Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
-        List<DetallePedido> detalles2 = new ArrayList<>();
-        for (DetallePedido detalle :
-                detalles) {
-            detalles2.add(detalle);
+            Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
+            List<DetallePedido> detalles2 = new ArrayList<>();
+            for (DetallePedido detalle :
+                    detalles) {
+                detalles2.add(detalle);
+            }
+            int i = 0;
+            for (DetallePedidoCreateDto detalle :
+                    entity.getDetallesPedido()) {
+                DetallePedido aux = detallePedidoRepository.getById(detalles2.get(i).getId());
+                System.out.println(articuloRepository.getById(detalle.getIdArticulo()));
+                aux.setArticulo(articuloRepository.getById(detalle.getIdArticulo()));
+                detallePedidoRepository.save(aux);
+                i++;
+            }
+            return ResponseEntity.ok(pedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        int i = 0;
-        for (DetallePedidoCreateDto detalle :
-                entity.getDetallesPedido()) {
-            DetallePedido aux = detallePedidoRepository.getById(detalles2.get(i).getId());
-            System.out.println(articuloRepository.getById(detalle.getIdArticulo()));
-            aux.setArticulo(articuloRepository.getById(detalle.getIdArticulo()));
-            detallePedidoRepository.save(aux);
-            i++;
-        }
-        return ResponseEntity.ok(pedido);
     }
 }

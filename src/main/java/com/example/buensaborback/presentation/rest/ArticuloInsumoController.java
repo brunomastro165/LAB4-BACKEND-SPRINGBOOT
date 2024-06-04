@@ -12,6 +12,7 @@ import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,19 +90,23 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ArticuloInsumoDto> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
-        System.out.println("Estoy en controller");
+        try {
+            System.out.println("Estoy en controller");
+            ArticuloInsumoDto articulo = facade.createNew(entity);
+            List<ImagenArticuloDto> imagenes = imageService.uploadImagesA(files, articulo.getId());
+            for (ImagenArticuloDto imagen :
+                    imagenes) {
+                articulo.getImagenes().add(imagen);
+            }
+            ArticuloInsumoCreateDto articuloActualizado = entity;
+            articuloActualizado.setId(articulo.getId());
+            articulo = facade.createNew(articuloActualizado);
 
-        ArticuloInsumoDto articulo = facade.createNew(entity);
-        List<ImagenArticuloDto> imagenes = imageService.uploadImagesA(files, articulo.getId());
-        for (ImagenArticuloDto imagen :
-                imagenes) {
-            articulo.getImagenes().add(imagen);
+            return ResponseEntity.ok(articulo);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        ArticuloInsumoCreateDto articuloActualizado = entity;
-        articuloActualizado.setId(articulo.getId());
-        articulo = facade.createNew(articuloActualizado);
-
-        return ResponseEntity.ok(articulo);
     }
 
 

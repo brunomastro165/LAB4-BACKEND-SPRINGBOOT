@@ -2,13 +2,17 @@ package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ArticuloManufacturadoFacadeImpl;
 import com.example.buensaborback.business.services.ImagenArticuloService;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
+import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
+import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +48,25 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ArticuloManufacturadoDto> create(@RequestPart("entity") ArticuloManufacturadoCreateDto entity, @RequestPart("files") MultipartFile[] files) {
-        System.out.println("Estoy en controller");
-        ArticuloManufacturadoDto articulo = facade.createNew(entity);
-        articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
-        return ResponseEntity.ok(articulo);
+        try {
+
+
+            System.out.println("Estoy en controller");
+            ArticuloManufacturadoDto articulo = facade.createNew(entity);
+            List<ImagenArticuloDto> imagenes = imageService.uploadImagesA(files, articulo.getId());
+            for (ImagenArticuloDto imagen :
+                    imagenes) {
+                articulo.getImagenes().add(imagen);
+            }
+            ArticuloManufacturadoCreateDto articuloActualizado = entity;
+            articuloActualizado.setId(articulo.getId());
+            articulo = facade.createNew(articuloActualizado);
+
+            return ResponseEntity.ok(articulo);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

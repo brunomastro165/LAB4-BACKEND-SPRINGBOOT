@@ -3,6 +3,7 @@ package com.example.buensaborback.presentation.base;
 import com.example.buensaborback.business.services.ImageService;
 import com.example.buensaborback.domain.entities.Image;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +28,9 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
             @RequestParam(value = "uploads", required = true) MultipartFile[] files, @PathVariable Long id) {
         try {
             return imageService.uploadImages(files, id); // Llama al método del servicio para subir imágenes
-        } catch (Exception e) {
+        }  catch (Exception e) {
             e.printStackTrace();
-            return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -70,4 +71,5 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
             return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica
         }
     }
+
 }

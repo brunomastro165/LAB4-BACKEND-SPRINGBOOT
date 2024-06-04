@@ -10,6 +10,7 @@ import com.example.buensaborback.repositories.ImagenEmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Service
 @Primary
+@Transactional
 public class ImagenEmpresaServiceImpl extends ImageServiceImpl<ImagenEmpresa, UUID> implements ImagenEmpresaService {
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary

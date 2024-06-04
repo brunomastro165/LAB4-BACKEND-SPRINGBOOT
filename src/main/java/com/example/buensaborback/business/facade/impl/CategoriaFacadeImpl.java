@@ -11,8 +11,10 @@ import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
 import com.example.buensaborback.domain.entities.Categoria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class CategoriaFacadeImpl extends BaseFacadeImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long> implements CategoriaFacade {
     @Autowired
     private CategoriaService categoriaService;

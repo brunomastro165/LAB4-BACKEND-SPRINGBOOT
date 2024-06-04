@@ -10,6 +10,7 @@ import com.example.buensaborback.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Primary
 @Service
+@Transactional
 public class ImagenSucursalServiceImpl extends ImageServiceImpl<ImagenSucursal, UUID> implements ImagenSucursalService {
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
@@ -41,6 +43,7 @@ public class ImagenSucursalServiceImpl extends ImageServiceImpl<ImagenSucursal, 
                 // Crear una entidad Image y establecer su nombre y URL (subida a Cloudinary)
                 ImagenSucursal image = createImageInstance();
                 image.setName(file.getOriginalFilename()); // Establecer el nombre del archivo original
+                image.setUrl(cloudinaryService.uploadFile(file)); // Subir el archivo a Cloudinary y obtener la URL
 
 
                 // Guardar la entidad Image en la base de datos
