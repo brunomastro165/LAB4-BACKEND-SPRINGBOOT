@@ -32,8 +32,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
             cliente.setImagenCliente(imageService.uploadImagesC(file, cliente.getId()));
             return ResponseEntity.ok(cliente);
         } catch (Exception e) {
-                // Aquí puedes manejar la excepción como prefieras.
-                // Por ejemplo, puedes registrar el error y devolver una respuesta de error al cliente.
                 e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }

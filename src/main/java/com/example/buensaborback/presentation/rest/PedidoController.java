@@ -46,6 +46,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public ResponseEntity<List<PedidoDto>> getAll() {
         // Obtén todos los pedidos con el facade
         List<PedidoDto> pedidos = facade.getAll();
+        /*
 
         for (PedidoDto pedido : pedidos) {
             if (!pedido.isEliminado() && pedidoRepository.getById(pedido.getId()).getDetallesPedido() != null) {
@@ -75,6 +76,8 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             }
         }
 
+         */
+
         return ResponseEntity.ok(pedidos);
     }
 
@@ -84,7 +87,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public ResponseEntity<PedidoDto> getById(@PathVariable Long id) {
         //obtengo el pedido con el facade aca los articulos son nulos
         PedidoDto pedido = facade.getById(id);
-
+        /*
         //creo un array de detalles posta
         Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
 
@@ -105,7 +108,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             }
         }
         pedido.setDetallesPedido(newDetalles);
-
+        */
         return ResponseEntity.ok(pedido);
     }
 
@@ -114,7 +117,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoCreateDto entity) {
         try {
             PedidoDto pedido = facade.createNew(entity);
-
+            /*
             Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
             List<DetallePedido> detalles2 = new ArrayList<>();
             for (DetallePedido detalle :
@@ -130,10 +133,21 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
                 detallePedidoRepository.save(aux);
                 i++;
             }
+
+             */
             return ResponseEntity.ok(pedido);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PostMapping("/api/create_preference_mp")
+    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido){
+        //Aca hay que calcular el total del pedido
+        MercadoPagoController cMercadoPago = new MercadoPagoController();
+        PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
+        create(pedido);
+        return preference;
     }
 }
