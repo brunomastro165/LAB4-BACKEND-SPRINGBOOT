@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 //@Audited
 public class UnidadMedida extends Base {
-
+    //private Empresa empresa;
     private String denominacion;
 
 }

@@ -204,6 +204,8 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
                 entity.setEstado(Estado.RECHAZADO);
             else
                 entity.setEstado(Estado.PENDIENTE);
+
+            entity.setFechaPedido(LocalDate.now());
             entity.getFactura().setFormaPago(FormaPago.EFECTIVO);
             entity.getFactura().setFechaFcturacion(LocalDate.now());
             entity.getFactura().setTotalVenta(entity.getTotal());
@@ -275,6 +277,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         else
             pedido.setEstado(Estado.PENDIENTE);
         pedido.getFactura().setFormaPago(FormaPago.MERCADO_PAGO);
+        pedido.setFechaPedido(LocalDate.now());
         pedido.getFactura().setFechaFcturacion(LocalDate.now());
         pedido.getFactura().setTotalVenta(pedido.getTotal());
         pedido.getFactura().setMpPreferenceId(preference.getId());
