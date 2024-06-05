@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Transactional
 public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, ID extends Serializable> implements BaseFacade<D, DC, DE, ID> {
 
@@ -53,7 +54,8 @@ public abstract class BaseFacadeImpl<E extends Base, D extends BaseDto, DC, DE, 
     public void deleteById(ID id) {
         baseService.deleteById(id);
     }
-    public void activateById(ID id){
+
+    public void activateById(ID id) {
         baseService.activateById(id);
     }
 

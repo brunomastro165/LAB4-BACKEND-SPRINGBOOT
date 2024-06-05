@@ -49,6 +49,7 @@ public abstract class BaseServiceImpl<E extends Base, ID extends Serializable> i
         baseRepository.delete(entity);
         logger.info("Borrada logicamente entidad {}", entity);
     }
+
     @Override
     public void activateById(ID id) {
         var entity = baseRepository.getEliminadoById(id);
