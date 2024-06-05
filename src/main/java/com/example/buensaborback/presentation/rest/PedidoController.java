@@ -149,18 +149,51 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
                 if(articulo instanceof ArticuloInsumo){
                     ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle.getIdArticulo());
                     costoTotal += articuloInsumo.getPrecioCompra();
-                    if(articuloInsumo.getStockActual() < articuloInsumo.getStockMinimo()){
+                    if(articuloInsumo.getStockActual() <= articuloInsumo.getStockMinimo()){
                         denegar = true;
                     }
+
                 }
                 if(articulo instanceof ArticuloManufacturado){
                     ArticuloManufacturado articuloManufacturado = articuloManufacturadoRepository.getById(detalle.getIdArticulo());
                     horaFinalizado = horaFinalizado.plusMinutes(articuloManufacturado.getTiempoEstimadoMinutos());
                     for (ArticuloManufacturadoDetalle detalle1:
                             articuloManufacturado.getArticuloManufacturadoDetalles()) {
-                        if(detalle1.getArticuloInsumo().getStockActual() < detalle1.getArticuloInsumo().getStockMinimo())
+                        if(detalle1.getArticuloInsumo().getStockActual() <= detalle1.getArticuloInsumo().getStockMinimo())
                             denegar = true;
                         costoTotal += detalle1.getArticuloInsumo().getPrecioVenta();
+                    }
+                }
+            }
+            if(!denegar){
+                for (DetallePedidoCreateDto detalle:
+                        entity.getDetallesPedido()) {
+                    Articulo articulo = articuloRepository.getById(detalle.getIdArticulo());
+                    if(articulo instanceof ArticuloInsumo){
+                        ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle.getIdArticulo());
+                        if(articuloInsumo.getStockActual()-detalle.getCantidad() <= articuloInsumo.getStockMinimo()){
+                            denegar = true;
+                            break;
+                        }
+                        articuloInsumo.setStockActual(articuloInsumo.getStockActual()-detalle.getCantidad());
+                        articuloInsumoRepository.save(articuloInsumo);
+                    }
+                    if(articulo instanceof ArticuloManufacturado){
+                        ArticuloManufacturado articuloManufacturado = articuloManufacturadoRepository.getById(detalle.getIdArticulo());
+                        for (ArticuloManufacturadoDetalle detalle1:
+                                articuloManufacturado.getArticuloManufacturadoDetalles()) {
+
+                            ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle1.getArticuloInsumo().getId());
+                            if(articuloInsumo.getStockActual()-detalle1.getCantidad() * detalle.getCantidad() <= articuloInsumo.getStockMinimo()){
+                                denegar = true;
+                                break;
+                            }
+                            articuloInsumo.setStockActual(articuloInsumo.getStockActual()-detalle1.getCantidad() * detalle.getCantidad());
+                            articuloInsumoRepository.save(articuloInsumo);
+
+                        }
+                        if(denegar)
+                            break;
                     }
                 }
             }
@@ -206,26 +239,30 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         MercadoPagoController cMercadoPago = new MercadoPagoController();
         PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
         LocalTime horaFinalizado = LocalTime.now();
+        boolean denegar = false;
         // Calcular el costo total que le cuesta a la empresa
         double costoTotal = 0;
         // Calcular el precio total que paga el cliente
         double total = 0;
         for (DetallePedidoCreateDto detalle:
                 pedido.getDetallesPedido()) {
-            detalle.setSubTotal(articuloRepository.getById(detalle.getIdArticulo()).getPrecioVenta());
+            Articulo articulo = articuloRepository.getById(detalle.getIdArticulo());
+            detalle.setSubTotal(articulo.getPrecioVenta());
             total += detalle.getSubTotal();
-
-            if(articuloRepository.getById(detalle.getIdArticulo()) instanceof ArticuloInsumo){
+            if(articulo instanceof ArticuloInsumo){
                 ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle.getIdArticulo());
                 costoTotal += articuloInsumo.getPrecioCompra();
-
+                if(articuloInsumo.getStockActual() <= articuloInsumo.getStockMinimo()){
+                    denegar = true;
+                }
             }
-            if(articuloRepository.getById(detalle.getIdArticulo()) instanceof ArticuloManufacturado){
-
+            if(articulo instanceof ArticuloManufacturado){
                 ArticuloManufacturado articuloManufacturado = articuloManufacturadoRepository.getById(detalle.getIdArticulo());
                 horaFinalizado = horaFinalizado.plusMinutes(articuloManufacturado.getTiempoEstimadoMinutos());
                 for (ArticuloManufacturadoDetalle detalle1:
                         articuloManufacturado.getArticuloManufacturadoDetalles()) {
+                    if(detalle1.getArticuloInsumo().getStockActual() <= detalle1.getArticuloInsumo().getStockMinimo())
+                        denegar = true;
                     costoTotal += detalle1.getArticuloInsumo().getPrecioVenta();
                 }
             }
@@ -233,7 +270,10 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         pedido.setHoraEstimadaFinalizacion(horaFinalizado);
         pedido.setTotal(total);
         pedido.setTotalCosto(costoTotal);
-        pedido.setEstado(Estado.PENDIENTE);
+        if(denegar)
+            pedido.setEstado(Estado.RECHAZADO);
+        else
+            pedido.setEstado(Estado.PENDIENTE);
         pedido.getFactura().setFormaPago(FormaPago.MERCADO_PAGO);
         pedido.getFactura().setFechaFcturacion(LocalDate.now());
         pedido.getFactura().setTotalVenta(pedido.getTotal());

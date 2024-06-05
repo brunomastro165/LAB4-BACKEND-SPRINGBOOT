@@ -23,7 +23,7 @@ public class Cliente extends Base {
     protected String telefono;
     protected String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     protected UsuarioCliente usuario;
 
     @OneToOne
