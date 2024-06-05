@@ -50,6 +50,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ResponseEntity<ArticuloManufacturadoDto> create(@RequestPart("entity") ArticuloManufacturadoCreateDto entity, @RequestPart("files") MultipartFile[] files) {
         try {
             System.out.println("Estoy en controller");
+            System.out.println(entity.getId());
             ArticuloManufacturadoDto articulo = facade.createNew(entity);
             articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
             return ResponseEntity.ok(articulo);

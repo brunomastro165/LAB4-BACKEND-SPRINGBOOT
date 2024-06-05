@@ -11,6 +11,7 @@ import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalEditDto;
 import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
+import com.example.buensaborback.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,23 +28,31 @@ import java.util.List;
 public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto, Long, SucursalFacadeImpl> {
     @Autowired
     private ImagenSucursalService imageService;
+    @Autowired
+    private SucursalRepository sucursalRepository;
 
     public SucursalController(SucursalFacadeImpl facade) {
         super(facade);
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SucursalDto> create(@RequestPart("entity") SucursalCreateDto entity, @RequestPart("files") MultipartFile[] files) {
+    public ResponseEntity<?> create(@RequestPart("entity") SucursalCreateDto entity, @RequestPart("files") MultipartFile[] files) {
         try {
-            System.out.println("Estoy en controller");
+            for (Sucursal sucursal:
+                 sucursalRepository.getAll()) {
+                if(sucursal.getEsCasaMatriz() && sucursal.getEmpresa().getId() == entity.getIdEmpresa())
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe una sucursal que es casa matriz.");
+            }
+
             SucursalDto sucursal = facade.createNew(entity);
             sucursal.setImagenes(imageService.uploadImagesS(files, sucursal.getId()));
             return ResponseEntity.ok(sucursal);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @GetMapping("/getInsumos/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idSucursal) {
