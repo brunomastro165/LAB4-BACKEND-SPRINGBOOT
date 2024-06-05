@@ -12,4 +12,5 @@ import lombok.Setter;
 public class UsuarioClienteDto extends BaseDto {
     private Long id;
     private String userName;
+    private String auth0Id;
 }

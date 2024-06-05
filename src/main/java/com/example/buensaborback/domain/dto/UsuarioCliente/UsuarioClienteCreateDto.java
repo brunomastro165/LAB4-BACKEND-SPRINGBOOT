@@ -11,4 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UsuarioClienteCreateDto extends BaseDto {
     private String userName;
+    private String auth0Id;
 }
