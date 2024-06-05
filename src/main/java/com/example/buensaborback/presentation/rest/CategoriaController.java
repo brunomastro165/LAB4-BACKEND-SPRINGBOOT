@@ -102,13 +102,21 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         CategoriaDto categoria = facade.getById(id);
+        // Comprobar si la categoría tiene insumos o artículos manufacturados
+        if(!categoria.getInsumos().isEmpty() || !categoria.getArticulosManufacturados().isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("La categoría tiene insumos o artículos manufacturados asociados y no puede ser eliminada");
+        }
         if(!categoria.getSubCategorias().isEmpty()){
             for (CategoriaShortDto categoriaShort:
-            categoria.getSubCategorias()) {
-                deleteById(categoriaShort.getId());
+                    categoria.getSubCategorias()) {
+                ResponseEntity<?> response = deleteById(categoriaShort.getId());
+                if(response.getStatusCode() == HttpStatus.CONFLICT){
+                    return response;
+                }
             }
         }
         facade.deleteById(id);
         return ResponseEntity.ok(null);
     }
+
 }
