@@ -3,6 +3,7 @@ package com.example.buensaborback.business.mapper.MappersImpl;
 import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
 import com.example.buensaborback.business.mapper.PedidoMapper;
+import com.example.buensaborback.business.services.SucursalService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoCreateDto;
@@ -37,6 +38,8 @@ public class PedidoMapperImpl implements PedidoMapper {
     ArticuloInsumoMapper articuloInsumoMapper;
     @Autowired
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
+    @Autowired
+    SucursalService sucursalService;
 
     @Override
     public PedidoDto toDTO(Pedido source) {
@@ -95,7 +98,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedido.estado( source.getEstado() );
         pedido.tipoEnvio( source.getTipoEnvio() );
         pedido.domicilio( domicilioCreateDtoToDomicilio( source.getDomicilio() ) );
-        pedido.sucursal( sucursalDtoToSucursal( source.getSucursal() ) );
+        pedido.sucursal(sucursalService.getById( source.getIdSucursal() ));
         pedido.factura( facturaCreateDtoToFactura( source.getFactura() ) );
         pedido.detallesPedido( detallePedidoCreateDtoListToDetallePedidoSet( source.getDetallesPedido() ) );
 
@@ -122,15 +125,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         }
         else {
             entity.setDomicilio( null );
-        }
-        if ( source.getSucursal() != null ) {
-            if ( entity.getSucursal() == null ) {
-                entity.setSucursal( Sucursal.builder().build() );
-            }
-            sucursalDtoToSucursal1( source.getSucursal(), entity.getSucursal() );
-        }
-        else {
-            entity.setSucursal( null );
         }
         if ( source.getFactura() != null ) {
             if ( entity.getFactura() == null ) {
