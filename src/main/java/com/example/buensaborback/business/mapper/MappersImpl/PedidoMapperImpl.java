@@ -35,7 +35,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/*
+
 @Component
 public class PedidoMapperImpl implements PedidoMapper {
     @Autowired
@@ -48,8 +48,6 @@ public class PedidoMapperImpl implements PedidoMapper {
     private DomicilioMapper domicilioMapper;
     @Autowired
     private SucursalService sucursalService;
-    @Autowired
-    private ClienteService clienteService;
 
 
     @Override
@@ -193,7 +191,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         Pedido.PedidoBuilder<?, ?> pedido = Pedido.builder();
 
         pedido.sucursal( sucursalService.getById( source.getIdSucursal() ) );
-        pedido.cliente( clienteService.getById( source.getIdCliente() ) );
         pedido.id( source.getId() );
         pedido.eliminado( source.isEliminado() );
         pedido.horaEstimadaFinalizacion( source.getHoraEstimadaFinalizacion() );
@@ -962,7 +959,7 @@ public class PedidoMapperImpl implements PedidoMapper {
     }
 
 }
-*/
+
 
 
 
