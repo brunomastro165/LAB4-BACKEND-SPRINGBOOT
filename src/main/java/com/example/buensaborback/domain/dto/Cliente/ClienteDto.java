@@ -4,6 +4,7 @@ import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.dto.ImagenCliente.ImagenClienteDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
+import com.example.buensaborback.domain.dto.Pedido.PedidoShortDto;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import com.example.buensaborback.domain.entities.Domicilio;
 import com.example.buensaborback.domain.entities.Pedido;
@@ -35,5 +36,5 @@ public class ClienteDto extends BaseDto {
     private Set<DomicilioDto> domicilios = new HashSet<>();
 
 
-    private Set<PedidoDto> pedidos = new HashSet<>();
+    private Set<PedidoShortDto> pedidos = new HashSet<>();
 }
