@@ -901,14 +901,8 @@ public class PedidoMapperImpl implements PedidoMapper {
         clienteDto.setEmail( cliente.getEmail() );
         clienteDto.setUsuario( usuarioClienteToUsuarioClienteDto( cliente.getUsuario() ) );
         clienteDto.setImagenCliente( imagenClienteToImagenClienteDto( cliente.getImagenCliente() ) );
-        Set<Domicilio> set = cliente.getDomicilios();
-        if ( set != null ) {
-            clienteDto.setDomicilios( new LinkedHashSet<Domicilio>( set ) );
-        }
-        Set<Pedido> set1 = cliente.getPedidos();
-        if ( set1 != null ) {
-            clienteDto.setPedidos( new LinkedHashSet<Pedido>( set1 ) );
-        }
+        clienteDto.setDomicilios( domicilioSetToDomicilioDtoSet( cliente.getDomicilios() ) );
+        clienteDto.setPedidos( pedidoSetToPedidoDtoSet( cliente.getPedidos() ) );
 
         return clienteDto;
     }
@@ -1116,14 +1110,8 @@ public class PedidoMapperImpl implements PedidoMapper {
         cliente.email( clienteDto.getEmail() );
         cliente.usuario( usuarioClienteDtoToUsuarioCliente( clienteDto.getUsuario() ) );
         cliente.imagenCliente( imagenClienteDtoToImagenCliente( clienteDto.getImagenCliente() ) );
-        Set<Domicilio> set = clienteDto.getDomicilios();
-        if ( set != null ) {
-            cliente.domicilios( new LinkedHashSet<Domicilio>( set ) );
-        }
-        Set<Pedido> set1 = clienteDto.getPedidos();
-        if ( set1 != null ) {
-            cliente.pedidos( new LinkedHashSet<Pedido>( set1 ) );
-        }
+        cliente.domicilios( domicilioDtoSetToDomicilioSet( clienteDto.getDomicilios() ) );
+        cliente.pedidos( pedidoDtoSetToPedidoSet( clienteDto.getPedidos() ) );
 
         return cliente.build();
     }
