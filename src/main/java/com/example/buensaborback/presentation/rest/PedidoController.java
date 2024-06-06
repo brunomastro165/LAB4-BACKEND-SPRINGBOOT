@@ -1,5 +1,6 @@
 package com.example.buensaborback.presentation.rest;
 
+import com.example.buensaborback.business.facade.ClienteFacade;
 import com.example.buensaborback.business.facade.impl.PedidoFacadeImpl;
 import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
@@ -36,6 +37,8 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     private ArticuloInsumoRepository articuloInsumoRepository;
     @Autowired
     private ArticuloManufacturadoRepository articuloManufacturadoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -210,6 +213,9 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             entity.getFactura().setFechaFcturacion(LocalDate.now());
             entity.getFactura().setTotalVenta(entity.getTotal());
             PedidoDto pedido = facade.createNew(entity);
+            Pedido p = pedidoRepository.getById(pedido.getId());
+            p.setCliente(clienteRepository.getById(entity.getIdCliente()));
+            pedidoRepository.save(p);
             /*
             Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
             List<DetallePedido> detalles2 = new ArrayList<>();
