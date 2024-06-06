@@ -47,9 +47,9 @@ public class PedidoMapperImpl implements PedidoMapper {
     @Autowired
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
     @Autowired
-    SucursalService sucursalService;
+    private SucursalService sucursalService;
     @Autowired
-    ClienteService clienteService;
+    private ClienteService clienteService;
 
     @Override
     public PedidoDto toDTO(Pedido source) {
@@ -78,62 +78,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedidoDto.setFactura( facturaToFacturaDto( source.getFactura() ) );
 
         return pedidoDto;
-    }
-    protected ClienteDto clienteToClienteDto(Cliente cliente) {
-        if ( cliente == null ) {
-            return null;
-        }
-
-        ClienteDto clienteDto = new ClienteDto();
-
-        clienteDto.setId( cliente.getId() );
-        if ( cliente.isEliminado() != null ) {
-            clienteDto.setEliminado( cliente.isEliminado() );
-        }
-        clienteDto.setNombre( cliente.getNombre() );
-        clienteDto.setApellido( cliente.getApellido() );
-        clienteDto.setTelefono( cliente.getTelefono() );
-        clienteDto.setEmail( cliente.getEmail() );
-        clienteDto.setUsuario( usuarioClienteToUsuarioClienteDto( cliente.getUsuario() ) );
-        clienteDto.setImagenCliente( imagenClienteToImagenClienteDto( cliente.getImagenCliente() ) );
-        clienteDto.setDomicilios( domicilioSetToDomicilioDtoSet( cliente.getDomicilios() ) );
-        clienteDto.setPedidos( pedidoSetToPedidoShortDtoSet( cliente.getPedidos() ) );
-
-        return clienteDto;
-    }
-    protected Set<PedidoShortDto> pedidoSetToPedidoShortDtoSet(Set<Pedido> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<PedidoShortDto> set1 = new LinkedHashSet<PedidoShortDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Pedido pedido : set ) {
-            set1.add( pedidoToPedidoShortDto( pedido ) );
-        }
-
-        return set1;
-    }
-    protected PedidoShortDto pedidoToPedidoShortDto(Pedido pedido) {
-        if ( pedido == null ) {
-            return null;
-        }
-
-        PedidoShortDto pedidoShortDto = new PedidoShortDto();
-
-        pedidoShortDto.setId( pedido.getId() );
-        if ( pedido.isEliminado() != null ) {
-            pedidoShortDto.setEliminado( pedido.isEliminado() );
-        }
-        pedidoShortDto.setDetallesPedido( detallePedidoSetToDetallePedidoDtoSet( pedido.getDetallesPedido() ) );
-        pedidoShortDto.setHoraEstimadaFinalizacion( pedido.getHoraEstimadaFinalizacion() );
-        pedidoShortDto.setTotal( pedido.getTotal() );
-        pedidoShortDto.setTotalCosto( pedido.getTotalCosto() );
-        pedidoShortDto.setEstado( pedido.getEstado() );
-        pedidoShortDto.setTipoEnvio( pedido.getTipoEnvio() );
-        pedidoShortDto.setFormaPago( pedido.getFormaPago() );
-        pedidoShortDto.setFechaPedido( pedido.getFechaPedido() );
-
-        return pedidoShortDto;
     }
 
     @Override
@@ -266,45 +210,9 @@ public class PedidoMapperImpl implements PedidoMapper {
         return pedido.build();
     }
 
-    protected DetallePedidoDto detallePedidoToDetallePedidoDto(DetallePedido detallePedido) {
-        if (detallePedido == null) {
-            return null;
-        }
 
-        DetallePedidoDto detallePedidoDto = new DetallePedidoDto();
 
-        detallePedidoDto.setId(detallePedido.getId());
-        if (detallePedido.isEliminado() != null) {
-            detallePedidoDto.setEliminado(detallePedido.isEliminado());
-        }
-        detallePedidoDto.setCantidad(detallePedido.getCantidad());
-        detallePedidoDto.setSubTotal(detallePedido.getSubTotal());
 
-        // Asigna el Articulo al DetallePedidoDto
-        Articulo articulo = articuloRepository.getById(detallePedido.getArticulo().getId());
-        if (articulo instanceof ArticuloManufacturado) {
-            ArticuloManufacturadoDto dto = articuloManufacturadoMapper.toDTO((ArticuloManufacturado) articulo);
-            detallePedidoDto.setArticuloManufacturado(dto);
-        } else if (articulo instanceof ArticuloInsumo) {
-            ArticuloInsumoDto insumoDto = articuloInsumoMapper.toDTO((ArticuloInsumo) articulo);
-            detallePedidoDto.setArticuloInsumo(insumoDto);
-        }
-
-        return detallePedidoDto;
-    }
-
-    protected Set<DetallePedidoDto> detallePedidoSetToDetallePedidoDtoSet(Set<DetallePedido> set) {
-        if (set == null) {
-            return null;
-        }
-
-        Set<DetallePedidoDto> set1 = new LinkedHashSet<DetallePedidoDto>(Math.max((int) (set.size() / .75f) + 1, 16));
-        for (DetallePedido detallePedido : set) {
-            set1.add(detallePedidoToDetallePedidoDto(detallePedido));
-        }
-
-        return set1;
-    }
 
     protected DomicilioCreateDto domicilioToDomicilioCreateDto(Domicilio domicilio) {
         if ( domicilio == null ) {
@@ -441,70 +349,63 @@ public class PedidoMapperImpl implements PedidoMapper {
         return set1;
     }
 
-    protected Set<PedidoDto> pedidoSetToPedidoDtoSet(Set<Pedido> set) {
+    protected PedidoShortDto pedidoToPedidoShortDto(Pedido pedido) {
+        if ( pedido == null ) {
+            return null;
+        }
+
+        PedidoShortDto pedidoShortDto = new PedidoShortDto();
+
+        pedidoShortDto.setId( pedido.getId() );
+        if ( pedido.isEliminado() != null ) {
+            pedidoShortDto.setEliminado( pedido.isEliminado() );
+        }
+        pedidoShortDto.setDetallesPedido( detallePedidoSetToDetallePedidoDtoSet( pedido.getDetallesPedido() ) );
+        pedidoShortDto.setHoraEstimadaFinalizacion( pedido.getHoraEstimadaFinalizacion() );
+        pedidoShortDto.setTotal( pedido.getTotal() );
+        pedidoShortDto.setTotalCosto( pedido.getTotalCosto() );
+        pedidoShortDto.setEstado( pedido.getEstado() );
+        pedidoShortDto.setTipoEnvio( pedido.getTipoEnvio() );
+        pedidoShortDto.setFormaPago( pedido.getFormaPago() );
+        pedidoShortDto.setFechaPedido( pedido.getFechaPedido() );
+
+        return pedidoShortDto;
+    }
+
+    protected Set<PedidoShortDto> pedidoSetToPedidoShortDtoSet(Set<Pedido> set) {
         if ( set == null ) {
             return null;
         }
 
-        Set<PedidoDto> set1 = new LinkedHashSet<PedidoDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        Set<PedidoShortDto> set1 = new LinkedHashSet<PedidoShortDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Pedido pedido : set ) {
-            set1.add( toDTO( pedido ) );
+            set1.add( pedidoToPedidoShortDto( pedido ) );
         }
 
         return set1;
     }
 
-    protected Cliente clienteDtoToCliente(ClienteDto clienteDto) {
-        if ( clienteDto == null ) {
+    protected ClienteDto clienteToClienteDto(Cliente cliente) {
+        if ( cliente == null ) {
             return null;
         }
 
-        Cliente.ClienteBuilder<?, ?> cliente = Cliente.builder();
+        ClienteDto clienteDto = new ClienteDto();
 
-        cliente.id( clienteDto.getId() );
-        cliente.eliminado( clienteDto.isEliminado() );
-        cliente.nombre( clienteDto.getNombre() );
-        cliente.apellido( clienteDto.getApellido() );
-        cliente.telefono( clienteDto.getTelefono() );
-        cliente.email( clienteDto.getEmail() );
-        cliente.usuario( usuarioClienteDtoToUsuarioCliente( clienteDto.getUsuario() ) );
-        cliente.imagenCliente( imagenClienteDtoToImagenCliente( clienteDto.getImagenCliente() ) );
-        cliente.domicilios( domicilioDtoSetToDomicilioSet( clienteDto.getDomicilios() ) );
-        cliente.pedidos( pedidoShortDtoSetToPedidoSet( clienteDto.getPedidos() ) );
-
-        return cliente.build();
-    }
-    protected Set<Pedido> pedidoShortDtoSetToPedidoSet(Set<PedidoShortDto> set) {
-        if ( set == null ) {
-            return null;
+        clienteDto.setId( cliente.getId() );
+        if ( cliente.isEliminado() != null ) {
+            clienteDto.setEliminado( cliente.isEliminado() );
         }
+        clienteDto.setNombre( cliente.getNombre() );
+        clienteDto.setApellido( cliente.getApellido() );
+        clienteDto.setTelefono( cliente.getTelefono() );
+        clienteDto.setEmail( cliente.getEmail() );
+        clienteDto.setUsuario( usuarioClienteToUsuarioClienteDto( cliente.getUsuario() ) );
+        clienteDto.setImagenCliente( imagenClienteToImagenClienteDto( cliente.getImagenCliente() ) );
+        clienteDto.setDomicilios( domicilioSetToDomicilioDtoSet( cliente.getDomicilios() ) );
+        clienteDto.setPedidos( pedidoSetToPedidoShortDtoSet( cliente.getPedidos() ) );
 
-        Set<Pedido> set1 = new LinkedHashSet<Pedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( PedidoShortDto pedidoShortDto : set ) {
-            set1.add( pedidoShortDtoToPedido( pedidoShortDto ) );
-        }
-
-        return set1;
-    }
-    protected Pedido pedidoShortDtoToPedido(PedidoShortDto pedidoShortDto) {
-        if ( pedidoShortDto == null ) {
-            return null;
-        }
-
-        Pedido.PedidoBuilder<?, ?> pedido = Pedido.builder();
-
-        pedido.id( pedidoShortDto.getId() );
-        pedido.eliminado( pedidoShortDto.isEliminado() );
-        pedido.horaEstimadaFinalizacion( pedidoShortDto.getHoraEstimadaFinalizacion() );
-        pedido.total( pedidoShortDto.getTotal() );
-        pedido.totalCosto( pedidoShortDto.getTotalCosto() );
-        pedido.estado( pedidoShortDto.getEstado() );
-        pedido.tipoEnvio( pedidoShortDto.getTipoEnvio() );
-        pedido.formaPago( pedidoShortDto.getFormaPago() );
-        pedido.fechaPedido( pedidoShortDto.getFechaPedido() );
-        pedido.detallesPedido( detallePedidoDtoSetToDetallePedidoSet( pedidoShortDto.getDetallesPedido() ) );
-
-        return pedido.build();
+        return clienteDto;
     }
 
     protected ImagenEmpresaDto imagenEmpresaToImagenEmpresaDto(ImagenEmpresa imagenEmpresa) {
@@ -598,6 +499,19 @@ public class PedidoMapperImpl implements PedidoMapper {
         sucursalDto.setImagenes( imagenSucursalSetToImagenSucursalDtoList( sucursal.getImagenes() ) );
 
         return sucursalDto;
+    }
+
+    protected Set<PedidoDto> pedidoSetToPedidoDtoSet(Set<Pedido> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<PedidoDto> set1 = new LinkedHashSet<PedidoDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Pedido pedido : set ) {
+            set1.add( toDTO( pedido ) );
+        }
+
+        return set1;
     }
 
     protected EmpleadoDto empleadoToEmpleadoDto(Empleado empleado) {
@@ -872,19 +786,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         return set1;
     }
 
-    protected Set<Pedido> pedidoDtoSetToPedidoSet(Set<PedidoDto> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<Pedido> set1 = new LinkedHashSet<Pedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( PedidoDto pedidoDto : set ) {
-            set1.add( toEntity( pedidoDto ) );
-        }
-
-        return set1;
-    }
-
     protected DetallePedido detallePedidoDtoToDetallePedido(DetallePedidoDto detallePedidoDto) {
         if ( detallePedidoDto == null ) {
             return null;
@@ -908,6 +809,74 @@ public class PedidoMapperImpl implements PedidoMapper {
         Set<DetallePedido> set1 = new LinkedHashSet<DetallePedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( DetallePedidoDto detallePedidoDto : set ) {
             set1.add( detallePedidoDtoToDetallePedido( detallePedidoDto ) );
+        }
+
+        return set1;
+    }
+
+    protected Pedido pedidoShortDtoToPedido(PedidoShortDto pedidoShortDto) {
+        if ( pedidoShortDto == null ) {
+            return null;
+        }
+
+        Pedido.PedidoBuilder<?, ?> pedido = Pedido.builder();
+
+        pedido.id( pedidoShortDto.getId() );
+        pedido.eliminado( pedidoShortDto.isEliminado() );
+        pedido.horaEstimadaFinalizacion( pedidoShortDto.getHoraEstimadaFinalizacion() );
+        pedido.total( pedidoShortDto.getTotal() );
+        pedido.totalCosto( pedidoShortDto.getTotalCosto() );
+        pedido.estado( pedidoShortDto.getEstado() );
+        pedido.tipoEnvio( pedidoShortDto.getTipoEnvio() );
+        pedido.formaPago( pedidoShortDto.getFormaPago() );
+        pedido.fechaPedido( pedidoShortDto.getFechaPedido() );
+        pedido.detallesPedido( detallePedidoDtoSetToDetallePedidoSet( pedidoShortDto.getDetallesPedido() ) );
+
+        return pedido.build();
+    }
+
+    protected Set<Pedido> pedidoShortDtoSetToPedidoSet(Set<PedidoShortDto> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<Pedido> set1 = new LinkedHashSet<Pedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( PedidoShortDto pedidoShortDto : set ) {
+            set1.add( pedidoShortDtoToPedido( pedidoShortDto ) );
+        }
+
+        return set1;
+    }
+
+    protected Cliente clienteDtoToCliente(ClienteDto clienteDto) {
+        if ( clienteDto == null ) {
+            return null;
+        }
+
+        Cliente.ClienteBuilder<?, ?> cliente = Cliente.builder();
+
+        cliente.id( clienteDto.getId() );
+        cliente.eliminado( clienteDto.isEliminado() );
+        cliente.nombre( clienteDto.getNombre() );
+        cliente.apellido( clienteDto.getApellido() );
+        cliente.telefono( clienteDto.getTelefono() );
+        cliente.email( clienteDto.getEmail() );
+        cliente.usuario( usuarioClienteDtoToUsuarioCliente( clienteDto.getUsuario() ) );
+        cliente.imagenCliente( imagenClienteDtoToImagenCliente( clienteDto.getImagenCliente() ) );
+        cliente.domicilios( domicilioDtoSetToDomicilioSet( clienteDto.getDomicilios() ) );
+        cliente.pedidos( pedidoShortDtoSetToPedidoSet( clienteDto.getPedidos() ) );
+
+        return cliente.build();
+    }
+
+    protected Set<Pedido> pedidoDtoSetToPedidoSet(Set<PedidoDto> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<Pedido> set1 = new LinkedHashSet<Pedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( PedidoDto pedidoDto : set ) {
+            set1.add( toEntity( pedidoDto ) );
         }
 
         return set1;
@@ -1210,6 +1179,46 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         return factura.build();
     }
+    protected DetallePedidoDto detallePedidoToDetallePedidoDto(DetallePedido detallePedido) {
+        if (detallePedido == null) {
+            return null;
+        }
+
+        DetallePedidoDto detallePedidoDto = new DetallePedidoDto();
+
+        detallePedidoDto.setId(detallePedido.getId());
+        if (detallePedido.isEliminado() != null) {
+            detallePedidoDto.setEliminado(detallePedido.isEliminado());
+        }
+        detallePedidoDto.setCantidad(detallePedido.getCantidad());
+        detallePedidoDto.setSubTotal(detallePedido.getSubTotal());
+
+        // Asigna el Articulo al DetallePedidoDto
+        Articulo articulo = articuloRepository.getById(detallePedido.getArticulo().getId());
+        if (articulo instanceof ArticuloManufacturado) {
+            ArticuloManufacturadoDto dto = articuloManufacturadoMapper.toDTO((ArticuloManufacturado) articulo);
+            detallePedidoDto.setArticuloManufacturado(dto);
+        } else if (articulo instanceof ArticuloInsumo) {
+            ArticuloInsumoDto insumoDto = articuloInsumoMapper.toDTO((ArticuloInsumo) articulo);
+            detallePedidoDto.setArticuloInsumo(insumoDto);
+        }
+
+        return detallePedidoDto;
+    }
+
+    protected Set<DetallePedidoDto> detallePedidoSetToDetallePedidoDtoSet(Set<DetallePedido> set) {
+        if (set == null) {
+            return null;
+        }
+
+        Set<DetallePedidoDto> set1 = new LinkedHashSet<DetallePedidoDto>(Math.max((int) (set.size() / .75f) + 1, 16));
+        for (DetallePedido detallePedido : set) {
+            set1.add(detallePedidoToDetallePedidoDto(detallePedido));
+        }
+
+        return set1;
+    }
+
 }
 
 
