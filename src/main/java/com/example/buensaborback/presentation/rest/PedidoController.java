@@ -42,7 +42,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @Autowired
     private PedidoRepository pedidoRepository;
-    /*
+
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
@@ -50,7 +50,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     private ArticuloManufacturadoMapper articuloManufacturadoMapper;
     @Autowired
     private ArticuloInsumoMapper articuloInsumoMapper;
-*/
+
     public PedidoController(PedidoFacadeImpl facade) {
         super(facade);
     }
@@ -58,7 +58,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public ResponseEntity<List<PedidoDto>> getAll() {
         // Obtén todos los pedidos con el facade
         List<PedidoDto> pedidos = facade.getAll();
-        /*
+
 
         for (PedidoDto pedido : pedidos) {
             if (!pedido.isEliminado() && pedidoRepository.getById(pedido.getId()).getDetallesPedido() != null) {
@@ -88,7 +88,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             }
         }
 
-         */
+
 
         return ResponseEntity.ok(pedidos);
     }
@@ -99,7 +99,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public ResponseEntity<PedidoDto> getById(@PathVariable Long id) {
         //obtengo el pedido con el facade aca los articulos son nulos
         PedidoDto pedido = facade.getById(id);
-        /*
+
         //creo un array de detalles posta
         Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
 
@@ -120,7 +120,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             }
         }
         pedido.setDetallesPedido(newDetalles);
-        */
+
         return ResponseEntity.ok(pedido);
     }
     @PutMapping("/cambiarEstado/{id}")
@@ -216,7 +216,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             Pedido p = pedidoRepository.getById(pedido.getId());
             p.setCliente(clienteRepository.getById(entity.getIdCliente()));
             pedidoRepository.save(p);
-            /*
+
             Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
             List<DetallePedido> detalles2 = new ArrayList<>();
             for (DetallePedido detalle :
@@ -233,7 +233,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
                 i++;
             }
 
-             */
+
             return ResponseEntity.ok(pedido);
         } catch (Exception e) {
             e.printStackTrace();

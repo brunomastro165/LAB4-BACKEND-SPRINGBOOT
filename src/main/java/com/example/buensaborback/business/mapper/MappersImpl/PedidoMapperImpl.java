@@ -35,7 +35,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-
+/*
 @Component
 public class PedidoMapperImpl implements PedidoMapper {
     @Autowired
@@ -959,7 +959,5 @@ public class PedidoMapperImpl implements PedidoMapper {
     }
 
 }
-
-
-
+*/
 
