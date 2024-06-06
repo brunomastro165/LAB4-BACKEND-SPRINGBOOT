@@ -250,640 +250,153 @@ public class PedidoMapperImpl implements PedidoMapper {
     }
 
     protected DomicilioCreateDto domicilioToDomicilioCreateDto(Domicilio domicilio) {
-        if (domicilio == null) {
+        if ( domicilio == null ) {
             return null;
         }
 
         DomicilioCreateDto domicilioCreateDto = new DomicilioCreateDto();
 
-        domicilioCreateDto.setCalle(domicilio.getCalle());
-        domicilioCreateDto.setNumero(domicilio.getNumero());
-        domicilioCreateDto.setCp(domicilio.getCp());
-        domicilioCreateDto.setPiso(domicilio.getPiso());
-        domicilioCreateDto.setNroDpto(domicilio.getNroDpto());
+        domicilioCreateDto.setCalle( domicilio.getCalle() );
+        domicilioCreateDto.setNumero( domicilio.getNumero() );
+        domicilioCreateDto.setCp( domicilio.getCp() );
+        domicilioCreateDto.setPiso( domicilio.getPiso() );
+        domicilioCreateDto.setNroDpto( domicilio.getNroDpto() );
 
         return domicilioCreateDto;
     }
 
+    protected UsuarioClienteDto usuarioClienteToUsuarioClienteDto(UsuarioCliente usuarioCliente) {
+        if ( usuarioCliente == null ) {
+            return null;
+        }
+
+        Long id = null;
+        String userName = null;
+        String auth0Id = null;
+
+        id = usuarioCliente.getId();
+        userName = usuarioCliente.getUserName();
+        auth0Id = usuarioCliente.getAuth0Id();
+
+        UsuarioClienteDto usuarioClienteDto = new UsuarioClienteDto( id, userName, auth0Id );
+
+        if ( usuarioCliente.isEliminado() != null ) {
+            usuarioClienteDto.setEliminado( usuarioCliente.isEliminado() );
+        }
+
+        return usuarioClienteDto;
+    }
+
+    protected ImagenClienteDto imagenClienteToImagenClienteDto(ImagenCliente imagenCliente) {
+        if ( imagenCliente == null ) {
+            return null;
+        }
+
+        ImagenClienteDto imagenClienteDto = new ImagenClienteDto();
+
+        imagenClienteDto.setName( imagenCliente.getName() );
+        imagenClienteDto.setUrl( imagenCliente.getUrl() );
+
+        return imagenClienteDto;
+    }
+
     protected PaisDto paisToPaisDto(Pais pais) {
-        if (pais == null) {
+        if ( pais == null ) {
             return null;
         }
 
         PaisDto paisDto = new PaisDto();
 
-        if (pais.isEliminado() != null) {
-            paisDto.setEliminado(pais.isEliminado());
+        if ( pais.isEliminado() != null ) {
+            paisDto.setEliminado( pais.isEliminado() );
         }
-        paisDto.setId(pais.getId());
-        paisDto.setNombre(pais.getNombre());
+        paisDto.setId( pais.getId() );
+        paisDto.setNombre( pais.getNombre() );
 
         return paisDto;
     }
 
     protected ProvinciaDto provinciaToProvinciaDto(Provincia provincia) {
-        if (provincia == null) {
+        if ( provincia == null ) {
             return null;
         }
 
         ProvinciaDto provinciaDto = new ProvinciaDto();
 
-        provinciaDto.setId(provincia.getId());
-        if (provincia.isEliminado() != null) {
-            provinciaDto.setEliminado(provincia.isEliminado());
+        provinciaDto.setId( provincia.getId() );
+        if ( provincia.isEliminado() != null ) {
+            provinciaDto.setEliminado( provincia.isEliminado() );
         }
-        provinciaDto.setNombre(provincia.getNombre());
-        provinciaDto.setPais(paisToPaisDto(provincia.getPais()));
+        provinciaDto.setNombre( provincia.getNombre() );
+        provinciaDto.setPais( paisToPaisDto( provincia.getPais() ) );
 
         return provinciaDto;
     }
 
     protected LocalidadDto localidadToLocalidadDto(Localidad localidad) {
-        if (localidad == null) {
+        if ( localidad == null ) {
             return null;
         }
 
         LocalidadDto localidadDto = new LocalidadDto();
 
-        localidadDto.setId(localidad.getId());
-        if (localidad.isEliminado() != null) {
-            localidadDto.setEliminado(localidad.isEliminado());
+        localidadDto.setId( localidad.getId() );
+        if ( localidad.isEliminado() != null ) {
+            localidadDto.setEliminado( localidad.isEliminado() );
         }
-        localidadDto.setNombre(localidad.getNombre());
-        localidadDto.setProvincia(provinciaToProvinciaDto(localidad.getProvincia()));
+        localidadDto.setNombre( localidad.getNombre() );
+        localidadDto.setProvincia( provinciaToProvinciaDto( localidad.getProvincia() ) );
 
         return localidadDto;
     }
 
     protected DomicilioDto domicilioToDomicilioDto(Domicilio domicilio) {
-        if (domicilio == null) {
+        if ( domicilio == null ) {
             return null;
         }
 
         DomicilioDto domicilioDto = new DomicilioDto();
 
-        domicilioDto.setId(domicilio.getId());
-        if (domicilio.isEliminado() != null) {
-            domicilioDto.setEliminado(domicilio.isEliminado());
+        domicilioDto.setId( domicilio.getId() );
+        if ( domicilio.isEliminado() != null ) {
+            domicilioDto.setEliminado( domicilio.isEliminado() );
         }
-        domicilioDto.setCalle(domicilio.getCalle());
-        domicilioDto.setNumero(domicilio.getNumero());
-        domicilioDto.setCp(domicilio.getCp());
-        domicilioDto.setPiso(domicilio.getPiso());
-        domicilioDto.setNroDpto(domicilio.getNroDpto());
-        domicilioDto.setLocalidad(localidadToLocalidadDto(domicilio.getLocalidad()));
+        domicilioDto.setCalle( domicilio.getCalle() );
+        domicilioDto.setNumero( domicilio.getNumero() );
+        domicilioDto.setCp( domicilio.getCp() );
+        domicilioDto.setPiso( domicilio.getPiso() );
+        domicilioDto.setNroDpto( domicilio.getNroDpto() );
+        domicilioDto.setLocalidad( localidadToLocalidadDto( domicilio.getLocalidad() ) );
 
         return domicilioDto;
     }
 
-    protected ImagenEmpresaDto imagenEmpresaToImagenEmpresaDto(ImagenEmpresa imagenEmpresa) {
-        if (imagenEmpresa == null) {
+    protected Set<DomicilioDto> domicilioSetToDomicilioDtoSet(Set<Domicilio> set) {
+        if ( set == null ) {
             return null;
         }
 
-        ImagenEmpresaDto imagenEmpresaDto = new ImagenEmpresaDto();
-
-        imagenEmpresaDto.setName(imagenEmpresa.getName());
-        imagenEmpresaDto.setUrl(imagenEmpresa.getUrl());
-
-        return imagenEmpresaDto;
-    }
-
-    protected List<ImagenEmpresaDto> imagenEmpresaSetToImagenEmpresaDtoList(Set<ImagenEmpresa> set) {
-        if (set == null) {
-            return null;
-        }
-
-        List<ImagenEmpresaDto> list = new ArrayList<ImagenEmpresaDto>(set.size());
-        for (ImagenEmpresa imagenEmpresa : set) {
-            list.add(imagenEmpresaToImagenEmpresaDto(imagenEmpresa));
-        }
-
-        return list;
-    }
-
-    protected EmpresaDto empresaToEmpresaDto(Empresa empresa) {
-        if (empresa == null) {
-            return null;
-        }
-
-        EmpresaDto empresaDto = new EmpresaDto();
-
-        empresaDto.setId(empresa.getId());
-        if (empresa.isEliminado() != null) {
-            empresaDto.setEliminado(empresa.isEliminado());
-        }
-        empresaDto.setNombre(empresa.getNombre());
-        empresaDto.setRazonSocial(empresa.getRazonSocial());
-        empresaDto.setCuil(empresa.getCuil());
-        empresaDto.setImagenes(imagenEmpresaSetToImagenEmpresaDtoList(empresa.getImagenes()));
-
-        return empresaDto;
-    }
-
-    protected ImagenSucursalDto imagenSucursalToImagenSucursalDto(ImagenSucursal imagenSucursal) {
-        if (imagenSucursal == null) {
-            return null;
-        }
-
-        ImagenSucursalDto imagenSucursalDto = new ImagenSucursalDto();
-
-        imagenSucursalDto.setName(imagenSucursal.getName());
-        imagenSucursalDto.setUrl(imagenSucursal.getUrl());
-
-        return imagenSucursalDto;
-    }
-
-    protected List<ImagenSucursalDto> imagenSucursalSetToImagenSucursalDtoList(Set<ImagenSucursal> set) {
-        if (set == null) {
-            return null;
-        }
-
-        List<ImagenSucursalDto> list = new ArrayList<ImagenSucursalDto>(set.size());
-        for (ImagenSucursal imagenSucursal : set) {
-            list.add(imagenSucursalToImagenSucursalDto(imagenSucursal));
-        }
-
-        return list;
-    }
-
-    protected SucursalDto sucursalToSucursalDto(Sucursal sucursal) {
-        if (sucursal == null) {
-            return null;
-        }
-
-        SucursalDto sucursalDto = new SucursalDto();
-
-        sucursalDto.setId(sucursal.getId());
-        if (sucursal.isEliminado() != null) {
-            sucursalDto.setEliminado(sucursal.isEliminado());
-        }
-        sucursalDto.setNombre(sucursal.getNombre());
-        sucursalDto.setHorarioApertura(sucursal.getHorarioApertura());
-        sucursalDto.setHorarioCierre(sucursal.getHorarioCierre());
-        sucursalDto.setEsCasaMatriz(sucursal.getEsCasaMatriz());
-        sucursalDto.setDomicilio(domicilioToDomicilioDto(sucursal.getDomicilio()));
-        sucursalDto.setEmpresa(empresaToEmpresaDto(sucursal.getEmpresa()));
-        sucursalDto.setImagenes(imagenSucursalSetToImagenSucursalDtoList(sucursal.getImagenes()));
-
-        return sucursalDto;
-    }
-
-    protected FacturaDto facturaToFacturaDto(Factura factura) {
-        if (factura == null) {
-            return null;
-        }
-
-        FacturaDto facturaDto = new FacturaDto();
-
-        facturaDto.setId(factura.getId());
-        if (factura.isEliminado() != null) {
-            facturaDto.setEliminado(factura.isEliminado());
-        }
-        facturaDto.setFechaFcturacion(factura.getFechaFcturacion());
-        facturaDto.setMpPaymentId(factura.getMpPaymentId());
-        facturaDto.setMpMerchantOrderId(factura.getMpMerchantOrderId());
-        facturaDto.setMpPreferenceId(factura.getMpPreferenceId());
-        facturaDto.setMpPaymentType(factura.getMpPaymentType());
-        facturaDto.setFormaPago(factura.getFormaPago());
-        facturaDto.setTotalVenta(factura.getTotalVenta());
-
-        return facturaDto;
-    }
-
-    protected Domicilio domicilioCreateDtoToDomicilio(DomicilioCreateDto domicilioCreateDto) {
-        if (domicilioCreateDto == null) {
-            return null;
-        }
-
-        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
-
-        domicilio.calle(domicilioCreateDto.getCalle());
-        domicilio.numero(domicilioCreateDto.getNumero());
-        domicilio.cp(domicilioCreateDto.getCp());
-        domicilio.piso(domicilioCreateDto.getPiso());
-        domicilio.nroDpto(domicilioCreateDto.getNroDpto());
-
-        return domicilio.build();
-    }
-
-    protected Pais paisDtoToPais(PaisDto paisDto) {
-        if (paisDto == null) {
-            return null;
-        }
-
-        Pais.PaisBuilder<?, ?> pais = Pais.builder();
-
-        pais.id(paisDto.getId());
-        pais.eliminado(paisDto.isEliminado());
-        pais.nombre(paisDto.getNombre());
-
-        return pais.build();
-    }
-
-    protected Provincia provinciaDtoToProvincia(ProvinciaDto provinciaDto) {
-        if (provinciaDto == null) {
-            return null;
-        }
-
-        Provincia.ProvinciaBuilder<?, ?> provincia = Provincia.builder();
-
-        provincia.id(provinciaDto.getId());
-        provincia.eliminado(provinciaDto.isEliminado());
-        provincia.nombre(provinciaDto.getNombre());
-        provincia.pais(paisDtoToPais(provinciaDto.getPais()));
-
-        return provincia.build();
-    }
-
-    protected Localidad localidadDtoToLocalidad(LocalidadDto localidadDto) {
-        if (localidadDto == null) {
-            return null;
-        }
-
-        Localidad.LocalidadBuilder<?, ?> localidad = Localidad.builder();
-
-        localidad.id(localidadDto.getId());
-        localidad.eliminado(localidadDto.isEliminado());
-        localidad.nombre(localidadDto.getNombre());
-        localidad.provincia(provinciaDtoToProvincia(localidadDto.getProvincia()));
-
-        return localidad.build();
-    }
-
-    protected Domicilio domicilioDtoToDomicilio(DomicilioDto domicilioDto) {
-        if (domicilioDto == null) {
-            return null;
-        }
-
-        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
-
-        domicilio.id(domicilioDto.getId());
-        domicilio.eliminado(domicilioDto.isEliminado());
-        domicilio.calle(domicilioDto.getCalle());
-        domicilio.numero(domicilioDto.getNumero());
-        domicilio.cp(domicilioDto.getCp());
-        domicilio.piso(domicilioDto.getPiso());
-        domicilio.nroDpto(domicilioDto.getNroDpto());
-        domicilio.localidad(localidadDtoToLocalidad(domicilioDto.getLocalidad()));
-
-        return domicilio.build();
-    }
-
-    protected ImagenEmpresa imagenEmpresaDtoToImagenEmpresa(ImagenEmpresaDto imagenEmpresaDto) {
-        if (imagenEmpresaDto == null) {
-            return null;
-        }
-
-        ImagenEmpresa.ImagenEmpresaBuilder<?, ?> imagenEmpresa = ImagenEmpresa.builder();
-
-        imagenEmpresa.name(imagenEmpresaDto.getName());
-        imagenEmpresa.url(imagenEmpresaDto.getUrl());
-
-        return imagenEmpresa.build();
-    }
-
-    protected Set<ImagenEmpresa> imagenEmpresaDtoListToImagenEmpresaSet(List<ImagenEmpresaDto> list) {
-        if (list == null) {
-            return null;
-        }
-
-        Set<ImagenEmpresa> set = new LinkedHashSet<ImagenEmpresa>(Math.max((int) (list.size() / .75f) + 1, 16));
-        for (ImagenEmpresaDto imagenEmpresaDto : list) {
-            set.add(imagenEmpresaDtoToImagenEmpresa(imagenEmpresaDto));
-        }
-
-        return set;
-    }
-
-    protected Empresa empresaDtoToEmpresa(EmpresaDto empresaDto) {
-        if (empresaDto == null) {
-            return null;
-        }
-
-        Empresa.EmpresaBuilder<?, ?> empresa = Empresa.builder();
-
-        empresa.id(empresaDto.getId());
-        empresa.eliminado(empresaDto.isEliminado());
-        empresa.nombre(empresaDto.getNombre());
-        empresa.razonSocial(empresaDto.getRazonSocial());
-        empresa.cuil(empresaDto.getCuil());
-        empresa.imagenes(imagenEmpresaDtoListToImagenEmpresaSet(empresaDto.getImagenes()));
-
-        return empresa.build();
-    }
-
-    protected ImagenSucursal imagenSucursalDtoToImagenSucursal(ImagenSucursalDto imagenSucursalDto) {
-        if (imagenSucursalDto == null) {
-            return null;
-        }
-
-        ImagenSucursal.ImagenSucursalBuilder<?, ?> imagenSucursal = ImagenSucursal.builder();
-
-        imagenSucursal.name(imagenSucursalDto.getName());
-        imagenSucursal.url(imagenSucursalDto.getUrl());
-
-        return imagenSucursal.build();
-    }
-
-    protected Set<ImagenSucursal> imagenSucursalDtoListToImagenSucursalSet(List<ImagenSucursalDto> list) {
-        if (list == null) {
-            return null;
-        }
-
-        Set<ImagenSucursal> set = new LinkedHashSet<ImagenSucursal>(Math.max((int) (list.size() / .75f) + 1, 16));
-        for (ImagenSucursalDto imagenSucursalDto : list) {
-            set.add(imagenSucursalDtoToImagenSucursal(imagenSucursalDto));
-        }
-
-        return set;
-    }
-
-    protected Sucursal sucursalDtoToSucursal(SucursalDto sucursalDto) {
-        if (sucursalDto == null) {
-            return null;
-        }
-
-        Sucursal.SucursalBuilder<?, ?> sucursal = Sucursal.builder();
-
-        sucursal.id(sucursalDto.getId());
-        sucursal.eliminado(sucursalDto.isEliminado());
-        sucursal.nombre(sucursalDto.getNombre());
-        sucursal.horarioApertura(sucursalDto.getHorarioApertura());
-        sucursal.horarioCierre(sucursalDto.getHorarioCierre());
-        sucursal.esCasaMatriz(sucursalDto.getEsCasaMatriz());
-        sucursal.domicilio(domicilioDtoToDomicilio(sucursalDto.getDomicilio()));
-        sucursal.empresa(empresaDtoToEmpresa(sucursalDto.getEmpresa()));
-        sucursal.imagenes(imagenSucursalDtoListToImagenSucursalSet(sucursalDto.getImagenes()));
-
-        return sucursal.build();
-    }
-
-    protected Factura facturaDtoToFactura(FacturaDto facturaDto) {
-        if (facturaDto == null) {
-            return null;
-        }
-
-        Factura.FacturaBuilder<?, ?> factura = Factura.builder();
-
-        factura.id(facturaDto.getId());
-        factura.eliminado(facturaDto.isEliminado());
-        factura.fechaFcturacion(facturaDto.getFechaFcturacion());
-        factura.mpPaymentId(facturaDto.getMpPaymentId());
-        factura.mpMerchantOrderId(facturaDto.getMpMerchantOrderId());
-        factura.mpPreferenceId(facturaDto.getMpPreferenceId());
-        factura.mpPaymentType(facturaDto.getMpPaymentType());
-        factura.formaPago(facturaDto.getFormaPago());
-        factura.totalVenta(facturaDto.getTotalVenta());
-
-        return factura.build();
-    }
-
-    protected DetallePedido detallePedidoDtoToDetallePedido(DetallePedidoDto detallePedidoDto) {
-        if (detallePedidoDto == null) {
-            return null;
-        }
-
-        DetallePedido.DetallePedidoBuilder<?, ?> detallePedido = DetallePedido.builder();
-
-        detallePedido.id(detallePedidoDto.getId());
-        detallePedido.eliminado(detallePedidoDto.isEliminado());
-        detallePedido.cantidad(detallePedidoDto.getCantidad());
-        detallePedido.subTotal(detallePedidoDto.getSubTotal());
-
-        return detallePedido.build();
-    }
-
-    protected Set<DetallePedido> detallePedidoDtoSetToDetallePedidoSet(Set<DetallePedidoDto> set) {
-        if (set == null) {
-            return null;
-        }
-
-        Set<DetallePedido> set1 = new LinkedHashSet<DetallePedido>(Math.max((int) (set.size() / .75f) + 1, 16));
-        for (DetallePedidoDto detallePedidoDto : set) {
-            set1.add(detallePedidoDtoToDetallePedido(detallePedidoDto));
+        Set<DomicilioDto> set1 = new LinkedHashSet<DomicilioDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Domicilio domicilio : set ) {
+            set1.add( domicilioToDomicilioDto( domicilio ) );
         }
 
         return set1;
     }
 
-    protected void facturaCreateDtoToFactura(FacturaCreateDto facturaCreateDto, Factura mappingTarget) {
-        if ( facturaCreateDto == null ) {
-            return;
-        }
-
-        mappingTarget.setId( facturaCreateDto.getId() );
-        mappingTarget.setEliminado( facturaCreateDto.isEliminado() );
-        mappingTarget.setFechaFcturacion( facturaCreateDto.getFechaFcturacion() );
-        mappingTarget.setMpPaymentId( facturaCreateDto.getMpPaymentId() );
-        mappingTarget.setMpMerchantOrderId( facturaCreateDto.getMpMerchantOrderId() );
-        mappingTarget.setMpPreferenceId( facturaCreateDto.getMpPreferenceId() );
-        mappingTarget.setMpPaymentType( facturaCreateDto.getMpPaymentType() );
-        mappingTarget.setFormaPago( facturaCreateDto.getFormaPago() );
-        mappingTarget.setTotalVenta( facturaCreateDto.getTotalVenta() );
-    }
-
-    protected DetallePedido detallePedidoCreateDtoToDetallePedido(DetallePedidoCreateDto detallePedidoCreateDto) {
-        if (detallePedidoCreateDto == null) {
+    protected Set<PedidoDto> pedidoSetToPedidoDtoSet(Set<Pedido> set) {
+        if ( set == null ) {
             return null;
         }
 
-        DetallePedido.DetallePedidoBuilder<?, ?> detallePedido = DetallePedido.builder();
+        Set<PedidoDto> set1 = new LinkedHashSet<PedidoDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Pedido pedido : set ) {
+            set1.add( toDTO( pedido ) );
+        }
 
-        detallePedido.id(detallePedidoCreateDto.getId());
-        detallePedido.eliminado(detallePedidoCreateDto.isEliminado());
-        detallePedido.cantidad(detallePedidoCreateDto.getCantidad());
-        detallePedido.subTotal(detallePedidoCreateDto.getSubTotal());
-
-        // Asigna el Articulo al DetallePedido
-        Articulo articulo = articuloRepository.getById(detallePedidoCreateDto.getIdArticulo());
-        detallePedido.articulo(articulo);
-
-        return detallePedido.build();
+        return set1;
     }
 
-    protected Set<DetallePedido> detallePedidoCreateDtoListToDetallePedidoSet(List<DetallePedidoCreateDto> list) {
-        if (list == null) {
-            return null;
-        }
-
-        Set<DetallePedido> set = new LinkedHashSet<DetallePedido>(Math.max((int) (list.size() / .75f) + 1, 16));
-        for (DetallePedidoCreateDto detallePedidoCreateDto : list) {
-            set.add(detallePedidoCreateDtoToDetallePedido(detallePedidoCreateDto));
-        }
-
-        return set;
-    }
-
-
-    protected void domicilioCreateDtoToDomicilio1(DomicilioCreateDto domicilioCreateDto, Domicilio mappingTarget) {
-        if (domicilioCreateDto == null) {
-            return;
-        }
-
-        mappingTarget.setCalle(domicilioCreateDto.getCalle());
-        mappingTarget.setNumero(domicilioCreateDto.getNumero());
-        mappingTarget.setCp(domicilioCreateDto.getCp());
-        mappingTarget.setPiso(domicilioCreateDto.getPiso());
-        mappingTarget.setNroDpto(domicilioCreateDto.getNroDpto());
-    }
-
-    protected void paisDtoToPais1(PaisDto paisDto, Pais mappingTarget) {
-        if (paisDto == null) {
-            return;
-        }
-
-        mappingTarget.setId(paisDto.getId());
-        mappingTarget.setEliminado(paisDto.isEliminado());
-        mappingTarget.setNombre(paisDto.getNombre());
-    }
-
-    protected void provinciaDtoToProvincia1(ProvinciaDto provinciaDto, Provincia mappingTarget) {
-        if (provinciaDto == null) {
-            return;
-        }
-
-        mappingTarget.setId(provinciaDto.getId());
-        mappingTarget.setEliminado(provinciaDto.isEliminado());
-        mappingTarget.setNombre(provinciaDto.getNombre());
-        if (provinciaDto.getPais() != null) {
-            if (mappingTarget.getPais() == null) {
-                mappingTarget.setPais(Pais.builder().build());
-            }
-            paisDtoToPais1(provinciaDto.getPais(), mappingTarget.getPais());
-        } else {
-            mappingTarget.setPais(null);
-        }
-    }
-
-    protected void localidadDtoToLocalidad1(LocalidadDto localidadDto, Localidad mappingTarget) {
-        if (localidadDto == null) {
-            return;
-        }
-
-        mappingTarget.setId(localidadDto.getId());
-        mappingTarget.setEliminado(localidadDto.isEliminado());
-        mappingTarget.setNombre(localidadDto.getNombre());
-        if (localidadDto.getProvincia() != null) {
-            if (mappingTarget.getProvincia() == null) {
-                mappingTarget.setProvincia(Provincia.builder().build());
-            }
-            provinciaDtoToProvincia1(localidadDto.getProvincia(), mappingTarget.getProvincia());
-        } else {
-            mappingTarget.setProvincia(null);
-        }
-    }
-
-    protected void domicilioDtoToDomicilio1(DomicilioDto domicilioDto, Domicilio mappingTarget) {
-        if (domicilioDto == null) {
-            return;
-        }
-
-        mappingTarget.setId(domicilioDto.getId());
-        mappingTarget.setEliminado(domicilioDto.isEliminado());
-        mappingTarget.setCalle(domicilioDto.getCalle());
-        mappingTarget.setNumero(domicilioDto.getNumero());
-        mappingTarget.setCp(domicilioDto.getCp());
-        mappingTarget.setPiso(domicilioDto.getPiso());
-        mappingTarget.setNroDpto(domicilioDto.getNroDpto());
-        if (domicilioDto.getLocalidad() != null) {
-            if (mappingTarget.getLocalidad() == null) {
-                mappingTarget.setLocalidad(Localidad.builder().build());
-            }
-            localidadDtoToLocalidad1(domicilioDto.getLocalidad(), mappingTarget.getLocalidad());
-        } else {
-            mappingTarget.setLocalidad(null);
-        }
-    }
-
-    protected void empresaDtoToEmpresa1(EmpresaDto empresaDto, Empresa mappingTarget) {
-        if (empresaDto == null) {
-            return;
-        }
-
-        mappingTarget.setId(empresaDto.getId());
-        mappingTarget.setEliminado(empresaDto.isEliminado());
-        mappingTarget.setNombre(empresaDto.getNombre());
-        mappingTarget.setRazonSocial(empresaDto.getRazonSocial());
-        mappingTarget.setCuil(empresaDto.getCuil());
-        if (mappingTarget.getImagenes() != null) {
-            Set<ImagenEmpresa> set = imagenEmpresaDtoListToImagenEmpresaSet(empresaDto.getImagenes());
-            if (set != null) {
-                mappingTarget.getImagenes().clear();
-                mappingTarget.getImagenes().addAll(set);
-            } else {
-                mappingTarget.setImagenes(null);
-            }
-        } else {
-            Set<ImagenEmpresa> set = imagenEmpresaDtoListToImagenEmpresaSet(empresaDto.getImagenes());
-            if (set != null) {
-                mappingTarget.setImagenes(set);
-            }
-        }
-    }
-
-    protected void sucursalDtoToSucursal1(SucursalDto sucursalDto, Sucursal mappingTarget) {
-        if (sucursalDto == null) {
-            return;
-        }
-
-        mappingTarget.setId(sucursalDto.getId());
-        mappingTarget.setEliminado(sucursalDto.isEliminado());
-        mappingTarget.setNombre(sucursalDto.getNombre());
-        mappingTarget.setHorarioApertura(sucursalDto.getHorarioApertura());
-        mappingTarget.setHorarioCierre(sucursalDto.getHorarioCierre());
-        mappingTarget.setEsCasaMatriz(sucursalDto.getEsCasaMatriz());
-        if (sucursalDto.getDomicilio() != null) {
-            if (mappingTarget.getDomicilio() == null) {
-                mappingTarget.setDomicilio(Domicilio.builder().build());
-            }
-            domicilioDtoToDomicilio1(sucursalDto.getDomicilio(), mappingTarget.getDomicilio());
-        } else {
-            mappingTarget.setDomicilio(null);
-        }
-        if (sucursalDto.getEmpresa() != null) {
-            if (mappingTarget.getEmpresa() == null) {
-                mappingTarget.setEmpresa(Empresa.builder().build());
-            }
-            empresaDtoToEmpresa1(sucursalDto.getEmpresa(), mappingTarget.getEmpresa());
-        } else {
-            mappingTarget.setEmpresa(null);
-        }
-        if (mappingTarget.getImagenes() != null) {
-            Set<ImagenSucursal> set = imagenSucursalDtoListToImagenSucursalSet(sucursalDto.getImagenes());
-            if (set != null) {
-                mappingTarget.getImagenes().clear();
-                mappingTarget.getImagenes().addAll(set);
-            } else {
-                mappingTarget.setImagenes(null);
-            }
-        } else {
-            Set<ImagenSucursal> set = imagenSucursalDtoListToImagenSucursalSet(sucursalDto.getImagenes());
-            if (set != null) {
-                mappingTarget.setImagenes(set);
-            }
-        }
-    }
-
-    protected Factura facturaCreateDtoToFactura1(FacturaCreateDto facturaCreateDto) {
-        if ( facturaCreateDto == null ) {
-            return null;
-        }
-
-        Factura.FacturaBuilder<?, ?> factura = Factura.builder();
-
-        factura.id( facturaCreateDto.getId() );
-        factura.eliminado( facturaCreateDto.isEliminado() );
-        factura.fechaFcturacion( facturaCreateDto.getFechaFcturacion() );
-        factura.mpPaymentId( facturaCreateDto.getMpPaymentId() );
-        factura.mpMerchantOrderId( facturaCreateDto.getMpMerchantOrderId() );
-        factura.mpPreferenceId( facturaCreateDto.getMpPreferenceId() );
-        factura.mpPaymentType( facturaCreateDto.getMpPaymentType() );
-        factura.formaPago( facturaCreateDto.getFormaPago() );
-        factura.totalVenta( facturaCreateDto.getTotalVenta() );
-
-        return factura.build();
-    }
     protected ClienteDto clienteToClienteDto(Cliente cliente) {
         if ( cliente == null ) {
             return null;
@@ -906,6 +419,333 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         return clienteDto;
     }
+
+    protected ImagenEmpresaDto imagenEmpresaToImagenEmpresaDto(ImagenEmpresa imagenEmpresa) {
+        if ( imagenEmpresa == null ) {
+            return null;
+        }
+
+        ImagenEmpresaDto imagenEmpresaDto = new ImagenEmpresaDto();
+
+        imagenEmpresaDto.setName( imagenEmpresa.getName() );
+        imagenEmpresaDto.setUrl( imagenEmpresa.getUrl() );
+
+        return imagenEmpresaDto;
+    }
+
+    protected List<ImagenEmpresaDto> imagenEmpresaSetToImagenEmpresaDtoList(Set<ImagenEmpresa> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        List<ImagenEmpresaDto> list = new ArrayList<ImagenEmpresaDto>( set.size() );
+        for ( ImagenEmpresa imagenEmpresa : set ) {
+            list.add( imagenEmpresaToImagenEmpresaDto( imagenEmpresa ) );
+        }
+
+        return list;
+    }
+
+    protected EmpresaDto empresaToEmpresaDto(Empresa empresa) {
+        if ( empresa == null ) {
+            return null;
+        }
+
+        EmpresaDto empresaDto = new EmpresaDto();
+
+        empresaDto.setId( empresa.getId() );
+        if ( empresa.isEliminado() != null ) {
+            empresaDto.setEliminado( empresa.isEliminado() );
+        }
+        empresaDto.setNombre( empresa.getNombre() );
+        empresaDto.setRazonSocial( empresa.getRazonSocial() );
+        empresaDto.setCuil( empresa.getCuil() );
+        empresaDto.setImagenes( imagenEmpresaSetToImagenEmpresaDtoList( empresa.getImagenes() ) );
+
+        return empresaDto;
+    }
+
+    protected ImagenSucursalDto imagenSucursalToImagenSucursalDto(ImagenSucursal imagenSucursal) {
+        if ( imagenSucursal == null ) {
+            return null;
+        }
+
+        ImagenSucursalDto imagenSucursalDto = new ImagenSucursalDto();
+
+        imagenSucursalDto.setName( imagenSucursal.getName() );
+        imagenSucursalDto.setUrl( imagenSucursal.getUrl() );
+
+        return imagenSucursalDto;
+    }
+
+    protected List<ImagenSucursalDto> imagenSucursalSetToImagenSucursalDtoList(Set<ImagenSucursal> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        List<ImagenSucursalDto> list = new ArrayList<ImagenSucursalDto>( set.size() );
+        for ( ImagenSucursal imagenSucursal : set ) {
+            list.add( imagenSucursalToImagenSucursalDto( imagenSucursal ) );
+        }
+
+        return list;
+    }
+
+    protected SucursalDto sucursalToSucursalDto(Sucursal sucursal) {
+        if ( sucursal == null ) {
+            return null;
+        }
+
+        SucursalDto sucursalDto = new SucursalDto();
+
+        sucursalDto.setId( sucursal.getId() );
+        if ( sucursal.isEliminado() != null ) {
+            sucursalDto.setEliminado( sucursal.isEliminado() );
+        }
+        sucursalDto.setNombre( sucursal.getNombre() );
+        sucursalDto.setHorarioApertura( sucursal.getHorarioApertura() );
+        sucursalDto.setHorarioCierre( sucursal.getHorarioCierre() );
+        sucursalDto.setEsCasaMatriz( sucursal.getEsCasaMatriz() );
+        sucursalDto.setDomicilio( domicilioToDomicilioDto( sucursal.getDomicilio() ) );
+        sucursalDto.setEmpresa( empresaToEmpresaDto( sucursal.getEmpresa() ) );
+        sucursalDto.setImagenes( imagenSucursalSetToImagenSucursalDtoList( sucursal.getImagenes() ) );
+
+        return sucursalDto;
+    }
+
+    protected EmpleadoDto empleadoToEmpleadoDto(Empleado empleado) {
+        if ( empleado == null ) {
+            return null;
+        }
+
+        EmpleadoDto empleadoDto = new EmpleadoDto();
+
+        empleadoDto.setId( empleado.getId() );
+        if ( empleado.isEliminado() != null ) {
+            empleadoDto.setEliminado( empleado.isEliminado() );
+        }
+        empleadoDto.setNombre( empleado.getNombre() );
+        empleadoDto.setApellido( empleado.getApellido() );
+        empleadoDto.setTelefono( empleado.getTelefono() );
+        empleadoDto.setEmail( empleado.getEmail() );
+        empleadoDto.setDomicilios( domicilioSetToDomicilioDtoSet( empleado.getDomicilios() ) );
+        empleadoDto.setTipoEmpleado( empleado.getTipoEmpleado() );
+        empleadoDto.setPedidos( pedidoSetToPedidoDtoSet( empleado.getPedidos() ) );
+        empleadoDto.setSucursal( sucursalToSucursalDto( empleado.getSucursal() ) );
+
+        return empleadoDto;
+    }
+
+    protected FacturaDto facturaToFacturaDto(Factura factura) {
+        if ( factura == null ) {
+            return null;
+        }
+
+        FacturaDto facturaDto = new FacturaDto();
+
+        facturaDto.setId( factura.getId() );
+        if ( factura.isEliminado() != null ) {
+            facturaDto.setEliminado( factura.isEliminado() );
+        }
+        facturaDto.setFechaFcturacion( factura.getFechaFcturacion() );
+        facturaDto.setMpPaymentId( factura.getMpPaymentId() );
+        facturaDto.setMpMerchantOrderId( factura.getMpMerchantOrderId() );
+        facturaDto.setMpPreferenceId( factura.getMpPreferenceId() );
+        facturaDto.setMpPaymentType( factura.getMpPaymentType() );
+        facturaDto.setFormaPago( factura.getFormaPago() );
+        facturaDto.setTotalVenta( factura.getTotalVenta() );
+
+        return facturaDto;
+    }
+
+    protected Domicilio domicilioCreateDtoToDomicilio(DomicilioCreateDto domicilioCreateDto) {
+        if ( domicilioCreateDto == null ) {
+            return null;
+        }
+
+        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
+
+        domicilio.calle( domicilioCreateDto.getCalle() );
+        domicilio.numero( domicilioCreateDto.getNumero() );
+        domicilio.cp( domicilioCreateDto.getCp() );
+        domicilio.piso( domicilioCreateDto.getPiso() );
+        domicilio.nroDpto( domicilioCreateDto.getNroDpto() );
+
+        return domicilio.build();
+    }
+
+    protected Pais paisDtoToPais(PaisDto paisDto) {
+        if ( paisDto == null ) {
+            return null;
+        }
+
+        Pais.PaisBuilder<?, ?> pais = Pais.builder();
+
+        pais.id( paisDto.getId() );
+        pais.eliminado( paisDto.isEliminado() );
+        pais.nombre( paisDto.getNombre() );
+
+        return pais.build();
+    }
+
+    protected Provincia provinciaDtoToProvincia(ProvinciaDto provinciaDto) {
+        if ( provinciaDto == null ) {
+            return null;
+        }
+
+        Provincia.ProvinciaBuilder<?, ?> provincia = Provincia.builder();
+
+        provincia.id( provinciaDto.getId() );
+        provincia.eliminado( provinciaDto.isEliminado() );
+        provincia.nombre( provinciaDto.getNombre() );
+        provincia.pais( paisDtoToPais( provinciaDto.getPais() ) );
+
+        return provincia.build();
+    }
+
+    protected Localidad localidadDtoToLocalidad(LocalidadDto localidadDto) {
+        if ( localidadDto == null ) {
+            return null;
+        }
+
+        Localidad.LocalidadBuilder<?, ?> localidad = Localidad.builder();
+
+        localidad.id( localidadDto.getId() );
+        localidad.eliminado( localidadDto.isEliminado() );
+        localidad.nombre( localidadDto.getNombre() );
+        localidad.provincia( provinciaDtoToProvincia( localidadDto.getProvincia() ) );
+
+        return localidad.build();
+    }
+
+    protected Domicilio domicilioDtoToDomicilio(DomicilioDto domicilioDto) {
+        if ( domicilioDto == null ) {
+            return null;
+        }
+
+        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
+
+        domicilio.id( domicilioDto.getId() );
+        domicilio.eliminado( domicilioDto.isEliminado() );
+        domicilio.calle( domicilioDto.getCalle() );
+        domicilio.numero( domicilioDto.getNumero() );
+        domicilio.cp( domicilioDto.getCp() );
+        domicilio.piso( domicilioDto.getPiso() );
+        domicilio.nroDpto( domicilioDto.getNroDpto() );
+        domicilio.localidad( localidadDtoToLocalidad( domicilioDto.getLocalidad() ) );
+
+        return domicilio.build();
+    }
+
+    protected ImagenEmpresa imagenEmpresaDtoToImagenEmpresa(ImagenEmpresaDto imagenEmpresaDto) {
+        if ( imagenEmpresaDto == null ) {
+            return null;
+        }
+
+        ImagenEmpresa.ImagenEmpresaBuilder<?, ?> imagenEmpresa = ImagenEmpresa.builder();
+
+        imagenEmpresa.name( imagenEmpresaDto.getName() );
+        imagenEmpresa.url( imagenEmpresaDto.getUrl() );
+
+        return imagenEmpresa.build();
+    }
+
+    protected Set<ImagenEmpresa> imagenEmpresaDtoListToImagenEmpresaSet(List<ImagenEmpresaDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        Set<ImagenEmpresa> set = new LinkedHashSet<ImagenEmpresa>( Math.max( (int) ( list.size() / .75f ) + 1, 16 ) );
+        for ( ImagenEmpresaDto imagenEmpresaDto : list ) {
+            set.add( imagenEmpresaDtoToImagenEmpresa( imagenEmpresaDto ) );
+        }
+
+        return set;
+    }
+
+    protected Empresa empresaDtoToEmpresa(EmpresaDto empresaDto) {
+        if ( empresaDto == null ) {
+            return null;
+        }
+
+        Empresa.EmpresaBuilder<?, ?> empresa = Empresa.builder();
+
+        empresa.id( empresaDto.getId() );
+        empresa.eliminado( empresaDto.isEliminado() );
+        empresa.nombre( empresaDto.getNombre() );
+        empresa.razonSocial( empresaDto.getRazonSocial() );
+        empresa.cuil( empresaDto.getCuil() );
+        empresa.imagenes( imagenEmpresaDtoListToImagenEmpresaSet( empresaDto.getImagenes() ) );
+
+        return empresa.build();
+    }
+
+    protected ImagenSucursal imagenSucursalDtoToImagenSucursal(ImagenSucursalDto imagenSucursalDto) {
+        if ( imagenSucursalDto == null ) {
+            return null;
+        }
+
+        ImagenSucursal.ImagenSucursalBuilder<?, ?> imagenSucursal = ImagenSucursal.builder();
+
+        imagenSucursal.name( imagenSucursalDto.getName() );
+        imagenSucursal.url( imagenSucursalDto.getUrl() );
+
+        return imagenSucursal.build();
+    }
+
+    protected Set<ImagenSucursal> imagenSucursalDtoListToImagenSucursalSet(List<ImagenSucursalDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        Set<ImagenSucursal> set = new LinkedHashSet<ImagenSucursal>( Math.max( (int) ( list.size() / .75f ) + 1, 16 ) );
+        for ( ImagenSucursalDto imagenSucursalDto : list ) {
+            set.add( imagenSucursalDtoToImagenSucursal( imagenSucursalDto ) );
+        }
+
+        return set;
+    }
+
+    protected Sucursal sucursalDtoToSucursal(SucursalDto sucursalDto) {
+        if ( sucursalDto == null ) {
+            return null;
+        }
+
+        Sucursal.SucursalBuilder<?, ?> sucursal = Sucursal.builder();
+
+        sucursal.id( sucursalDto.getId() );
+        sucursal.eliminado( sucursalDto.isEliminado() );
+        sucursal.nombre( sucursalDto.getNombre() );
+        sucursal.horarioApertura( sucursalDto.getHorarioApertura() );
+        sucursal.horarioCierre( sucursalDto.getHorarioCierre() );
+        sucursal.esCasaMatriz( sucursalDto.getEsCasaMatriz() );
+        sucursal.domicilio( domicilioDtoToDomicilio( sucursalDto.getDomicilio() ) );
+        sucursal.empresa( empresaDtoToEmpresa( sucursalDto.getEmpresa() ) );
+        sucursal.imagenes( imagenSucursalDtoListToImagenSucursalSet( sucursalDto.getImagenes() ) );
+
+        return sucursal.build();
+    }
+
+    protected Factura facturaDtoToFactura(FacturaDto facturaDto) {
+        if ( facturaDto == null ) {
+            return null;
+        }
+
+        Factura.FacturaBuilder<?, ?> factura = Factura.builder();
+
+        factura.id( facturaDto.getId() );
+        factura.eliminado( facturaDto.isEliminado() );
+        factura.fechaFcturacion( facturaDto.getFechaFcturacion() );
+        factura.mpPaymentId( facturaDto.getMpPaymentId() );
+        factura.mpMerchantOrderId( facturaDto.getMpMerchantOrderId() );
+        factura.mpPreferenceId( facturaDto.getMpPreferenceId() );
+        factura.mpPaymentType( facturaDto.getMpPaymentType() );
+        factura.formaPago( facturaDto.getFormaPago() );
+        factura.totalVenta( facturaDto.getTotalVenta() );
+
+        return factura.build();
+    }
+
     protected UsuarioCliente usuarioClienteDtoToUsuarioCliente(UsuarioClienteDto usuarioClienteDto) {
         if ( usuarioClienteDto == null ) {
             return null;
@@ -918,39 +758,95 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         return usuarioCliente.build();
     }
-    protected UsuarioClienteDto usuarioClienteToUsuarioClienteDto(UsuarioCliente usuarioCliente) {
-        if ( usuarioCliente == null ) {
+
+    protected ImagenCliente imagenClienteDtoToImagenCliente(ImagenClienteDto imagenClienteDto) {
+        if ( imagenClienteDto == null ) {
             return null;
         }
 
-        Long id = null;
-        String userName = null;
-        String auth0Id = null;
+        ImagenCliente.ImagenClienteBuilder<?, ?> imagenCliente = ImagenCliente.builder();
 
-        id = usuarioCliente.getId();
-        userName = usuarioCliente.getUserName();
-        auth0Id = usuarioCliente.getAuth0Id();
+        imagenCliente.name( imagenClienteDto.getName() );
+        imagenCliente.url( imagenClienteDto.getUrl() );
 
-        UsuarioClienteDto usuarioClienteDto = new UsuarioClienteDto( id, userName, auth0Id );
-
-        if ( usuarioCliente.isEliminado() != null ) {
-            usuarioClienteDto.setEliminado( usuarioCliente.isEliminado() );
-        }
-
-        return usuarioClienteDto;
+        return imagenCliente.build();
     }
-    protected ImagenClienteDto imagenClienteToImagenClienteDto(ImagenCliente imagenCliente) {
-        if ( imagenCliente == null ) {
+
+    protected Set<Domicilio> domicilioDtoSetToDomicilioSet(Set<DomicilioDto> set) {
+        if ( set == null ) {
             return null;
         }
 
-        ImagenClienteDto imagenClienteDto = new ImagenClienteDto();
+        Set<Domicilio> set1 = new LinkedHashSet<Domicilio>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( DomicilioDto domicilioDto : set ) {
+            set1.add( domicilioDtoToDomicilio( domicilioDto ) );
+        }
 
-        imagenClienteDto.setName( imagenCliente.getName() );
-        imagenClienteDto.setUrl( imagenCliente.getUrl() );
-
-        return imagenClienteDto;
+        return set1;
     }
+
+    protected Set<Pedido> pedidoDtoSetToPedidoSet(Set<PedidoDto> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<Pedido> set1 = new LinkedHashSet<Pedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( PedidoDto pedidoDto : set ) {
+            set1.add( toEntity( pedidoDto ) );
+        }
+
+        return set1;
+    }
+
+    protected Cliente clienteDtoToCliente(ClienteDto clienteDto) {
+        if ( clienteDto == null ) {
+            return null;
+        }
+
+        Cliente.ClienteBuilder<?, ?> cliente = Cliente.builder();
+
+        cliente.id( clienteDto.getId() );
+        cliente.eliminado( clienteDto.isEliminado() );
+        cliente.nombre( clienteDto.getNombre() );
+        cliente.apellido( clienteDto.getApellido() );
+        cliente.telefono( clienteDto.getTelefono() );
+        cliente.email( clienteDto.getEmail() );
+        cliente.usuario( usuarioClienteDtoToUsuarioCliente( clienteDto.getUsuario() ) );
+        cliente.imagenCliente( imagenClienteDtoToImagenCliente( clienteDto.getImagenCliente() ) );
+        cliente.domicilios( domicilioDtoSetToDomicilioSet( clienteDto.getDomicilios() ) );
+        cliente.pedidos( pedidoDtoSetToPedidoSet( clienteDto.getPedidos() ) );
+
+        return cliente.build();
+    }
+
+    protected DetallePedido detallePedidoDtoToDetallePedido(DetallePedidoDto detallePedidoDto) {
+        if ( detallePedidoDto == null ) {
+            return null;
+        }
+
+        DetallePedido.DetallePedidoBuilder<?, ?> detallePedido = DetallePedido.builder();
+
+        detallePedido.id( detallePedidoDto.getId() );
+        detallePedido.eliminado( detallePedidoDto.isEliminado() );
+        detallePedido.cantidad( detallePedidoDto.getCantidad() );
+        detallePedido.subTotal( detallePedidoDto.getSubTotal() );
+
+        return detallePedido.build();
+    }
+
+    protected Set<DetallePedido> detallePedidoDtoSetToDetallePedidoSet(Set<DetallePedidoDto> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<DetallePedido> set1 = new LinkedHashSet<DetallePedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( DetallePedidoDto detallePedidoDto : set ) {
+            set1.add( detallePedidoDtoToDetallePedido( detallePedidoDto ) );
+        }
+
+        return set1;
+    }
+
     protected Empleado empleadoDtoToEmpleado(EmpleadoDto empleadoDto) {
         if ( empleadoDto == null ) {
             return null;
@@ -971,30 +867,209 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         return empleado.build();
     }
-    protected Set<Domicilio> domicilioDtoSetToDomicilioSet(Set<DomicilioDto> set) {
-        if ( set == null ) {
+
+    protected void domicilioCreateDtoToDomicilio1(DomicilioCreateDto domicilioCreateDto, Domicilio mappingTarget) {
+        if ( domicilioCreateDto == null ) {
+            return;
+        }
+
+        mappingTarget.setCalle( domicilioCreateDto.getCalle() );
+        mappingTarget.setNumero( domicilioCreateDto.getNumero() );
+        mappingTarget.setCp( domicilioCreateDto.getCp() );
+        mappingTarget.setPiso( domicilioCreateDto.getPiso() );
+        mappingTarget.setNroDpto( domicilioCreateDto.getNroDpto() );
+    }
+
+    protected void facturaCreateDtoToFactura(FacturaCreateDto facturaCreateDto, Factura mappingTarget) {
+        if ( facturaCreateDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( facturaCreateDto.getId() );
+        mappingTarget.setEliminado( facturaCreateDto.isEliminado() );
+        mappingTarget.setFechaFcturacion( facturaCreateDto.getFechaFcturacion() );
+        mappingTarget.setMpPaymentId( facturaCreateDto.getMpPaymentId() );
+        mappingTarget.setMpMerchantOrderId( facturaCreateDto.getMpMerchantOrderId() );
+        mappingTarget.setMpPreferenceId( facturaCreateDto.getMpPreferenceId() );
+        mappingTarget.setMpPaymentType( facturaCreateDto.getMpPaymentType() );
+        mappingTarget.setFormaPago( facturaCreateDto.getFormaPago() );
+        mappingTarget.setTotalVenta( facturaCreateDto.getTotalVenta() );
+    }
+
+    protected DetallePedido detallePedidoCreateDtoToDetallePedido(DetallePedidoCreateDto detallePedidoCreateDto) {
+        if ( detallePedidoCreateDto == null ) {
             return null;
         }
 
-        Set<Domicilio> set1 = new LinkedHashSet<Domicilio>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( DomicilioDto domicilioDto : set ) {
-            set1.add( domicilioDtoToDomicilio( domicilioDto ) );
-        }
+        DetallePedido.DetallePedidoBuilder<?, ?> detallePedido = DetallePedido.builder();
 
-        return set1;
+        detallePedido.id( detallePedidoCreateDto.getId() );
+        detallePedido.eliminado( detallePedidoCreateDto.isEliminado() );
+        detallePedido.cantidad( detallePedidoCreateDto.getCantidad() );
+        detallePedido.subTotal( detallePedidoCreateDto.getSubTotal() );
+
+        return detallePedido.build();
     }
-    protected Set<Pedido> pedidoDtoSetToPedidoSet(Set<PedidoDto> set) {
-        if ( set == null ) {
+
+    protected Set<DetallePedido> detallePedidoCreateDtoListToDetallePedidoSet(List<DetallePedidoCreateDto> list) {
+        if ( list == null ) {
             return null;
         }
 
-        Set<Pedido> set1 = new LinkedHashSet<Pedido>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( PedidoDto pedidoDto : set ) {
-            set1.add( toEntity( pedidoDto ) );
+        Set<DetallePedido> set = new LinkedHashSet<DetallePedido>( Math.max( (int) ( list.size() / .75f ) + 1, 16 ) );
+        for ( DetallePedidoCreateDto detallePedidoCreateDto : list ) {
+            set.add( detallePedidoCreateDtoToDetallePedido( detallePedidoCreateDto ) );
         }
 
-        return set1;
+        return set;
     }
+
+    protected void paisDtoToPais1(PaisDto paisDto, Pais mappingTarget) {
+        if ( paisDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( paisDto.getId() );
+        mappingTarget.setEliminado( paisDto.isEliminado() );
+        mappingTarget.setNombre( paisDto.getNombre() );
+    }
+
+    protected void provinciaDtoToProvincia1(ProvinciaDto provinciaDto, Provincia mappingTarget) {
+        if ( provinciaDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( provinciaDto.getId() );
+        mappingTarget.setEliminado( provinciaDto.isEliminado() );
+        mappingTarget.setNombre( provinciaDto.getNombre() );
+        if ( provinciaDto.getPais() != null ) {
+            if ( mappingTarget.getPais() == null ) {
+                mappingTarget.setPais( Pais.builder().build() );
+            }
+            paisDtoToPais1( provinciaDto.getPais(), mappingTarget.getPais() );
+        }
+        else {
+            mappingTarget.setPais( null );
+        }
+    }
+
+    protected void localidadDtoToLocalidad1(LocalidadDto localidadDto, Localidad mappingTarget) {
+        if ( localidadDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( localidadDto.getId() );
+        mappingTarget.setEliminado( localidadDto.isEliminado() );
+        mappingTarget.setNombre( localidadDto.getNombre() );
+        if ( localidadDto.getProvincia() != null ) {
+            if ( mappingTarget.getProvincia() == null ) {
+                mappingTarget.setProvincia( Provincia.builder().build() );
+            }
+            provinciaDtoToProvincia1( localidadDto.getProvincia(), mappingTarget.getProvincia() );
+        }
+        else {
+            mappingTarget.setProvincia( null );
+        }
+    }
+
+    protected void domicilioDtoToDomicilio1(DomicilioDto domicilioDto, Domicilio mappingTarget) {
+        if ( domicilioDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( domicilioDto.getId() );
+        mappingTarget.setEliminado( domicilioDto.isEliminado() );
+        mappingTarget.setCalle( domicilioDto.getCalle() );
+        mappingTarget.setNumero( domicilioDto.getNumero() );
+        mappingTarget.setCp( domicilioDto.getCp() );
+        mappingTarget.setPiso( domicilioDto.getPiso() );
+        mappingTarget.setNroDpto( domicilioDto.getNroDpto() );
+        if ( domicilioDto.getLocalidad() != null ) {
+            if ( mappingTarget.getLocalidad() == null ) {
+                mappingTarget.setLocalidad( Localidad.builder().build() );
+            }
+            localidadDtoToLocalidad1( domicilioDto.getLocalidad(), mappingTarget.getLocalidad() );
+        }
+        else {
+            mappingTarget.setLocalidad( null );
+        }
+    }
+
+    protected void empresaDtoToEmpresa1(EmpresaDto empresaDto, Empresa mappingTarget) {
+        if ( empresaDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( empresaDto.getId() );
+        mappingTarget.setEliminado( empresaDto.isEliminado() );
+        mappingTarget.setNombre( empresaDto.getNombre() );
+        mappingTarget.setRazonSocial( empresaDto.getRazonSocial() );
+        mappingTarget.setCuil( empresaDto.getCuil() );
+        if ( mappingTarget.getImagenes() != null ) {
+            Set<ImagenEmpresa> set = imagenEmpresaDtoListToImagenEmpresaSet( empresaDto.getImagenes() );
+            if ( set != null ) {
+                mappingTarget.getImagenes().clear();
+                mappingTarget.getImagenes().addAll( set );
+            }
+            else {
+                mappingTarget.setImagenes( null );
+            }
+        }
+        else {
+            Set<ImagenEmpresa> set = imagenEmpresaDtoListToImagenEmpresaSet( empresaDto.getImagenes() );
+            if ( set != null ) {
+                mappingTarget.setImagenes( set );
+            }
+        }
+    }
+
+    protected void sucursalDtoToSucursal1(SucursalDto sucursalDto, Sucursal mappingTarget) {
+        if ( sucursalDto == null ) {
+            return;
+        }
+
+        mappingTarget.setId( sucursalDto.getId() );
+        mappingTarget.setEliminado( sucursalDto.isEliminado() );
+        mappingTarget.setNombre( sucursalDto.getNombre() );
+        mappingTarget.setHorarioApertura( sucursalDto.getHorarioApertura() );
+        mappingTarget.setHorarioCierre( sucursalDto.getHorarioCierre() );
+        mappingTarget.setEsCasaMatriz( sucursalDto.getEsCasaMatriz() );
+        if ( sucursalDto.getDomicilio() != null ) {
+            if ( mappingTarget.getDomicilio() == null ) {
+                mappingTarget.setDomicilio( Domicilio.builder().build() );
+            }
+            domicilioDtoToDomicilio1( sucursalDto.getDomicilio(), mappingTarget.getDomicilio() );
+        }
+        else {
+            mappingTarget.setDomicilio( null );
+        }
+        if ( sucursalDto.getEmpresa() != null ) {
+            if ( mappingTarget.getEmpresa() == null ) {
+                mappingTarget.setEmpresa( Empresa.builder().build() );
+            }
+            empresaDtoToEmpresa1( sucursalDto.getEmpresa(), mappingTarget.getEmpresa() );
+        }
+        else {
+            mappingTarget.setEmpresa( null );
+        }
+        if ( mappingTarget.getImagenes() != null ) {
+            Set<ImagenSucursal> set = imagenSucursalDtoListToImagenSucursalSet( sucursalDto.getImagenes() );
+            if ( set != null ) {
+                mappingTarget.getImagenes().clear();
+                mappingTarget.getImagenes().addAll( set );
+            }
+            else {
+                mappingTarget.setImagenes( null );
+            }
+        }
+        else {
+            Set<ImagenSucursal> set = imagenSucursalDtoListToImagenSucursalSet( sucursalDto.getImagenes() );
+            if ( set != null ) {
+                mappingTarget.setImagenes( set );
+            }
+        }
+    }
+
     protected void empleadoDtoToEmpleado1(EmpleadoDto empleadoDto, Empleado mappingTarget) {
         if ( empleadoDto == null ) {
             return;
@@ -1049,82 +1124,26 @@ public class PedidoMapperImpl implements PedidoMapper {
             mappingTarget.setSucursal( null );
         }
     }
-    protected EmpleadoDto empleadoToEmpleadoDto(Empleado empleado) {
-        if ( empleado == null ) {
+
+    protected Factura facturaCreateDtoToFactura1(FacturaCreateDto facturaCreateDto) {
+        if ( facturaCreateDto == null ) {
             return null;
         }
 
-        EmpleadoDto empleadoDto = new EmpleadoDto();
+        Factura.FacturaBuilder<?, ?> factura = Factura.builder();
 
-        empleadoDto.setId( empleado.getId() );
-        if ( empleado.isEliminado() != null ) {
-            empleadoDto.setEliminado( empleado.isEliminado() );
-        }
-        empleadoDto.setNombre( empleado.getNombre() );
-        empleadoDto.setApellido( empleado.getApellido() );
-        empleadoDto.setTelefono( empleado.getTelefono() );
-        empleadoDto.setEmail( empleado.getEmail() );
-        empleadoDto.setDomicilios( domicilioSetToDomicilioDtoSet( empleado.getDomicilios() ) );
-        empleadoDto.setTipoEmpleado( empleado.getTipoEmpleado() );
-        empleadoDto.setPedidos( pedidoSetToPedidoDtoSet( empleado.getPedidos() ) );
-        empleadoDto.setSucursal( sucursalToSucursalDto( empleado.getSucursal() ) );
+        factura.id( facturaCreateDto.getId() );
+        factura.eliminado( facturaCreateDto.isEliminado() );
+        factura.fechaFcturacion( facturaCreateDto.getFechaFcturacion() );
+        factura.mpPaymentId( facturaCreateDto.getMpPaymentId() );
+        factura.mpMerchantOrderId( facturaCreateDto.getMpMerchantOrderId() );
+        factura.mpPreferenceId( facturaCreateDto.getMpPreferenceId() );
+        factura.mpPaymentType( facturaCreateDto.getMpPaymentType() );
+        factura.formaPago( facturaCreateDto.getFormaPago() );
+        factura.totalVenta( facturaCreateDto.getTotalVenta() );
 
-        return empleadoDto;
-    }
-    protected Set<DomicilioDto> domicilioSetToDomicilioDtoSet(Set<Domicilio> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<DomicilioDto> set1 = new LinkedHashSet<DomicilioDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Domicilio domicilio : set ) {
-            set1.add( domicilioToDomicilioDto( domicilio ) );
-        }
-
-        return set1;
-    }
-    protected Set<PedidoDto> pedidoSetToPedidoDtoSet(Set<Pedido> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<PedidoDto> set1 = new LinkedHashSet<PedidoDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Pedido pedido : set ) {
-            set1.add( toDTO( pedido ) );
-        }
-
-        return set1;
-    }
-    protected Cliente clienteDtoToCliente(ClienteDto clienteDto) {
-        if ( clienteDto == null ) {
-            return null;
-        }
-
-        Cliente.ClienteBuilder<?, ?> cliente = Cliente.builder();
-
-        cliente.id( clienteDto.getId() );
-        cliente.eliminado( clienteDto.isEliminado() );
-        cliente.nombre( clienteDto.getNombre() );
-        cliente.apellido( clienteDto.getApellido() );
-        cliente.telefono( clienteDto.getTelefono() );
-        cliente.email( clienteDto.getEmail() );
-        cliente.usuario( usuarioClienteDtoToUsuarioCliente( clienteDto.getUsuario() ) );
-        cliente.imagenCliente( imagenClienteDtoToImagenCliente( clienteDto.getImagenCliente() ) );
-        cliente.domicilios( domicilioDtoSetToDomicilioSet( clienteDto.getDomicilios() ) );
-        cliente.pedidos( pedidoDtoSetToPedidoSet( clienteDto.getPedidos() ) );
-
-        return cliente.build();
-    }
-    protected ImagenCliente imagenClienteDtoToImagenCliente(ImagenClienteDto imagenClienteDto) {
-        if ( imagenClienteDto == null ) {
-            return null;
-        }
-
-        ImagenCliente.ImagenClienteBuilder<?, ?> imagenCliente = ImagenCliente.builder();
-
-        imagenCliente.name( imagenClienteDto.getName() );
-        imagenCliente.url( imagenClienteDto.getUrl() );
-
-        return imagenCliente.build();
+        return factura.build();
     }
 }
+
+
