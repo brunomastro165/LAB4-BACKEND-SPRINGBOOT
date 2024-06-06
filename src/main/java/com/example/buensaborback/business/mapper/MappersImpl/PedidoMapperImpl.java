@@ -2,6 +2,7 @@ package com.example.buensaborback.business.mapper.MappersImpl;
 
 import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
+import com.example.buensaborback.business.mapper.ClienteMapper;
 import com.example.buensaborback.business.mapper.PedidoMapper;
 import com.example.buensaborback.business.services.ClienteService;
 import com.example.buensaborback.business.services.SucursalService;
@@ -71,7 +72,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedidoDto.setTipoEnvio( source.getTipoEnvio() );
         pedidoDto.setFormaPago( source.getFormaPago() );
         pedidoDto.setFechaPedido( source.getFechaPedido() );
-        pedidoDto.setDomicilio( domicilioToDomicilioCreateDto( source.getDomicilio() ) );
+        pedidoDto.setDomicilio( domicilioToDomicilioDto( source.getDomicilio() ) );
         pedidoDto.setCliente( clienteToClienteDto( source.getCliente() ) );
         pedidoDto.setSucursal( sucursalToSucursalDto( source.getSucursal() ) );
         pedidoDto.setEmpleado( empleadoToEmpleadoDto( source.getEmpleado() ) );
@@ -97,7 +98,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedido.tipoEnvio( source.getTipoEnvio() );
         pedido.formaPago( source.getFormaPago() );
         pedido.fechaPedido( source.getFechaPedido() );
-        pedido.domicilio( domicilioCreateDtoToDomicilio( source.getDomicilio() ) );
+        pedido.domicilio( domicilioDtoToDomicilio( source.getDomicilio() ) );
         pedido.sucursal( sucursalDtoToSucursal( source.getSucursal() ) );
         pedido.factura( facturaDtoToFactura( source.getFactura() ) );
         pedido.cliente( clienteDtoToCliente( source.getCliente() ) );
@@ -126,7 +127,7 @@ public class PedidoMapperImpl implements PedidoMapper {
             if ( entity.getDomicilio() == null ) {
                 entity.setDomicilio( Domicilio.builder().build() );
             }
-            domicilioCreateDtoToDomicilio1( source.getDomicilio(), entity.getDomicilio() );
+            domicilioCreateDtoToDomicilio( source.getDomicilio(), entity.getDomicilio() );
         }
         else {
             entity.setDomicilio( null );
@@ -202,7 +203,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedido.tipoEnvio( source.getTipoEnvio() );
         pedido.formaPago( source.getFormaPago() );
         pedido.fechaPedido( source.getFechaPedido() );
-        pedido.domicilio( domicilioCreateDtoToDomicilio( source.getDomicilio() ) );
+        pedido.domicilio( domicilioCreateDtoToDomicilio1( source.getDomicilio() ) );
         pedido.factura( facturaCreateDtoToFactura1( source.getFactura() ) );
         pedido.detallesPedido( detallePedidoCreateDtoListToDetallePedidoSet( source.getDetallesPedido() ) );
         pedido.empleado( empleadoDtoToEmpleado( source.getEmpleado() ) );
@@ -211,59 +212,6 @@ public class PedidoMapperImpl implements PedidoMapper {
     }
 
 
-
-
-
-    protected DomicilioCreateDto domicilioToDomicilioCreateDto(Domicilio domicilio) {
-        if ( domicilio == null ) {
-            return null;
-        }
-
-        DomicilioCreateDto domicilioCreateDto = new DomicilioCreateDto();
-
-        domicilioCreateDto.setCalle( domicilio.getCalle() );
-        domicilioCreateDto.setNumero( domicilio.getNumero() );
-        domicilioCreateDto.setCp( domicilio.getCp() );
-        domicilioCreateDto.setPiso( domicilio.getPiso() );
-        domicilioCreateDto.setNroDpto( domicilio.getNroDpto() );
-
-        return domicilioCreateDto;
-    }
-
-    protected UsuarioClienteDto usuarioClienteToUsuarioClienteDto(UsuarioCliente usuarioCliente) {
-        if ( usuarioCliente == null ) {
-            return null;
-        }
-
-        Long id = null;
-        String userName = null;
-        String auth0Id = null;
-
-        id = usuarioCliente.getId();
-        userName = usuarioCliente.getUserName();
-        auth0Id = usuarioCliente.getAuth0Id();
-
-        UsuarioClienteDto usuarioClienteDto = new UsuarioClienteDto( id, userName, auth0Id );
-
-        if ( usuarioCliente.isEliminado() != null ) {
-            usuarioClienteDto.setEliminado( usuarioCliente.isEliminado() );
-        }
-
-        return usuarioClienteDto;
-    }
-
-    protected ImagenClienteDto imagenClienteToImagenClienteDto(ImagenCliente imagenCliente) {
-        if ( imagenCliente == null ) {
-            return null;
-        }
-
-        ImagenClienteDto imagenClienteDto = new ImagenClienteDto();
-
-        imagenClienteDto.setName( imagenCliente.getName() );
-        imagenClienteDto.setUrl( imagenCliente.getUrl() );
-
-        return imagenClienteDto;
-    }
 
     protected PaisDto paisToPaisDto(Pais pais) {
         if ( pais == null ) {
@@ -334,6 +282,41 @@ public class PedidoMapperImpl implements PedidoMapper {
         domicilioDto.setLocalidad( localidadToLocalidadDto( domicilio.getLocalidad() ) );
 
         return domicilioDto;
+    }
+
+    protected UsuarioClienteDto usuarioClienteToUsuarioClienteDto(UsuarioCliente usuarioCliente) {
+        if ( usuarioCliente == null ) {
+            return null;
+        }
+
+        Long id = null;
+        String userName = null;
+        String auth0Id = null;
+
+        id = usuarioCliente.getId();
+        userName = usuarioCliente.getUserName();
+        auth0Id = usuarioCliente.getAuth0Id();
+
+        UsuarioClienteDto usuarioClienteDto = new UsuarioClienteDto( id, userName, auth0Id );
+
+        if ( usuarioCliente.isEliminado() != null ) {
+            usuarioClienteDto.setEliminado( usuarioCliente.isEliminado() );
+        }
+
+        return usuarioClienteDto;
+    }
+
+    protected ImagenClienteDto imagenClienteToImagenClienteDto(ImagenCliente imagenCliente) {
+        if ( imagenCliente == null ) {
+            return null;
+        }
+
+        ImagenClienteDto imagenClienteDto = new ImagenClienteDto();
+
+        imagenClienteDto.setName( imagenCliente.getName() );
+        imagenClienteDto.setUrl( imagenCliente.getUrl() );
+
+        return imagenClienteDto;
     }
 
     protected Set<DomicilioDto> domicilioSetToDomicilioDtoSet(Set<Domicilio> set) {
@@ -557,22 +540,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         facturaDto.setTotalVenta( factura.getTotalVenta() );
 
         return facturaDto;
-    }
-
-    protected Domicilio domicilioCreateDtoToDomicilio(DomicilioCreateDto domicilioCreateDto) {
-        if ( domicilioCreateDto == null ) {
-            return null;
-        }
-
-        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
-
-        domicilio.calle( domicilioCreateDto.getCalle() );
-        domicilio.numero( domicilioCreateDto.getNumero() );
-        domicilio.cp( domicilioCreateDto.getCp() );
-        domicilio.piso( domicilioCreateDto.getPiso() );
-        domicilio.nroDpto( domicilioCreateDto.getNroDpto() );
-
-        return domicilio.build();
     }
 
     protected Pais paisDtoToPais(PaisDto paisDto) {
@@ -903,7 +870,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         return empleado.build();
     }
 
-    protected void domicilioCreateDtoToDomicilio1(DomicilioCreateDto domicilioCreateDto, Domicilio mappingTarget) {
+    protected void domicilioCreateDtoToDomicilio(DomicilioCreateDto domicilioCreateDto, Domicilio mappingTarget) {
         if ( domicilioCreateDto == null ) {
             return;
         }
@@ -1160,6 +1127,22 @@ public class PedidoMapperImpl implements PedidoMapper {
         }
     }
 
+    protected Domicilio domicilioCreateDtoToDomicilio1(DomicilioCreateDto domicilioCreateDto) {
+        if ( domicilioCreateDto == null ) {
+            return null;
+        }
+
+        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
+
+        domicilio.calle( domicilioCreateDto.getCalle() );
+        domicilio.numero( domicilioCreateDto.getNumero() );
+        domicilio.cp( domicilioCreateDto.getCp() );
+        domicilio.piso( domicilioCreateDto.getPiso() );
+        domicilio.nroDpto( domicilioCreateDto.getNroDpto() );
+
+        return domicilio.build();
+    }
+
     protected Factura facturaCreateDtoToFactura1(FacturaCreateDto facturaCreateDto) {
         if ( facturaCreateDto == null ) {
             return null;
@@ -1220,5 +1203,7 @@ public class PedidoMapperImpl implements PedidoMapper {
     }
 
 }
+
+
 
 

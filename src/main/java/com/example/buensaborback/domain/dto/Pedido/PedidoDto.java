@@ -4,6 +4,7 @@ import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.dto.Empleado.EmpleadoDto;
 import com.example.buensaborback.domain.dto.Factura.FacturaDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
@@ -33,7 +34,7 @@ public class PedidoDto extends BaseDto {
     private TipoEnvio tipoEnvio;
     private FormaPago formaPago;
     private LocalDate fechaPedido;
-    private DomicilioCreateDto domicilio;
+    private DomicilioDto domicilio;
 
     private ClienteDto cliente;
     private SucursalDto sucursal;
