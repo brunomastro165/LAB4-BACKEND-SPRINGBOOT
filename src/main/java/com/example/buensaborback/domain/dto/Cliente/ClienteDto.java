@@ -33,8 +33,8 @@ public class ClienteDto extends BaseDto {
     private ImagenClienteDto imagenCliente;
 
 
-    private Set<DomicilioDto> domicilios = new HashSet<>();
+    private Set<DomicilioDto> domicilios;
 
 
-    private Set<PedidoShortDto> pedidos = new HashSet<>();
+    private Set<PedidoShortDto> pedidos;
 }

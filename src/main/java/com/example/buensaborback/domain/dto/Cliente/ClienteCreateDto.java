@@ -26,7 +26,5 @@ public class ClienteCreateDto extends BaseDto {
     private String telefono;
     private String email;
     private UsuarioClienteCreateDto usuario;
-    private Set<DomicilioDto> domicilios = new HashSet<>();
-
-    private Set<PedidoShortDto> pedidos;
+    private Set<DomicilioDto> domicilios;
 }

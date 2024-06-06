@@ -1,9 +1,6 @@
 package com.example.buensaborback.business.mapper.MappersImpl;
 
-import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
-import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
-import com.example.buensaborback.business.mapper.ClienteMapper;
-import com.example.buensaborback.business.mapper.PedidoMapper;
+import com.example.buensaborback.business.mapper.*;
 import com.example.buensaborback.business.services.ClienteService;
 import com.example.buensaborback.business.services.SucursalService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
@@ -48,9 +45,12 @@ public class PedidoMapperImpl implements PedidoMapper {
     @Autowired
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
     @Autowired
+    private DomicilioMapper domicilioMapper;
+    @Autowired
     private SucursalService sucursalService;
     @Autowired
     private ClienteService clienteService;
+
 
     @Override
     public PedidoDto toDTO(Pedido source) {
@@ -72,7 +72,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedidoDto.setTipoEnvio( source.getTipoEnvio() );
         pedidoDto.setFormaPago( source.getFormaPago() );
         pedidoDto.setFechaPedido( source.getFechaPedido() );
-        pedidoDto.setDomicilio( domicilioToDomicilioDto( source.getDomicilio() ) );
+        pedidoDto.setDomicilio( domicilioMapper.toDTO( source.getDomicilio() ) );
         pedidoDto.setCliente( clienteToClienteDto( source.getCliente() ) );
         pedidoDto.setSucursal( sucursalToSucursalDto( source.getSucursal() ) );
         pedidoDto.setEmpleado( empleadoToEmpleadoDto( source.getEmpleado() ) );
@@ -98,7 +98,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedido.tipoEnvio( source.getTipoEnvio() );
         pedido.formaPago( source.getFormaPago() );
         pedido.fechaPedido( source.getFechaPedido() );
-        pedido.domicilio( domicilioDtoToDomicilio( source.getDomicilio() ) );
+        pedido.domicilio( domicilioMapper.toEntity( source.getDomicilio() ) );
         pedido.sucursal( sucursalDtoToSucursal( source.getSucursal() ) );
         pedido.factura( facturaDtoToFactura( source.getFactura() ) );
         pedido.cliente( clienteDtoToCliente( source.getCliente() ) );
@@ -127,7 +127,7 @@ public class PedidoMapperImpl implements PedidoMapper {
             if ( entity.getDomicilio() == null ) {
                 entity.setDomicilio( Domicilio.builder().build() );
             }
-            domicilioCreateDtoToDomicilio( source.getDomicilio(), entity.getDomicilio() );
+            domicilioMapper.toUpdate( entity.getDomicilio(), source.getDomicilio() );
         }
         else {
             entity.setDomicilio( null );
@@ -203,7 +203,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         pedido.tipoEnvio( source.getTipoEnvio() );
         pedido.formaPago( source.getFormaPago() );
         pedido.fechaPedido( source.getFechaPedido() );
-        pedido.domicilio( domicilioCreateDtoToDomicilio1( source.getDomicilio() ) );
+        pedido.domicilio( domicilioMapper.toEntityCreate( source.getDomicilio() ) );
         pedido.factura( facturaCreateDtoToFactura1( source.getFactura() ) );
         pedido.detallesPedido( detallePedidoCreateDtoListToDetallePedidoSet( source.getDetallesPedido() ) );
         pedido.empleado( empleadoDtoToEmpleado( source.getEmpleado() ) );
@@ -212,77 +212,6 @@ public class PedidoMapperImpl implements PedidoMapper {
     }
 
 
-
-    protected PaisDto paisToPaisDto(Pais pais) {
-        if ( pais == null ) {
-            return null;
-        }
-
-        PaisDto paisDto = new PaisDto();
-
-        if ( pais.isEliminado() != null ) {
-            paisDto.setEliminado( pais.isEliminado() );
-        }
-        paisDto.setId( pais.getId() );
-        paisDto.setNombre( pais.getNombre() );
-
-        return paisDto;
-    }
-
-    protected ProvinciaDto provinciaToProvinciaDto(Provincia provincia) {
-        if ( provincia == null ) {
-            return null;
-        }
-
-        ProvinciaDto provinciaDto = new ProvinciaDto();
-
-        provinciaDto.setId( provincia.getId() );
-        if ( provincia.isEliminado() != null ) {
-            provinciaDto.setEliminado( provincia.isEliminado() );
-        }
-        provinciaDto.setNombre( provincia.getNombre() );
-        provinciaDto.setPais( paisToPaisDto( provincia.getPais() ) );
-
-        return provinciaDto;
-    }
-
-    protected LocalidadDto localidadToLocalidadDto(Localidad localidad) {
-        if ( localidad == null ) {
-            return null;
-        }
-
-        LocalidadDto localidadDto = new LocalidadDto();
-
-        localidadDto.setId( localidad.getId() );
-        if ( localidad.isEliminado() != null ) {
-            localidadDto.setEliminado( localidad.isEliminado() );
-        }
-        localidadDto.setNombre( localidad.getNombre() );
-        localidadDto.setProvincia( provinciaToProvinciaDto( localidad.getProvincia() ) );
-
-        return localidadDto;
-    }
-
-    protected DomicilioDto domicilioToDomicilioDto(Domicilio domicilio) {
-        if ( domicilio == null ) {
-            return null;
-        }
-
-        DomicilioDto domicilioDto = new DomicilioDto();
-
-        domicilioDto.setId( domicilio.getId() );
-        if ( domicilio.isEliminado() != null ) {
-            domicilioDto.setEliminado( domicilio.isEliminado() );
-        }
-        domicilioDto.setCalle( domicilio.getCalle() );
-        domicilioDto.setNumero( domicilio.getNumero() );
-        domicilioDto.setCp( domicilio.getCp() );
-        domicilioDto.setPiso( domicilio.getPiso() );
-        domicilioDto.setNroDpto( domicilio.getNroDpto() );
-        domicilioDto.setLocalidad( localidadToLocalidadDto( domicilio.getLocalidad() ) );
-
-        return domicilioDto;
-    }
 
     protected UsuarioClienteDto usuarioClienteToUsuarioClienteDto(UsuarioCliente usuarioCliente) {
         if ( usuarioCliente == null ) {
@@ -326,7 +255,7 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         Set<DomicilioDto> set1 = new LinkedHashSet<DomicilioDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Domicilio domicilio : set ) {
-            set1.add( domicilioToDomicilioDto( domicilio ) );
+            set1.add( domicilioMapper.toDTO( domicilio ) );
         }
 
         return set1;
@@ -477,7 +406,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         sucursalDto.setHorarioApertura( sucursal.getHorarioApertura() );
         sucursalDto.setHorarioCierre( sucursal.getHorarioCierre() );
         sucursalDto.setEsCasaMatriz( sucursal.getEsCasaMatriz() );
-        sucursalDto.setDomicilio( domicilioToDomicilioDto( sucursal.getDomicilio() ) );
+        sucursalDto.setDomicilio( domicilioMapper.toDTO( sucursal.getDomicilio() ) );
         sucursalDto.setEmpresa( empresaToEmpresaDto( sucursal.getEmpresa() ) );
         sucursalDto.setImagenes( imagenSucursalSetToImagenSucursalDtoList( sucursal.getImagenes() ) );
 
@@ -540,69 +469,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         facturaDto.setTotalVenta( factura.getTotalVenta() );
 
         return facturaDto;
-    }
-
-    protected Pais paisDtoToPais(PaisDto paisDto) {
-        if ( paisDto == null ) {
-            return null;
-        }
-
-        Pais.PaisBuilder<?, ?> pais = Pais.builder();
-
-        pais.id( paisDto.getId() );
-        pais.eliminado( paisDto.isEliminado() );
-        pais.nombre( paisDto.getNombre() );
-
-        return pais.build();
-    }
-
-    protected Provincia provinciaDtoToProvincia(ProvinciaDto provinciaDto) {
-        if ( provinciaDto == null ) {
-            return null;
-        }
-
-        Provincia.ProvinciaBuilder<?, ?> provincia = Provincia.builder();
-
-        provincia.id( provinciaDto.getId() );
-        provincia.eliminado( provinciaDto.isEliminado() );
-        provincia.nombre( provinciaDto.getNombre() );
-        provincia.pais( paisDtoToPais( provinciaDto.getPais() ) );
-
-        return provincia.build();
-    }
-
-    protected Localidad localidadDtoToLocalidad(LocalidadDto localidadDto) {
-        if ( localidadDto == null ) {
-            return null;
-        }
-
-        Localidad.LocalidadBuilder<?, ?> localidad = Localidad.builder();
-
-        localidad.id( localidadDto.getId() );
-        localidad.eliminado( localidadDto.isEliminado() );
-        localidad.nombre( localidadDto.getNombre() );
-        localidad.provincia( provinciaDtoToProvincia( localidadDto.getProvincia() ) );
-
-        return localidad.build();
-    }
-
-    protected Domicilio domicilioDtoToDomicilio(DomicilioDto domicilioDto) {
-        if ( domicilioDto == null ) {
-            return null;
-        }
-
-        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
-
-        domicilio.id( domicilioDto.getId() );
-        domicilio.eliminado( domicilioDto.isEliminado() );
-        domicilio.calle( domicilioDto.getCalle() );
-        domicilio.numero( domicilioDto.getNumero() );
-        domicilio.cp( domicilioDto.getCp() );
-        domicilio.piso( domicilioDto.getPiso() );
-        domicilio.nroDpto( domicilioDto.getNroDpto() );
-        domicilio.localidad( localidadDtoToLocalidad( domicilioDto.getLocalidad() ) );
-
-        return domicilio.build();
     }
 
     protected ImagenEmpresa imagenEmpresaDtoToImagenEmpresa(ImagenEmpresaDto imagenEmpresaDto) {
@@ -687,7 +553,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         sucursal.horarioApertura( sucursalDto.getHorarioApertura() );
         sucursal.horarioCierre( sucursalDto.getHorarioCierre() );
         sucursal.esCasaMatriz( sucursalDto.getEsCasaMatriz() );
-        sucursal.domicilio( domicilioDtoToDomicilio( sucursalDto.getDomicilio() ) );
+        sucursal.domicilio( domicilioMapper.toEntity( sucursalDto.getDomicilio() ) );
         sucursal.empresa( empresaDtoToEmpresa( sucursalDto.getEmpresa() ) );
         sucursal.imagenes( imagenSucursalDtoListToImagenSucursalSet( sucursalDto.getImagenes() ) );
 
@@ -747,7 +613,7 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         Set<Domicilio> set1 = new LinkedHashSet<Domicilio>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( DomicilioDto domicilioDto : set ) {
-            set1.add( domicilioDtoToDomicilio( domicilioDto ) );
+            set1.add( domicilioMapper.toEntity( domicilioDto ) );
         }
 
         return set1;
@@ -870,18 +736,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         return empleado.build();
     }
 
-    protected void domicilioCreateDtoToDomicilio(DomicilioCreateDto domicilioCreateDto, Domicilio mappingTarget) {
-        if ( domicilioCreateDto == null ) {
-            return;
-        }
-
-        mappingTarget.setCalle( domicilioCreateDto.getCalle() );
-        mappingTarget.setNumero( domicilioCreateDto.getNumero() );
-        mappingTarget.setCp( domicilioCreateDto.getCp() );
-        mappingTarget.setPiso( domicilioCreateDto.getPiso() );
-        mappingTarget.setNroDpto( domicilioCreateDto.getNroDpto() );
-    }
-
     protected void facturaCreateDtoToFactura(FacturaCreateDto facturaCreateDto, Factura mappingTarget) {
         if ( facturaCreateDto == null ) {
             return;
@@ -926,77 +780,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         return set;
     }
 
-    protected void paisDtoToPais1(PaisDto paisDto, Pais mappingTarget) {
-        if ( paisDto == null ) {
-            return;
-        }
-
-        mappingTarget.setId( paisDto.getId() );
-        mappingTarget.setEliminado( paisDto.isEliminado() );
-        mappingTarget.setNombre( paisDto.getNombre() );
-    }
-
-    protected void provinciaDtoToProvincia1(ProvinciaDto provinciaDto, Provincia mappingTarget) {
-        if ( provinciaDto == null ) {
-            return;
-        }
-
-        mappingTarget.setId( provinciaDto.getId() );
-        mappingTarget.setEliminado( provinciaDto.isEliminado() );
-        mappingTarget.setNombre( provinciaDto.getNombre() );
-        if ( provinciaDto.getPais() != null ) {
-            if ( mappingTarget.getPais() == null ) {
-                mappingTarget.setPais( Pais.builder().build() );
-            }
-            paisDtoToPais1( provinciaDto.getPais(), mappingTarget.getPais() );
-        }
-        else {
-            mappingTarget.setPais( null );
-        }
-    }
-
-    protected void localidadDtoToLocalidad1(LocalidadDto localidadDto, Localidad mappingTarget) {
-        if ( localidadDto == null ) {
-            return;
-        }
-
-        mappingTarget.setId( localidadDto.getId() );
-        mappingTarget.setEliminado( localidadDto.isEliminado() );
-        mappingTarget.setNombre( localidadDto.getNombre() );
-        if ( localidadDto.getProvincia() != null ) {
-            if ( mappingTarget.getProvincia() == null ) {
-                mappingTarget.setProvincia( Provincia.builder().build() );
-            }
-            provinciaDtoToProvincia1( localidadDto.getProvincia(), mappingTarget.getProvincia() );
-        }
-        else {
-            mappingTarget.setProvincia( null );
-        }
-    }
-
-    protected void domicilioDtoToDomicilio1(DomicilioDto domicilioDto, Domicilio mappingTarget) {
-        if ( domicilioDto == null ) {
-            return;
-        }
-
-        mappingTarget.setId( domicilioDto.getId() );
-        mappingTarget.setEliminado( domicilioDto.isEliminado() );
-        mappingTarget.setCalle( domicilioDto.getCalle() );
-        mappingTarget.setNumero( domicilioDto.getNumero() );
-        mappingTarget.setCp( domicilioDto.getCp() );
-        mappingTarget.setPiso( domicilioDto.getPiso() );
-        mappingTarget.setNroDpto( domicilioDto.getNroDpto() );
-        if ( domicilioDto.getLocalidad() != null ) {
-            if ( mappingTarget.getLocalidad() == null ) {
-                mappingTarget.setLocalidad( Localidad.builder().build() );
-            }
-            localidadDtoToLocalidad1( domicilioDto.getLocalidad(), mappingTarget.getLocalidad() );
-        }
-        else {
-            mappingTarget.setLocalidad( null );
-        }
-    }
-
     protected void empresaDtoToEmpresa1(EmpresaDto empresaDto, Empresa mappingTarget) {
         if ( empresaDto == null ) {
             return;
@@ -1036,15 +819,7 @@ public class PedidoMapperImpl implements PedidoMapper {
         mappingTarget.setHorarioApertura( sucursalDto.getHorarioApertura() );
         mappingTarget.setHorarioCierre( sucursalDto.getHorarioCierre() );
         mappingTarget.setEsCasaMatriz( sucursalDto.getEsCasaMatriz() );
-        if ( sucursalDto.getDomicilio() != null ) {
-            if ( mappingTarget.getDomicilio() == null ) {
-                mappingTarget.setDomicilio( Domicilio.builder().build() );
-            }
-            domicilioDtoToDomicilio1( sucursalDto.getDomicilio(), mappingTarget.getDomicilio() );
-        }
-        else {
-            mappingTarget.setDomicilio( null );
-        }
+        mappingTarget.setDomicilio( domicilioMapper.toEntity( sucursalDto.getDomicilio() ) );
         if ( sucursalDto.getEmpresa() != null ) {
             if ( mappingTarget.getEmpresa() == null ) {
                 mappingTarget.setEmpresa( Empresa.builder().build() );
@@ -1125,22 +900,6 @@ public class PedidoMapperImpl implements PedidoMapper {
         else {
             mappingTarget.setSucursal( null );
         }
-    }
-
-    protected Domicilio domicilioCreateDtoToDomicilio1(DomicilioCreateDto domicilioCreateDto) {
-        if ( domicilioCreateDto == null ) {
-            return null;
-        }
-
-        Domicilio.DomicilioBuilder<?, ?> domicilio = Domicilio.builder();
-
-        domicilio.calle( domicilioCreateDto.getCalle() );
-        domicilio.numero( domicilioCreateDto.getNumero() );
-        domicilio.cp( domicilioCreateDto.getCp() );
-        domicilio.piso( domicilioCreateDto.getPiso() );
-        domicilio.nroDpto( domicilioCreateDto.getNroDpto() );
-
-        return domicilio.build();
     }
 
     protected Factura facturaCreateDtoToFactura1(FacturaCreateDto facturaCreateDto) {
