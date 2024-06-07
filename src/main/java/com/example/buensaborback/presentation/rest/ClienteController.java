@@ -6,7 +6,9 @@ import com.example.buensaborback.business.services.ImagenClienteService;
 import com.example.buensaborback.business.services.UsuarioClienteService;
 import com.example.buensaborback.domain.dto.Cliente.ClienteCreateDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
+import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import com.example.buensaborback.domain.entities.Cliente;
+import com.example.buensaborback.domain.entities.UsuarioCliente;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
@@ -37,18 +39,18 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     }
 
     @PostMapping("/getCliente")
-    public ResponseEntity<ClienteDto> getCliente(@RequestBody ClienteDto cliente) {
+    public ResponseEntity<ClienteDto> getCliente(@RequestBody UsuarioClienteDto usuarioCliente) {
         try {
             var items = facade.getAll();
             for (ClienteDto c : items) {
                 // Encriptar la clave ingresada usando SHA3
                 SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512();
-                byte[] digest = digestSHA3.digest(cliente.getUsuario().getClave().getBytes());
+                byte[] digest = digestSHA3.digest(usuarioCliente.getClave().getBytes());
 
                 // Convertir el hash a hexadecimal
                 String claveEncriptada = Hex.toHexString(digest);
 
-                if (c.getUsuario().getUserName().equals(cliente.getUsuario().getUserName()) && c.getUsuario().getClave().equals(claveEncriptada)) {
+                if (c.getUsuario().getUserName().equals(usuarioCliente.getUserName()) && c.getUsuario().getClave().equals(claveEncriptada)) {
                     return ResponseEntity.ok().body(c);
                 }
             }
