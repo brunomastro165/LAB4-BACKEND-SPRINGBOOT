@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+    //ENCRIPTACION
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
     //MERCADO PAGO
     implementation 'com.mercadopago:sdk-java:2.1.24'
     // SPRING BOOT OAUTH2 RESOURCE SERVER
