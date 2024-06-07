@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -54,11 +55,17 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         // Obtén todos los pedidos con el facade
         List<PedidoDto> pedidos = facade.getAll();
 
-
-
-
-
         return ResponseEntity.ok(pedidos);
+    }
+    @GetMapping("/getPorCliente/{id}")
+    public ResponseEntity<List<PedidoDto>> getPorCliente(@PathVariable Long id) {
+        // Obtén todos los pedidos con el facade
+        List<PedidoDto> pedidos = facade.getAll();
+        List<PedidoDto> filteredPedidos = pedidos.stream()
+                .filter(a -> a.getCliente().getId().equals(id)
+                        && !a.isEliminado())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredPedidos);
     }
 
 

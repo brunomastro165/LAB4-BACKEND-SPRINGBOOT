@@ -39,12 +39,6 @@ import java.util.stream.Collectors;
 public class ArticuloManufacturadoController extends BaseControllerImpl<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto, Long, ArticuloManufacturadoFacadeImpl> {
     @Autowired
     private ImagenArticuloService imageService;
-    @Autowired
-    private ImagenArticuloRepository imagenArticuloRepository;
-    @Autowired
-    private CategoriaRepository categoriaRepository;
-    @Autowired
-    private ArticuloManufacturadoRepository articuloRepository;
 
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImpl facade) {
         super(facade);

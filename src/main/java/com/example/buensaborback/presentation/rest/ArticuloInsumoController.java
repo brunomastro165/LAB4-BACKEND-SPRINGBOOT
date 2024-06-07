@@ -33,9 +33,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @Autowired
     private ArticuloRepository articuloRepository;
 
-    @Autowired
-    private CategoriaRepository categoriaRepository;
-
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
@@ -44,7 +41,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     public ResponseEntity<List<ArticuloInsumoDto>> getPorCategorias(@PathVariable Long idCategoria) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getCategoria().equals(categoriaRepository.getById(idCategoria))
+                .filter(a -> a.getCategoria().getId().equals(idCategoria)
                         && !a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
