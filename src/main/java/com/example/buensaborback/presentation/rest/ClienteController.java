@@ -37,10 +37,10 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     }
 
     @PostMapping("/getCliente")
-    public ResponseEntity<Cliente> getCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDto> getCliente(@RequestBody ClienteDto cliente) {
         try {
-            var items = clienteService.getAll();
-            for (Cliente c : items) {
+            var items = facade.getAll();
+            for (ClienteDto c : items) {
                 // Encriptar la clave ingresada usando SHA3
                 SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512();
                 byte[] digest = digestSHA3.digest(cliente.getUsuario().getClave().getBytes());
@@ -59,11 +59,11 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> crear(@RequestBody Cliente cliente){
-        var clientes = clienteService.getAll();
+    public ResponseEntity<?> crear(@RequestBody ClienteCreateDto cliente){
+        var clientes = facade.getAll();
 
         if (!clientes.isEmpty()) {
-            for (Cliente c : clientes) {
+            for (ClienteDto c : clientes) {
                 if (c.getUsuario().getUserName().equals(cliente.getUsuario().getUserName())) {
                     return new ResponseEntity<>("Ya existe un cliente con ese nombre", HttpStatus.BAD_REQUEST);
                 }
@@ -80,7 +80,7 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
         // Establecer la clave encriptada
         cliente.getUsuario().setClave(claveEncriptada);
 
-        return ResponseEntity.ok().body(clienteService.create(cliente));
+        return ResponseEntity.ok().body(facade.createNew(cliente));
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -10,7 +10,7 @@ import lombok.Setter;
 //@NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioClienteDto extends BaseDto {
-    private Long id;
     private String userName;
     private String auth0Id;
+    private String clave;
 }
