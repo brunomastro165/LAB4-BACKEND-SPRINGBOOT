@@ -37,14 +37,9 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     private ArticuloInsumoRepository articuloInsumoRepository;
     @Autowired
     private ArticuloManufacturadoRepository articuloManufacturadoRepository;
-    @Autowired
-    private ClienteRepository clienteRepository;
 
     @Autowired
     private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private DetallePedidoRepository detallePedidoRepository;
 
     @Autowired
     private ArticuloManufacturadoMapper articuloManufacturadoMapper;
@@ -60,33 +55,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         List<PedidoDto> pedidos = facade.getAll();
 
 
-        for (PedidoDto pedido : pedidos) {
-            if (!pedido.isEliminado() && pedidoRepository.getById(pedido.getId()).getDetallesPedido() != null) {
-                // Crea un array de detalles
-                Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
-
-                Set<DetallePedidoDto> newDetalles = new HashSet<>();
-                for (DetallePedido detalle : detalles) {
-                    // Comprueba si el detalle ha sido eliminado
-                    if (!detalle.isEliminado() && detalle.getArticulo() != null) {
-                        Articulo articulo = articuloRepository.getById(detalle.getArticulo().getId());
-                        System.out.println(articulo);
-                        if (articulo instanceof ArticuloManufacturado) {
-                            System.out.println("El detalle:" + detalle.getId() + " tiene un articuloManufacturado");
-                            ArticuloManufacturadoDto dto = articuloManufacturadoMapper.toDTO((ArticuloManufacturado) articulo);
-                            newDetalles.add(new DetallePedidoDto(detalle.getCantidad(),detalle.getSubTotal(), null, dto));
-                        } else if (articulo instanceof ArticuloInsumo) {
-                            System.out.println("El detalle:" + detalle.getId() + " tiene un articuloInsumo");
-                            ArticuloInsumoDto insumoDto = articuloInsumoMapper.toDTO((ArticuloInsumo) articulo);
-                            newDetalles.add(new DetallePedidoDto(detalle.getCantidad(),detalle.getSubTotal(), insumoDto, null));
-                        } else {
-                            System.out.println("El detalle:" + detalle.getId() + " no tiene articulo asignado");
-                        }
-                    }
-                }
-                pedido.setDetallesPedido(newDetalles);
-            }
-        }
 
 
 
@@ -97,29 +65,11 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> getById(@PathVariable Long id) {
+
         //obtengo el pedido con el facade aca los articulos son nulos
         PedidoDto pedido = facade.getById(id);
 
-        //creo un array de detalles posta
-        Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
 
-        Set<DetallePedidoDto> newDetalles = new HashSet<>();
-        for (DetallePedido detalle : detalles) {
-            Articulo articulo = articuloRepository.getById(detalle.getArticulo().getId());
-            System.out.println(articulo);
-            if (articulo instanceof ArticuloManufacturado) {
-                System.out.println("El detalle:" + detalle.getId() + " tiene un articuloManufacturado");
-                ArticuloManufacturadoDto dto = articuloManufacturadoMapper.toDTO((ArticuloManufacturado) articulo);
-                newDetalles.add(new DetallePedidoDto(detalle.getCantidad(),detalle.getSubTotal(), null, dto));
-            } else if (articulo instanceof ArticuloInsumo) {
-                System.out.println("El detalle:" + detalle.getId() + " tiene un articuloInsumo");
-                ArticuloInsumoDto insumoDto = articuloInsumoMapper.toDTO((ArticuloInsumo) articulo);
-                newDetalles.add(new DetallePedidoDto(detalle.getCantidad(),detalle.getSubTotal(), insumoDto, null));
-            } else {
-                System.out.println("El detalle:" + detalle.getId() + " no tiene articulo asignado");
-            }
-        }
-        pedido.setDetallesPedido(newDetalles);
 
         return ResponseEntity.ok(pedido);
     }
@@ -138,104 +88,13 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     @PostMapping()
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoCreateDto entity) {
         try {
-            LocalTime horaFinalizado = LocalTime.now();
-            boolean denegar = false;
-            double costoTotal = 0;
-            double total = 0;
-
-            // Primera pasada para calcular subtotales y verificar condiciones
-            for (DetallePedidoCreateDto detalle : entity.getDetallesPedido()) {
-                Articulo articulo = articuloRepository.getById(detalle.getIdArticulo());
-
-                // Calcular y establecer el subtotal
-                double subTotal = articulo.getPrecioVenta() * detalle.getCantidad();
-                detalle.setSubTotal(subTotal);
-
-                // Acumular el total
-                total += detalle.getSubTotal();
-                if (articulo instanceof ArticuloInsumo) {
-                    ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle.getIdArticulo());
-                    costoTotal += articuloInsumo.getPrecioCompra();
-                    if (articuloInsumo.getStockActual() <= articuloInsumo.getStockMinimo()) {
-                        denegar = true;
-                    }
-                } else if (articulo instanceof ArticuloManufacturado) {
-                    ArticuloManufacturado articuloManufacturado = articuloManufacturadoRepository.getById(detalle.getIdArticulo());
-                    horaFinalizado = horaFinalizado.plusMinutes(articuloManufacturado.getTiempoEstimadoMinutos());
-                    for (ArticuloManufacturadoDetalle detalle1 : articuloManufacturado.getArticuloManufacturadoDetalles()) {
-                        if (detalle1.getArticuloInsumo().getStockActual() <= detalle1.getArticuloInsumo().getStockMinimo()) {
-                            denegar = true;
-                        }
-                        costoTotal += detalle1.getArticuloInsumo().getPrecioVenta() * detalle.getCantidad();
-                    }
-                }
-            }
-
-            // Segunda pasada para actualizar stocks si no se deniega
-            if (!denegar) {
-                for (DetallePedidoCreateDto detalle : entity.getDetallesPedido()) {
-                    Articulo articulo = articuloRepository.getById(detalle.getIdArticulo());
-                    if (articulo instanceof ArticuloInsumo) {
-                        ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle.getIdArticulo());
-                        if (articuloInsumo.getStockActual() - detalle.getCantidad() <= articuloInsumo.getStockMinimo()) {
-                            denegar = true;
-                            break;
-                        }
-                        articuloInsumo.setStockActual(articuloInsumo.getStockActual() - detalle.getCantidad());
-                        articuloInsumoRepository.save(articuloInsumo);
-                    } else if (articulo instanceof ArticuloManufacturado) {
-                        ArticuloManufacturado articuloManufacturado = articuloManufacturadoRepository.getById(detalle.getIdArticulo());
-                        for (ArticuloManufacturadoDetalle detalle1 : articuloManufacturado.getArticuloManufacturadoDetalles()) {
-                            ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle1.getArticuloInsumo().getId());
-                            if (articuloInsumo.getStockActual() - detalle1.getCantidad() * detalle.getCantidad() <= articuloInsumo.getStockMinimo()) {
-                                denegar = true;
-                                break;
-                            }
-                            articuloInsumo.setStockActual(articuloInsumo.getStockActual() - detalle1.getCantidad() * detalle.getCantidad());
-                            articuloInsumoRepository.save(articuloInsumo);
-                        }
-                        if (denegar) break;
-                    }
-                }
-            }
-
-            // Configurar el estado del pedido
-            entity.setHoraEstimadaFinalizacion(horaFinalizado);
-            entity.setTotal(total);
-            entity.setTotalCosto(costoTotal);
-            if (denegar)
-                entity.setEstado(Estado.RECHAZADO);
-            else
-                entity.setEstado(Estado.PENDIENTE);
-
-            entity.setFechaPedido(LocalDate.now());
             entity.getFactura().setFormaPago(FormaPago.EFECTIVO);
             entity.getFactura().setFechaFcturacion(LocalDate.now());
             entity.getFactura().setTotalVenta(entity.getTotal());
+
             PedidoDto pedido = facade.createNew(entity);
 
-            // Configurar el cliente del pedido
-            Pedido p = pedidoRepository.getById(pedido.getId());
-            p.setCliente(clienteRepository.getById(entity.getIdCliente()));
-            pedidoRepository.save(p);
 
-            // Configurar los detalles del pedido correctamente
-            Set<DetallePedido> detalles = pedidoRepository.getById(pedido.getId()).getDetallesPedido();
-            List<DetallePedido> detallesList = new ArrayList<>(detalles);
-            for (int i = 0; i < entity.getDetallesPedido().size(); i++) {
-                DetallePedidoCreateDto detalleDto = entity.getDetallesPedido().get(i);
-                DetallePedido detalleEntity = detallesList.get(i);
-                Articulo articulo = articuloRepository.getById(detalleDto.getIdArticulo());
-
-                // Recalcular y asignar el subtotal correcto
-                double subTotal = articulo.getPrecioVenta() * detalleDto.getCantidad();
-                detalleDto.setSubTotal(subTotal);
-
-                detalleEntity.setArticulo(articulo);
-                detalleEntity.setCantidad(detalleDto.getCantidad());
-                detalleEntity.setSubTotal(subTotal); // Asegurarse de que el subtotal se asigne correctamente
-                detallePedidoRepository.save(detalleEntity);
-            }
             return ResponseEntity.ok(pedido);
         } catch (Exception e) {
             e.printStackTrace();
@@ -248,44 +107,8 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         //Aca hay que calcular el total del pedido
         MercadoPagoController cMercadoPago = new MercadoPagoController();
         PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
-        LocalTime horaFinalizado = LocalTime.now();
-        boolean denegar = false;
-        // Calcular el costo total que le cuesta a la empresa
-        double costoTotal = 0;
-        // Calcular el precio total que paga el cliente
-        double total = 0;
-        for (DetallePedidoCreateDto detalle:
-                pedido.getDetallesPedido()) {
-            Articulo articulo = articuloRepository.getById(detalle.getIdArticulo());
-            detalle.setSubTotal(articulo.getPrecioVenta()*detalle.getCantidad());
-            total += detalle.getSubTotal();
-            if(articulo instanceof ArticuloInsumo){
-                ArticuloInsumo articuloInsumo = articuloInsumoRepository.getById(detalle.getIdArticulo());
-                costoTotal += articuloInsumo.getPrecioCompra();
-                if(articuloInsumo.getStockActual() <= articuloInsumo.getStockMinimo()){
-                    denegar = true;
-                }
-            }
-            if(articulo instanceof ArticuloManufacturado){
-                ArticuloManufacturado articuloManufacturado = articuloManufacturadoRepository.getById(detalle.getIdArticulo());
-                horaFinalizado = horaFinalizado.plusMinutes(articuloManufacturado.getTiempoEstimadoMinutos());
-                for (ArticuloManufacturadoDetalle detalle1:
-                        articuloManufacturado.getArticuloManufacturadoDetalles()) {
-                    if(detalle1.getArticuloInsumo().getStockActual() <= detalle1.getArticuloInsumo().getStockMinimo())
-                        denegar = true;
-                    costoTotal += detalle1.getArticuloInsumo().getPrecioVenta();
-                }
-            }
-        }
-        pedido.setHoraEstimadaFinalizacion(horaFinalizado);
-        pedido.setTotal(total);
-        pedido.setTotalCosto(costoTotal);
-        if(denegar)
-            pedido.setEstado(Estado.RECHAZADO);
-        else
-            pedido.setEstado(Estado.PENDIENTE);
+
         pedido.getFactura().setFormaPago(FormaPago.MERCADO_PAGO);
-        pedido.setFechaPedido(LocalDate.now());
         pedido.getFactura().setFechaFcturacion(LocalDate.now());
         pedido.getFactura().setTotalVenta(pedido.getTotal());
         pedido.getFactura().setMpPreferenceId(preference.getId());

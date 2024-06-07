@@ -8,10 +8,11 @@ import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.dto.Promocion.PromocionCreateDto;
 import com.example.buensaborback.domain.entities.Pedido;
 import com.example.buensaborback.domain.entities.Promocion;
+import com.example.buensaborback.repositories.ClienteRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring",uses = {SucursalService.class,DomicilioMapper.class})
+@Mapper(componentModel = "spring",uses = {SucursalService.class,DomicilioMapper.class,DetallePedidoMapper.class, FacturaMapper.class})
 public interface PedidoMapper extends BaseMapper<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto> {
 
     @Mapping(target = "sucursal", source = "idSucursal", qualifiedByName = "getById")

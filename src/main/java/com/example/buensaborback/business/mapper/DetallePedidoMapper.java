@@ -5,6 +5,6 @@ import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoDto;
 import com.example.buensaborback.domain.entities.DetallePedido;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+//@Mapper(componentModel = "spring")
 public interface DetallePedidoMapper extends BaseMapper<DetallePedido, DetallePedidoDto, DetallePedidoCreateDto, DetallePedidoCreateDto> {
 }

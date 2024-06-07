@@ -2,6 +2,7 @@ package com.example.buensaborback.domain.dto.Pedido;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
+import com.example.buensaborback.domain.dto.Cliente.ClienteShortDto;
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
@@ -36,7 +37,7 @@ public class PedidoDto extends BaseDto {
     private LocalDate fechaPedido;
     private DomicilioDto domicilio;
 
-    private ClienteDto cliente;
+    private ClienteShortDto cliente;
     private SucursalDto sucursal;
     private EmpleadoDto empleado;
 

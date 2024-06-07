@@ -18,7 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @SuperBuilder
 //@Audited
 public class Pedido extends Base {
@@ -42,6 +41,7 @@ public class Pedido extends Base {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+
     private Cliente cliente;
 
     @OneToMany(cascade = CascadeType.ALL)
