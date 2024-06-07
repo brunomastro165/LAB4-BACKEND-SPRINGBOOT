@@ -62,11 +62,12 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         // Obtén todos los pedidos con el facade
         List<PedidoDto> pedidos = facade.getAll();
         List<PedidoDto> filteredPedidos = pedidos.stream()
-                .filter(a -> a.getCliente().getId().equals(id)
+                .filter(a -> a.getCliente() != null && a.getCliente().getId().equals(id)
                         && !a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredPedidos);
     }
+
 
 
     @Override
