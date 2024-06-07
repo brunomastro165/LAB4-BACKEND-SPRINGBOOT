@@ -12,10 +12,11 @@ import com.example.buensaborback.repositories.ClienteRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring",uses = {SucursalService.class,DomicilioMapper.class,DetallePedidoMapper.class, FacturaMapper.class})
+@Mapper(componentModel = "spring",uses = {SucursalService.class,DomicilioMapper.class,DetallePedidoMapper.class, FacturaMapper.class,ClienteService.class})
 public interface PedidoMapper extends BaseMapper<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto> {
 
     @Mapping(target = "sucursal", source = "idSucursal", qualifiedByName = "getById")
+    @Mapping(target = "cliente", source = "idCliente", qualifiedByName = "getById")
     Pedido toEntityCreate(PedidoCreateDto source);
 
 }

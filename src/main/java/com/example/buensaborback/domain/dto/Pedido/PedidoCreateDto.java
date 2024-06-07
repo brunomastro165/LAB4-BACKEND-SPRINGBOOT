@@ -35,7 +35,7 @@ public class PedidoCreateDto extends BaseDto {
     private LocalDate fechaPedido;
     private DomicilioCreateDto domicilio;
 
-    private ClienteShortDto cliente;
+    private Long idCliente;
     private Long idSucursal;
     private EmpleadoDto empleado;
 

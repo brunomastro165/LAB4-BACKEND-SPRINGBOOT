@@ -14,4 +14,5 @@ public class DetallePedidoCreateDto extends BaseDto {
     private Integer cantidad;
     private Double subTotal;
     private Long idArticulo;
+    private Long idPromocion;
 }

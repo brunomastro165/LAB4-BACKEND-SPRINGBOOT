@@ -64,7 +64,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria) {
         List<ArticuloManufacturadoDto> allArticulos = facade.getAll();
         List<ArticuloManufacturadoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getCategoria().equals(categoriaRepository.getById(idCategoria))
+                .filter(a -> a.getCategoria().getId().equals(idCategoria)
                         && !a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
