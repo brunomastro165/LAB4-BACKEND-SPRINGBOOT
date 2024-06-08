@@ -30,11 +30,26 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         return ResponseEntity.ok(facade.getById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<D>> getAll() {
+    @GetMapping("/{limit}/{startId}")
+    public ResponseEntity<List<D>> getAll(@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
         logger.info("INICIO GET ALL");
-        return ResponseEntity.ok(facade.getAll());
+        List<D> allItems = facade.getAll();
+
+
+        if (startId != null) {
+            System.out.println("facade del orto");
+            allItems = allItems.stream()
+                    .filter(item -> item.getId() > startId)
+                    .collect(Collectors.toList());
+        }
+
+        if (limit != null && limit < allItems.size()) {
+            allItems = allItems.subList(0, limit);
+        }
+
+        return ResponseEntity.ok(allItems);
     }
+
 
     @GetMapping("/eliminados")
     public ResponseEntity<List<D>> getEliminados() {
