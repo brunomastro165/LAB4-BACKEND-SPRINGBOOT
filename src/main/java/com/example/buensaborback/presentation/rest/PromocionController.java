@@ -57,7 +57,9 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
     public ResponseEntity<PromocionDto> create(@RequestPart("entity") PromocionCreateDto entity,
                                                @RequestPart("files") MultipartFile[] files) {
         try {
+            System.out.println(entity.getIdSucursales());
             PromocionDto promocion = facade.createNew(entity);
+            System.out.println(promocion.getSucursales());
             promocion.setImagenes(imageService.uploadImagesP(files, promocion.getId()));
 
             return ResponseEntity.ok(promocion);
