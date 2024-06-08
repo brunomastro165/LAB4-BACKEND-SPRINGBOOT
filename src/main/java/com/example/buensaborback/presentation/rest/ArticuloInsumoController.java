@@ -73,19 +73,24 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         return ResponseEntity.ok(articulosResponse);
     }
     @GetMapping("/getArticulosInsumos/{searchString}/{idSucursal}/{limit}/{startId}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable String searchString, @PathVariable Long idSucursal, @PathVariable Integer limit, @PathVariable Long startId) {
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @PathVariable Integer limit, @PathVariable Long startId) {
+        if (limit == null || startId == null) {
+            return ResponseEntity.badRequest().build();
+        }
         List<ArticuloInsumoDto> articulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = articulos.stream()
-                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
+                .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
                         && a.getId() > startId
                         && !a.isEliminado()
                         && a.getCategoria() != null
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
-        filteredArticulos = filteredArticulos.subList(0, limit);
-
+        if (filteredArticulos.size() > limit) {
+            filteredArticulos = filteredArticulos.subList(0, limit);
+        }
         return ResponseEntity.ok(filteredArticulos);
     }
+
 
 
     @GetMapping("/buscar/{searchString}/{idSucursal}")

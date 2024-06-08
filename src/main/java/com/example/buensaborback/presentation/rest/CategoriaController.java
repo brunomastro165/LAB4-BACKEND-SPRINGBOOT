@@ -123,18 +123,22 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     }
     @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
     public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable (required = false) Integer limit, @PathVariable (required = false) Long startId){
+        if (limit == null || startId == null) {
+            return ResponseEntity.badRequest().build();
+        }
         List<CategoriaDto> categorias = facade.getAll();
         List<CategoriaShortDto> categoriasShort = new ArrayList<>();
-        for (CategoriaDto categoria:
-             categorias) {
+        for (CategoriaDto categoria: categorias) {
             categoriasShort.add(categoriaMapper.dtoToShortDto(categoria));
         }
         categoriasShort = categoriasShort.stream()
-                .filter(a ->  a.getId() > startId
-                        && !a.isEliminado())
+                .filter(a ->  a.getId() > startId)
                 .collect(Collectors.toList());
-        categoriasShort = categoriasShort.subList(0, limit);
+        if (categoriasShort.size() > limit) {
+            categoriasShort = categoriasShort.subList(0, limit);
+        }
         return ResponseEntity.ok(categoriasShort);
     }
+
 
 }

@@ -35,19 +35,19 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         logger.info("INICIO GET ALL");
         List<D> allItems = facade.getAll();
 
-
         if (startId != null) {
             allItems = allItems.stream()
                     .filter(item -> item.getId() > startId)
                     .collect(Collectors.toList());
         }
 
-        if (limit != null && limit < allItems.size()) {
+        if (limit != null && allItems.size() > limit) {
             allItems = allItems.subList(0, limit);
         }
 
         return ResponseEntity.ok(allItems);
     }
+
 
 
     @GetMapping("/eliminados")
