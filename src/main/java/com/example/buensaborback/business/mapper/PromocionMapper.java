@@ -9,11 +9,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = {SucursalService.class, SucursalMapper.class})
+@Mapper(componentModel = "spring", uses = {SucursalService.class, SucursalMapper.class,PromocionDetalleMapper.class})
 public interface PromocionMapper extends BaseMapper<Promocion, PromocionDto, PromocionCreateDto, PromocionEditDto> {
     PromocionMapper INSTANCE = Mappers.getMapper(PromocionMapper.class);
-
-    // Este método define la transformación de un CategoriaCreateDto a una entidad Categoria.
     @Mapping(target = "sucursales", source = "idSucursales", qualifiedByName = "getById")
     Promocion toEntityCreate(PromocionCreateDto source);
 }

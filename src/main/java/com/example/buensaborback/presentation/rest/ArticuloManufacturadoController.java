@@ -43,7 +43,20 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImpl facade) {
         super(facade);
     }
+    @GetMapping("/getArticulosManufacturados/{searchString}/{idSucursal}/{limit}/{startId}")
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@PathVariable String searchString, @PathVariable Long idSucursal, @PathVariable Integer limit, @PathVariable Long startId) {
+        List<ArticuloManufacturadoDto> articulos = facade.getAll();
+        List<ArticuloManufacturadoDto> filteredArticulos = articulos.stream()
+                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
+                        && a.getId() > startId
+                        && !a.isEliminado()
+                        && a.getCategoria() != null
+                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                .collect(Collectors.toList());
+        filteredArticulos = filteredArticulos.subList(0, limit);
 
+        return ResponseEntity.ok(filteredArticulos);
+    }
     @GetMapping("/buscar/{idSucursal}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorSucursal(@PathVariable Long idSucursal) {
         List<ArticuloManufacturadoDto> allArticulos = facade.getAll();

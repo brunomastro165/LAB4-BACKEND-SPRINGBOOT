@@ -11,7 +11,7 @@ import java.util.List;
 public interface BaseController<D extends BaseDto, DC, DE, ID extends Serializable> {
     ResponseEntity<D> getById(ID id);
 
-    ResponseEntity<List<D>> getAll(Integer limit, Long startId);
+    ResponseEntity<List<D>> getAll(Integer limit, ID startId);
 
     ResponseEntity<D> create(DC entity);
 

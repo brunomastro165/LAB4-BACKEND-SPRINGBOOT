@@ -6,6 +6,7 @@ import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufa
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
+import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.Categoria;
@@ -45,5 +46,6 @@ public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto, Cat
                 .map(articulo -> ArticuloManufacturadoMapper.INSTANCE.toDTO((ArticuloManufacturado) articulo))
                 .collect(Collectors.toSet());
     }
+    CategoriaShortDto dtoToShortDto(CategoriaDto source);
 
 }

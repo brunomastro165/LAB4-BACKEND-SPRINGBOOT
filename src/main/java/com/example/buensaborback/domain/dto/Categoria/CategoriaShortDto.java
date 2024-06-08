@@ -15,6 +15,6 @@ import java.util.Set;
 public class CategoriaShortDto extends BaseDto {
     private String denominacion;
     private boolean esInsumo;
-    private Set<CategoriaDto> subCategorias;
+    private Set<CategoriaShortDto> subCategorias;
     private boolean esPadre;
 }

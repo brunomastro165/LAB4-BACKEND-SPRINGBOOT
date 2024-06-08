@@ -32,30 +32,13 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 @RequestMapping("/pedido")
 public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto, Long, PedidoFacadeImpl> {
-    @Autowired
-    private ArticuloRepository articuloRepository;
-    @Autowired
-    private ArticuloInsumoRepository articuloInsumoRepository;
-    @Autowired
-    private ArticuloManufacturadoRepository articuloManufacturadoRepository;
+
 
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    @Autowired
-    private ArticuloManufacturadoMapper articuloManufacturadoMapper;
-    @Autowired
-    private ArticuloInsumoMapper articuloInsumoMapper;
-
     public PedidoController(PedidoFacadeImpl facade) {
         super(facade);
-    }
-    @GetMapping("")
-    public ResponseEntity<List<PedidoDto>> getAll() {
-        // Obtén todos los pedidos con el facade
-        List<PedidoDto> pedidos = facade.getAll();
-
-        return ResponseEntity.ok(pedidos);
     }
     @GetMapping("/getPorCliente/{id}")
     public ResponseEntity<List<PedidoDto>> getPorCliente(@PathVariable Long id) {

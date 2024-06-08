@@ -2,6 +2,7 @@ package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
 import com.example.buensaborback.business.services.ImagenArticuloService;
+import com.example.buensaborback.domain.dto.Articulo.ArticuloDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
@@ -70,6 +71,20 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         }
 
         return ResponseEntity.ok(articulosResponse);
+    }
+    @GetMapping("/getArticulosInsumos/{searchString}/{idSucursal}/{limit}/{startId}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable String searchString, @PathVariable Long idSucursal, @PathVariable Integer limit, @PathVariable Long startId) {
+        List<ArticuloInsumoDto> articulos = facade.getAll();
+        List<ArticuloInsumoDto> filteredArticulos = articulos.stream()
+                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
+                        && a.getId() > startId
+                        && !a.isEliminado()
+                        && a.getCategoria() != null
+                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                .collect(Collectors.toList());
+        filteredArticulos = filteredArticulos.subList(0, limit);
+
+        return ResponseEntity.ok(filteredArticulos);
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.CategoriaFacadeImpl;
+import com.example.buensaborback.business.mapper.CategoriaMapper;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 @RequestMapping("/categoria")
 public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long, CategoriaFacadeImpl> {
+    @Autowired
+    CategoriaMapper categoriaMapper;
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
     }
@@ -117,6 +120,21 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         }
         facade.deleteById(id);
         return ResponseEntity.ok(null);
+    }
+    @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
+    public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable (required = false) Integer limit, @PathVariable (required = false) Long startId){
+        List<CategoriaDto> categorias = facade.getAll();
+        List<CategoriaShortDto> categoriasShort = new ArrayList<>();
+        for (CategoriaDto categoria:
+             categorias) {
+            categoriasShort.add(categoriaMapper.dtoToShortDto(categoria));
+        }
+        categoriasShort = categoriasShort.stream()
+                .filter(a ->  a.getId() > startId
+                        && !a.isEliminado())
+                .collect(Collectors.toList());
+        categoriasShort = categoriasShort.subList(0, limit);
+        return ResponseEntity.ok(categoriasShort);
     }
 
 }
