@@ -123,6 +123,6 @@ public class SecurityConfiguration {
     }
 }
 /*VARIABLES DE ENTORNO
-AUTH0_AUDIENCE=http://api_auth0_buenSabor/;AUTH0_ISSUER_URI=http://dev-ni2b3u711x5zx2x7.us.auth0.com/;CORS_ALLOWED_ORIGINS=http://localhost:5173;SPRING_SECURITY_LOG_LEVEL=INFO;WEB_SECURITY_DEBUG=true
+AUTH0_AUDIENCE=http://api_auth0_buenSabor;AUTH0_ISSUER_URI=https://dev-ni2b3u711x5zx2x7.us.auth0.com/;CORS_ALLOWED_ORIGINS=http://localhost:5173;SPRING_SECURITY_DEBUG=INFO;WEB_SECURITY_DEBUG=true
 SOLO COPIAR Y PEGAR ESO EN LAS VARIABLES
  */

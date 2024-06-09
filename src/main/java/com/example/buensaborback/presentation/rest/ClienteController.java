@@ -18,6 +18,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import okhttp3.OkHttpClient;
+//import okhttp3.RequestBody;
+import okhttp3.Request;
+import okhttp3.Response;
+import com.google.gson.Gson;
+import java.io.IOException;
+
+
 @RestController
 @RequestMapping("/cliente")
 @CrossOrigin(value = "*",allowedHeaders = "*")
@@ -115,6 +125,28 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el cliente y subir la imagen.");
         }
     }
+    /*
+    private String getAuth0Token(UsuarioCliente usuario) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"client_id\":\"YOUR_CLIENT_ID\",\"client_secret\":\"YOUR_CLIENT_SECRET\",\"audience\":\"YOUR_API_IDENTIFIER\",\"grant_type\":\"client_credentials\"}");
+        Request request = new Request.Builder()
+                .url("https://YOUR_DOMAIN/oauth/token")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        // Aquí deberías parsear la respuesta JSON para obtener el token.
+        // Este es solo un ejemplo y necesitarás ajustarlo a tu caso específico.
+        String token = parseToken(responseBody);
+
+        return token;
+    }
+*/
 
 }
 
