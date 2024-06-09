@@ -39,11 +39,14 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         if (!categoria.getSubCategorias().isEmpty()) {
             for (CategoriaShortDto subCategoria :
                     categoria.getSubCategorias()) {
-                List<ArticuloInsumoDto> ins = getArticuloSubCategoria(subCategoria.getId());
-                for (ArticuloInsumoDto i :
-                        ins) {
-                    insumos.add(i);
+                if(!subCategoria.isEliminado()){
+                    List<ArticuloInsumoDto> ins = getArticuloSubCategoria(subCategoria.getId());
+                    for (ArticuloInsumoDto i :
+                            ins) {
+                        insumos.add(i);
+                    }
                 }
+
             }
         }
         return insumos;

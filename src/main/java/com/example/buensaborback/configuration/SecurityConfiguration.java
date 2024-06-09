@@ -40,10 +40,35 @@ public class SecurityConfiguration {
                 .cors(withDefaults()) // Por defecto Spring va a buscar un bean con el nombre "corsConfigurationSource"
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/").permitAll() // No aplica autorización a "api/public/"
-                                .requestMatchers("/api/admin/**").hasAuthority("administrador")
-                                .requestMatchers("/api/client/**").hasAuthority("cliente")
-                                .anyRequest().authenticated() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
+                                .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
+                                .requestMatchers("/ArticuloManufacturado/**").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers("/categoria/**").hasAuthority("COCINERO")
+                                .requestMatchers("/cliente/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/detallePedido/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/domicilio/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/empleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .requestMatchers("/empresa/**").hasAuthority("ADMIN")
+                                .requestMatchers("/factura/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/imagenArticulo/**").hasAuthority("ADMIN")
+                                .requestMatchers("/imagenCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/imagenEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .requestMatchers("/imagenEmpresa/**").hasAuthority("ADMIN")
+                                .requestMatchers("/imagenPromocion/**").hasAuthority("ADMIN")
+                                .requestMatchers("/imagenSucursal/**").hasAuthority("ADMIN")
+                                .requestMatchers("/localidad/**").permitAll()
+                                .requestMatchers("/mercadoPago/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/pais/**").permitAll()
+                                .requestMatchers("/pedido/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/preferenceMP/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/promocion/**").hasAuthority("ADMIN")
+                                .requestMatchers("/promocionDetalle/**").hasAuthority("ADMIN")
+                                .requestMatchers("/provincia/**").permitAll()
+                                .requestMatchers("/sucursal/**").hasAuthority("CONINERO")
+                                .requestMatchers("/UnidadMedida/**").hasAuthority("COCINERO")
+                                .requestMatchers("/usuarioCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/usuarioEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .anyRequest().permitAll() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer
