@@ -48,6 +48,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
 
         PromocionDto promocion = facade.update(entity,id);
 
+
         promocion.setImagenes(imageService.uploadImagesP(files, id));
 
         return ResponseEntity.ok(promocion);

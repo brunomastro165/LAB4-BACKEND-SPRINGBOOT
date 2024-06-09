@@ -11,13 +11,6 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class PromocionEditDto extends BaseDto {
-    private String denominacion;
-    private LocalDate fechaDesde;
-    private LocalDate fechaHasta;
-    private LocalTime horaDesde;
-    private LocalTime horaHasta;
-    private Double precioPromocional;
+public class PromocionEditDto extends PromocionCreateDto {
 }

@@ -14,5 +14,9 @@ public interface PromocionRepository extends BaseRepository<Promocion, Long> {
     @Query(value = "INSERT INTO sucursal_promocion (sucursal_id, promocion_id) VALUES (:sucursalId, :promocionId)", nativeQuery = true)
     void insertIntoSucursalPromocion(@Param("sucursalId") Long sucursalId, @Param("promocionId") Long promocionId);
 
+    @Modifying
+    @Query(value = "DELETE FROM sucursal_promocion WHERE promocion_id = :promocionId", nativeQuery = true)
+    void deleteFromSucursalPromocionByPromocionId(@Param("promocionId") Long promocionId);
+
 
 }

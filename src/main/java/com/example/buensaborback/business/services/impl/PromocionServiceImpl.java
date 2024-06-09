@@ -21,5 +21,17 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
                 insertIntoSucursalPromocion(sucursal.getId(), newEntity.getId()));
         return newEntity;
     }
+    @Override
+    public Promocion update(Promocion request, Long id) {
+        var optionalEntity = baseRepository.findById( request.getId());
+        if (optionalEntity.isEmpty()) {
+            throw new RuntimeException("No se encontro una entidad con el id " + request.getId());
+        }
+        var newEntity = baseRepository.save(request);
+        promocionRepository.deleteFromSucursalPromocionByPromocionId(newEntity.getId());
+        newEntity.getSucursales().forEach(sucursal -> promocionRepository.
+                insertIntoSucursalPromocion(sucursal.getId(), newEntity.getId()));
+        return newEntity;
+    }
 
 }
