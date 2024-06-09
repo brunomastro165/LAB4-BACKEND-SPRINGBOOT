@@ -53,6 +53,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al actualizar la promoción y subir las imágenes.");
         }
+
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

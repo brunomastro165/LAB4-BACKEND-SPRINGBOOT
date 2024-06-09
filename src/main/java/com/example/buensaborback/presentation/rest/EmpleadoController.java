@@ -27,6 +27,7 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") EmpleadoCreateDto entity, @RequestPart("file") MultipartFile file) {
         try {
+
             System.out.println("Estoy en controller");
             EmpleadoDto empleado = facade.createNew(entity);
             try {

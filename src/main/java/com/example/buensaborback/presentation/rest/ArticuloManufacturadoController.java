@@ -85,6 +85,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloManufacturadoEditDto entity,
                                   @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
         try {
+
             facade.update(entity,id);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al actualizar el artículo manufacturado");

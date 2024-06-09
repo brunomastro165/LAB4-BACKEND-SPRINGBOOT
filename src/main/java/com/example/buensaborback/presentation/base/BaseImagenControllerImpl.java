@@ -72,6 +72,7 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
             e.printStackTrace();
             return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica
         }
+
     }
 
 }

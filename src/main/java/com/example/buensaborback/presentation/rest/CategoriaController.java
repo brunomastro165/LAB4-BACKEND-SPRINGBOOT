@@ -47,6 +47,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
             }
         }
         return insumos;
+
     }
 
     @GetMapping("/getInsumos/{idCategoria}")

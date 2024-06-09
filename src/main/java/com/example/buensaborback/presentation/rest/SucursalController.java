@@ -42,7 +42,6 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
                 if(sucursal.getEsCasaMatriz() && sucursal.getEmpresa().getId() == entity.getIdEmpresa())
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe una sucursal que es casa matriz.");
             }
-
             SucursalDto sucursal = facade.createNew(entity);
             try {
                 sucursal.setImagenes(imageService.uploadImagesS(files, sucursal.getId()));

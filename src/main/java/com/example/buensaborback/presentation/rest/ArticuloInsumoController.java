@@ -128,6 +128,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
+
             System.out.println("Estoy en controller");
             ArticuloInsumoDto articulo = facade.createNew(entity);
             try {

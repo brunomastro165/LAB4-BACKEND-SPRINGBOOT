@@ -88,7 +88,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") ClienteCreateDto entity, @RequestPart("file") MultipartFile file) {
         try {
-
             var clientes = facade.getAll();
             System.out.println("Estoy en controller");
             if (!clientes.isEmpty()) {
