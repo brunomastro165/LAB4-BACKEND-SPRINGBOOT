@@ -28,7 +28,8 @@ dependencies {
     implementation 'com.mercadopago:sdk-java:2.1.24'
     // SPRING BOOT OAUTH2 RESOURCE SERVER
     // OJO ESTO HACE QUE TE CIERRE EL SWAGGER CON USUARIO Y CONTRASEÑA
-    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // SPRING BOOT DATA JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
