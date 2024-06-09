@@ -82,27 +82,41 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
         return ResponseEntity.ok(filteredArticulos);
     }
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ArticuloManufacturadoDto> edit(@RequestPart("entity") ArticuloManufacturadoEditDto entity,
-                                                         @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
-        facade.update(entity,id);
-        imageService.uploadImagesA(files, id);
+    public ResponseEntity<?> edit(@RequestPart("entity") ArticuloManufacturadoEditDto entity,
+                                  @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
+        try {
+            facade.update(entity,id);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al actualizar el artículo manufacturado");
+        }
+
+        try {
+            imageService.uploadImagesA(files, id);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
+        }
 
         return ResponseEntity.ok(facade.getById(id));
     }
 
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArticuloManufacturadoDto> create(@RequestPart("entity") ArticuloManufacturadoCreateDto entity, @RequestPart("files") MultipartFile[] files) {
+    public ResponseEntity<?> create(@RequestPart("entity") ArticuloManufacturadoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
             System.out.println("Estoy en controller");
-            System.out.println(entity.getId());
             ArticuloManufacturadoDto articulo = facade.createNew(entity);
-            articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
+            try {
+                articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
+            }catch (Exception e){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
+            }
+
             return ResponseEntity.ok(articulo);
         }catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el artículo manufacturado.");
         }
     }
+
 
 }

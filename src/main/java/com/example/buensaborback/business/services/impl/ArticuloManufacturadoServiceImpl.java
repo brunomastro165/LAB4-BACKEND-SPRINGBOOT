@@ -9,30 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloManufacturado, Long> implements ArticuloManufacturadoService {
-    @Autowired
-    ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
-    //Esto ya lo hace el cascade TYPE.ALL creo
-/*
-    @Override
-    public ArticuloManufacturado create(ArticuloManufacturado articuloManufacturado) {
-        var detalles = articuloManufacturado.getArticuloManufacturadoDetalles();
-        Set<ArticuloManufacturadoDetalle> newDetalles = new HashSet<>();
 
 
-
-        for (ArticuloManufacturadoDetalle detalle : detalles) {
-            try {
-                System.out.println(detalle);
-                newDetalles.add(articuloManufacturadoDetalleRepository.save(detalle));
-            } catch (Exception e) {
-
-            }
-
-        }
-        articuloManufacturado.setArticuloManufacturadoDetalles(newDetalles);
-        var newEntity = baseRepository.save(articuloManufacturado);
-        return newEntity;
-    }
-
- */
 }

@@ -86,16 +86,36 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClienteDto> create(@RequestPart("entity") ClienteCreateDto entity, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<?> create(@RequestPart("entity") ClienteCreateDto entity, @RequestPart("file") MultipartFile file) {
         try {
+
+            var clientes = facade.getAll();
             System.out.println("Estoy en controller");
+            if (!clientes.isEmpty()) {
+                for (ClienteDto c : clientes) {
+                    if (c.getUsuario().getUserName().equals(entity.getUsuario().getUserName())) {
+                        return new ResponseEntity<>("Ya existe un cliente con ese nombre", HttpStatus.BAD_REQUEST);
+                    }
+                }
+            }
+            // Encriptar la clave usando SHA3
+            SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512();
+            byte[] digest = digestSHA3.digest(entity.getUsuario().getClave().getBytes());
+
+            // Convertir el hash a hexadecimal
+            String claveEncriptada = Hex.toHexString(digest);
+
+            // Establecer la clave encriptada
+            entity.getUsuario().setClave(claveEncriptada);
+
             ClienteDto cliente = facade.createNew(entity);
             cliente.setImagenCliente(imageService.uploadImagesC(file, cliente.getId()));
             return ResponseEntity.ok(cliente);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el cliente y subir la imagen.");
         }
     }
+
 }
 

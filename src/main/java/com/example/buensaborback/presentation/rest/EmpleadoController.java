@@ -25,17 +25,20 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmpleadoDto> create(@RequestPart("entity") EmpleadoCreateDto entity, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<?> create(@RequestPart("entity") EmpleadoCreateDto entity, @RequestPart("file") MultipartFile file) {
         try {
             System.out.println("Estoy en controller");
             EmpleadoDto empleado = facade.createNew(entity);
-            empleado.setImagenPersona(imageService.uploadImagesE(file, empleado.getId()));
+            try {
+                empleado.setImagenPersona(imageService.uploadImagesE(file, empleado.getId()));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir la imagen.");
+            }
             return ResponseEntity.ok(empleado);
         } catch (Exception e) {
-            // Aquí puedes manejar la excepción como prefieras.
-            // Por ejemplo, puedes registrar el error y devolver una respuesta de error al cliente.
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el empleado.");
         }
     }
+
 }
