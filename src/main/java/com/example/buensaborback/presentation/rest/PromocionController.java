@@ -43,30 +43,31 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
 
 
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<PromocionDto> edit(@RequestPart("entity") PromocionEditDto entity,
-                                             @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
+    public ResponseEntity<?> edit(@RequestPart("entity") PromocionEditDto entity,
+                                  @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
+        try {
+            PromocionDto promocion = facade.update(entity,id);
+            promocion.setImagenes(imageService.uploadImagesP(files, id));
+            return ResponseEntity.ok(promocion);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al actualizar la promoción y subir las imágenes.");
+        }
 
-        PromocionDto promocion = facade.update(entity,id);
-
-
-        promocion.setImagenes(imageService.uploadImagesP(files, id));
-
-        return ResponseEntity.ok(promocion);
     }
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<PromocionDto> create(@RequestPart("entity") PromocionCreateDto entity,
-                                               @RequestPart("files") MultipartFile[] files) {
+    public ResponseEntity<?> create(@RequestPart("entity") PromocionCreateDto entity,
+                                    @RequestPart("files") MultipartFile[] files) {
         try {
             System.out.println(entity.getIdSucursales());
             PromocionDto promocion = facade.createNew(entity);
             System.out.println(promocion.getSucursales());
             promocion.setImagenes(imageService.uploadImagesP(files, promocion.getId()));
-
             return ResponseEntity.ok(promocion);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear la promoción y subir las imágenes.");
         }
     }
 

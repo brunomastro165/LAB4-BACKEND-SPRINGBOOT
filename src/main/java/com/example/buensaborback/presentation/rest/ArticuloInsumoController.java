@@ -6,6 +6,8 @@ import com.example.buensaborback.domain.dto.Articulo.ArticuloDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
 import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
@@ -103,21 +105,38 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
+    @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> edit(@RequestPart("entity") ArticuloInsumoEditDto entity,
+                                                         @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
+        try {
+            facade.update(entity,id);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir actualizar el insumo");
+        }
+
+        try {
+            imageService.uploadImagesA(files, id);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
+        }
+
+
+        return ResponseEntity.ok(facade.getById(id));
+    }
 
 
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArticuloInsumoDto> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
+    public ResponseEntity<?> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
+
             System.out.println("Estoy en controller");
             ArticuloInsumoDto articulo = facade.createNew(entity);
-            List<ImagenArticuloDto> imagenes = imageService.uploadImagesA(files, articulo.getId());
-            for (ImagenArticuloDto imagen :
-                    imagenes) {
-                articulo.getImagenes().add(imagen);
+            try {
+                articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
+            }catch (Exception e){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
             }
-            ArticuloInsumoCreateDto articuloActualizado = entity;
-            articuloActualizado.setId(articulo.getId());
-            articulo = facade.createNew(articuloActualizado);
+
 
             return ResponseEntity.ok(articulo);
         }catch (Exception e) {

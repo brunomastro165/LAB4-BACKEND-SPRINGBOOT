@@ -38,20 +38,24 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") SucursalCreateDto entity, @RequestPart("files") MultipartFile[] files) {
         try {
-            for (Sucursal sucursal:
-                 sucursalRepository.getAll()) {
+            for (Sucursal sucursal: sucursalRepository.getAll()) {
                 if(sucursal.getEsCasaMatriz() && sucursal.getEmpresa().getId() == entity.getIdEmpresa())
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe una sucursal que es casa matriz.");
             }
-
             SucursalDto sucursal = facade.createNew(entity);
-            sucursal.setImagenes(imageService.uploadImagesS(files, sucursal.getId()));
+            try {
+                sucursal.setImagenes(imageService.uploadImagesS(files, sucursal.getId()));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
+            }
+
             return ResponseEntity.ok(sucursal);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear la sucursal.");
         }
     }
+
 
 
     @GetMapping("/getInsumos/{idSucursal}")

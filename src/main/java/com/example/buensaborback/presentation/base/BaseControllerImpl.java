@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@Transactional
 public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, DE, ID extends Serializable, F extends BaseFacadeImpl<E, D, DC, DE, ID>> implements BaseController<D, DC, DE, ID> {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseControllerImpl.class);
