@@ -6,6 +6,7 @@ import com.example.buensaborback.business.services.ImagenClienteService;
 import com.example.buensaborback.business.services.UsuarioClienteService;
 import com.example.buensaborback.domain.dto.Cliente.ClienteCreateDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
+import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteCreateDto;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import com.example.buensaborback.domain.entities.Cliente;
 import com.example.buensaborback.domain.entities.UsuarioCliente;
@@ -119,29 +120,37 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
 
             ClienteDto cliente = facade.createNew(entity);
             cliente.setImagenCliente(imageService.uploadImagesC(file, cliente.getId()));
+            /*
+            String auth0Token = getAuth0Token(entity.getUsuario());
+
+            // Guarda el token de Auth0 en el usuario
+            entity.getUsuario().setAuth0Id(auth0Token);
+*/
+
+
             return ResponseEntity.ok(cliente);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el cliente y subir la imagen.");
         }
     }
-    /*
-    private String getAuth0Token(UsuarioCliente usuario) throws IOException {
+/*
+    private String getAuth0Token(UsuarioClienteCreateDto usuario) throws IOException {
+
         OkHttpClient client = new OkHttpClient();
 
         okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"client_id\":\"YOUR_CLIENT_ID\",\"client_secret\":\"YOUR_CLIENT_SECRET\",\"audience\":\"YOUR_API_IDENTIFIER\",\"grant_type\":\"client_credentials\"}");
+        okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\"email\":\"test@example.com\",\"password\":\"secret\",\"connection\":\"Username-Password-Authentication\"}");
         Request request = new Request.Builder()
-                .url("https://YOUR_DOMAIN/oauth/token")
+                .url("https://YOUR_DOMAIN.auth0.com/api/v2/users")
                 .post(body)
                 .addHeader("content-type", "application/json")
+                .addHeader("Authorization", "Bearer YOUR_MANAGEMENT_API_TOKEN")
                 .build();
 
         Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
 
-        // Aquí deberías parsear la respuesta JSON para obtener el token.
-        // Este es solo un ejemplo y necesitarás ajustarlo a tu caso específico.
+
         String token = parseToken(responseBody);
 
         return token;

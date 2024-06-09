@@ -37,10 +37,25 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(withDefaults())
+                .cors(withDefaults()) // Por defecto Spring va a buscar un bean con el nombre "corsConfigurationSource"
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
+                                .requestMatchers("/").permitAll() // No aplica autorización a "api/public/"
+                                .requestMatchers("/api/admin/**").hasAuthority("administrador")
+                                .requestMatchers("/api/client/**").hasAuthority("cliente")
+                                .anyRequest().authenticated() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
+                )
+                .oauth2ResourceServer(oauth2ResourceServer ->
+                        oauth2ResourceServer
+                                .jwt(jwt -> jwt
+                                        .decoder(jwtDecoder())
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                )
+                );
+
+        return http.build();
+    }/*
+    .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
                                 .requestMatchers("/ArticuloManufacturado/**").hasAnyAuthority("ADMIN", "COCINERO")
                                 .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAnyAuthority("ADMIN", "COCINERO")
                                 .requestMatchers("/Categoria/**").permitAll()
@@ -69,18 +84,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/UsuarioCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
                                 .requestMatchers("/UsuarioEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
                                 .anyRequest().authenticated()
-                )
-                .oauth2ResourceServer(oauth2ResourceServer ->
-                        oauth2ResourceServer
-                                .jwt(jwt -> jwt
-                                        .decoder(jwtDecoder())
-                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                                )
-                );
-
-        return http.build();
-    }
-
+                                */
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -122,7 +126,6 @@ public class SecurityConfiguration {
         return jwtConverter;
     }
 }
-/*VARIABLES DE ENTORNO
-AUTH0_AUDIENCE=http://api_auth0_buenSabor;AUTH0_ISSUER_URI=https://dev-ni2b3u711x5zx2x7.us.auth0.com/;CORS_ALLOWED_ORIGINS=http://localhost:5173;SPRING_SECURITY_DEBUG=INFO;WEB_SECURITY_DEBUG=true
-SOLO COPIAR Y PEGAR ESO EN LAS VARIABLES
+/*ESTAS SON LAS VARIABLES DE ENTORNO
+    AUTH0_AUDIENCE=http://api_auth0_buenSabor;AUTH0_ISSUER_URI=https://dev-ni2b3u711x5zx2x7.us.auth0.com/;CORS_ALLOWED_ORIGINS=http://localhost:5173;SPRING_SECURITY_DEBUG=INFO;WEB_SECURITY_DEBUG=true
  */
