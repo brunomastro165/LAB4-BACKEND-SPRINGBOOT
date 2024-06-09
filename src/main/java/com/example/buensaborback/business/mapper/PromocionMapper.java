@@ -16,6 +16,5 @@ public interface PromocionMapper extends BaseMapper<Promocion, PromocionDto, Pro
     @Mapping(target = "sucursales", source = "idSucursales", qualifiedByName = "getById")
     Promocion toEntityCreate(PromocionCreateDto source);
 
-
  */
 }

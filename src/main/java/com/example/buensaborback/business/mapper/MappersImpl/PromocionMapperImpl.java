@@ -102,7 +102,6 @@ public class PromocionMapperImpl implements PromocionMapper {
         if ( source == null ) {
             return entity;
         }
-
         entity.setSucursales( longSetToSucursalSet( source.getIdSucursales() ) );
         entity.setId( source.getId() );
         entity.setEliminado( source.isEliminado() );

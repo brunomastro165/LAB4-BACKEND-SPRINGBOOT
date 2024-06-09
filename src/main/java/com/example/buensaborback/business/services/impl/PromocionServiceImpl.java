@@ -21,7 +21,6 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
                 insertIntoSucursalPromocion(sucursal.getId(), newEntity.getId()));
         return newEntity;
     }
-
     @Override
     public Promocion update(Promocion request, Long id) {
         var optionalEntity = baseRepository.findById( request.getId());

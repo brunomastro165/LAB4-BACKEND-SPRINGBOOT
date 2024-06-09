@@ -13,5 +13,4 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 public class PromocionEditDto extends PromocionCreateDto {
-
 }

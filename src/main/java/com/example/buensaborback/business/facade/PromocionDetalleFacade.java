@@ -5,4 +5,5 @@ import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleCre
 import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto;
 
 public interface PromocionDetalleFacade extends BaseFacade<PromocionDetalleDto, PromocionDetalleCreateDto, PromocionDetalleCreateDto, Long> {
+
 }

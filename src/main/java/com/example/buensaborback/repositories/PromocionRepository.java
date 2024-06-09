@@ -19,5 +19,4 @@ public interface PromocionRepository extends BaseRepository<Promocion, Long> {
     void deleteFromSucursalPromocionByPromocionId(@Param("promocionId") Long promocionId);
 
 
-
 }
