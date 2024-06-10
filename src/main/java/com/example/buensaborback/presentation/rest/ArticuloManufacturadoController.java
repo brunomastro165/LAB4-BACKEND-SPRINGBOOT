@@ -1,5 +1,6 @@
 package com.example.buensaborback.presentation.rest;
 
+import com.example.buensaborback.business.facade.PromocionFacade;
 import com.example.buensaborback.business.facade.impl.ArticuloManufacturadoFacadeImpl;
 import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
@@ -39,6 +40,8 @@ import java.util.stream.Collectors;
 public class ArticuloManufacturadoController extends BaseControllerImpl<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto, Long, ArticuloManufacturadoFacadeImpl> {
     @Autowired
     private ImagenArticuloService imageService;
+    @Autowired
+    private PromocionFacade promocionFacade;
 
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImpl facade) {
         super(facade);
@@ -68,16 +71,6 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
         List<ArticuloManufacturadoDto> filteredArticulos = allArticulos.stream()
                 .filter(a -> !a.isEliminado()
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(filteredArticulos);
-    }
-
-    @GetMapping("/getArticulosCategoria/{idCategoria}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria) {
-        List<ArticuloManufacturadoDto> allArticulos = facade.getAll();
-        List<ArticuloManufacturadoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getCategoria().getId().equals(idCategoria)
-                        && !a.isEliminado())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
@@ -118,6 +111,20 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el artículo manufacturado.");
         }
     }
-
+    @Override
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        //Aca se comprueba que el insumo no esta en una promocion
+        boolean isInPromocion = promocionFacade.getAll().stream()
+                .flatMap(promocion -> promocion.getDetalles().stream())
+                .anyMatch(promocionDetalle ->
+                        promocionDetalle.getArticulosManufacturados() != null && promocionDetalle.getArticulosManufacturados().isEliminado()
+                );
+        if (isInPromocion) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el manufacturado porque esta en una promocion");
+        }
+        facade.deleteById(id);
+        return ResponseEntity.ok("La entidad fue borrada correctamente");
+    }
 
 }

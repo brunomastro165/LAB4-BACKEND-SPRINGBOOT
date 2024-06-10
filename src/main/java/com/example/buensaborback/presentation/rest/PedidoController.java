@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 @RequestMapping("/pedido")
 public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto, Long, PedidoFacadeImpl> {
-
-
     @Autowired
     private PedidoRepository pedidoRepository;
 
@@ -56,12 +54,8 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> getById(@PathVariable Long id) {
-
         //obtengo el pedido con el facade aca los articulos son nulos
         PedidoDto pedido = facade.getById(id);
-
-
-
         return ResponseEntity.ok(pedido);
     }
     @PutMapping("/cambiarEstado/{id}")

@@ -3,6 +3,7 @@ package com.example.buensaborback.presentation.rest;
 import com.example.buensaborback.business.facade.impl.CategoriaFacadeImpl;
 import com.example.buensaborback.business.mapper.CategoriaMapper;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
@@ -29,7 +30,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         super(facade);
     }
 
-    public List<ArticuloInsumoDto> getArticuloSubCategoria(Long idSub) {
+    public List<ArticuloInsumoDto> getInsumoSubCategoria(Long idSub) {
         List<ArticuloInsumoDto> insumos = new ArrayList<>();
         var categoria = facade.getById(idSub);
         for (ArticuloInsumoDto insumo :
@@ -40,22 +41,44 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
             for (CategoriaShortDto subCategoria :
                     categoria.getSubCategorias()) {
                 if(!subCategoria.isEliminado()){
-                    List<ArticuloInsumoDto> ins = getArticuloSubCategoria(subCategoria.getId());
+                    List<ArticuloInsumoDto> ins = getInsumoSubCategoria(subCategoria.getId());
                     for (ArticuloInsumoDto i :
                             ins) {
+                        if(!i.isEliminado())
                         insumos.add(i);
                     }
                 }
-
             }
         }
         return insumos;
 
     }
+    public List<ArticuloManufacturadoDto> getManufacturadoSubCategoria(Long idSub) {
+        List<ArticuloManufacturadoDto> manufacturados = new ArrayList<>();
+        var categoria = facade.getById(idSub);
+        for (ArticuloManufacturadoDto manufacturado :
+                categoria.getArticulosManufacturados()) {
+            manufacturados.add(manufacturado);
+        }
+        if (!categoria.getSubCategorias().isEmpty()) {
+            for (CategoriaShortDto subCategoria :
+                    categoria.getSubCategorias()) {
+                if(!subCategoria.isEliminado()){
+                    List<ArticuloManufacturadoDto> manu = getManufacturadoSubCategoria(subCategoria.getId());
+                    for (ArticuloManufacturadoDto m :
+                            manu) {
+                        if(!m.isEliminado())
+                        manufacturados.add(m);
+                    }
+                }
+            }
+        }
+        return manufacturados;
+    }
 
     @GetMapping("/getInsumos/{idCategoria}")
     public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria) {
-        return ResponseEntity.ok(getArticuloSubCategoria(idCategoria));
+        return ResponseEntity.ok(getInsumoSubCategoria(idCategoria));
     }
 
     @GetMapping("/insumo")
@@ -84,6 +107,12 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/getArticulosCategoria/{idCategoria}")
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria) {
+
+        return ResponseEntity.ok(getManufacturadoSubCategoria(idCategoria));
     }
 
     @PutMapping("/addArticuloManufacturado/{idCategoria}/{idArticulo}")

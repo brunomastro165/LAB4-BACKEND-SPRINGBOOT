@@ -9,11 +9,11 @@ import com.example.buensaborback.domain.entities.Pedido;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-//@Mapper(componentModel = "spring",uses = {PromocionService.class})
+@Mapper(componentModel = "spring",uses = {PromocionService.class})
 public interface DetallePedidoMapper extends BaseMapper<DetallePedido, DetallePedidoDto, DetallePedidoCreateDto, DetallePedidoCreateDto> {
-    /*
+
     @Mapping(target = "promocion", source = "idPromocion", qualifiedByName = "getById")
     DetallePedido toEntityCreate(DetallePedidoCreateDto source);
 
-     */
+
 }

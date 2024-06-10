@@ -2,6 +2,7 @@ package com.example.buensaborback.domain.dto.Cliente;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioShortDto;
 import com.example.buensaborback.domain.dto.ImagenCliente.ImagenClienteDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoShortDto;
@@ -28,12 +29,10 @@ public class ClienteDto extends BaseDto {
     private String email;
 
     private UsuarioClienteDto usuario;
-
-
     private ImagenClienteDto imagenCliente;
 
 
-    private Set<DomicilioDto> domicilios;
+    private Set<DomicilioShortDto> domicilios;
 
 
     private Set<PedidoShortDto> pedidos;

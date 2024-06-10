@@ -36,8 +36,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     @Autowired
     private ImagenClienteService imageService;
     @Autowired
-    private ClienteService clienteService;
-    @Autowired
     private UsuarioClienteService usuarioClienteService;
 
     public ClienteController(ClienteFacadeImpl facade) {
@@ -74,7 +72,7 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     @PostMapping("/create")
     public ResponseEntity<?> crear(@RequestBody ClienteCreateDto cliente){
         var clientes = facade.getAll();
-
+        System.out.println(cliente.getUsuario().getUserName());
         if (!clientes.isEmpty()) {
             for (ClienteDto c : clientes) {
                 if (c.getUsuario().getUserName().equals(cliente.getUsuario().getUserName())) {
@@ -108,9 +106,11 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
                     }
                 }
             }
+            System.out.println("puto");
             // Encriptar la clave usando SHA3
             SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512();
             byte[] digest = digestSHA3.digest(entity.getUsuario().getClave().getBytes());
+            System.out.println("puto");
 
             // Convertir el hash a hexadecimal
             String claveEncriptada = Hex.toHexString(digest);
@@ -120,13 +120,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
 
             ClienteDto cliente = facade.createNew(entity);
             cliente.setImagenCliente(imageService.uploadImagesC(file, cliente.getId()));
-            /*
-            String auth0Token = getAuth0Token(entity.getUsuario());
-
-            // Guarda el token de Auth0 en el usuario
-            entity.getUsuario().setAuth0Id(auth0Token);
-*/
-
 
             return ResponseEntity.ok(cliente);
         } catch (Exception e) {

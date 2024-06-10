@@ -96,12 +96,12 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
     public ResponseEntity<?> deleteById(@PathVariable ID id) {
         logger.info("INICIO DELETE BY ID");
         facade.deleteById(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok("La entidad fue borrada con exito");
     }
     @PostMapping("/activate/{id}")
     public ResponseEntity<?> activateById(@PathVariable ID id) {
         logger.info("INICIO DELETE BY ID");
         facade.activateById(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok("La entidad fue activada con exito");
     }
 }

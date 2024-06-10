@@ -1,6 +1,9 @@
 package com.example.buensaborback.presentation.rest;
 
+import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
+import com.example.buensaborback.business.facade.PromocionFacade;
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
+import com.example.buensaborback.business.services.ArticuloManufacturadoService;
 import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.domain.dto.Articulo.ArticuloDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
@@ -8,9 +11,14 @@ import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
+import com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
 import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
+import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
+import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto;
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
+import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
+import com.example.buensaborback.domain.entities.Promocion;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.CategoriaRepository;
@@ -18,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,11 +44,16 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
     @Autowired
     private ArticuloRepository articuloRepository;
+    @Autowired
+    private ArticuloManufacturadoFacade articuloManufacturadoFacade;
+    @Autowired
+    private PromocionFacade promocionFacade;
 
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
 
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @GetMapping("/getArticulosCategoria/{idCategoria}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorCategorias(@PathVariable Long idCategoria) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
@@ -93,8 +107,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         return ResponseEntity.ok(filteredArticulos);
     }
 
-
-
     @GetMapping("/buscar/{searchString}/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
@@ -128,7 +140,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
-
             System.out.println("Estoy en controller");
             ArticuloInsumoDto articulo = facade.createNew(entity);
             try {
@@ -136,13 +147,33 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
             }catch (Exception e){
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
             }
-
-
             return ResponseEntity.ok(articulo);
         }catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    @Override
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        //Aca se comprueba que el insumo no esta en un manufacturado
+        boolean isInManufacturado = articuloManufacturadoFacade.getAll().stream()
+                .flatMap(articuloManufacturado -> articuloManufacturado.getArticuloManufacturadoDetalles().stream())
+                .anyMatch(articuloManufacturadoDetalle -> articuloManufacturadoDetalle.getArticuloInsumo().getId() == id);
+        if (isInManufacturado) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en un manufacturado");
+        }
+        //Aca se comprueba que el insumo no esta en una promocion
+        boolean isInPromocion = promocionFacade.getAll().stream()
+                .flatMap(promocion -> promocion.getDetalles().stream())
+                .anyMatch(promocionDetalle ->
+                        promocionDetalle.getInsumos() != null && promocionDetalle.getInsumos().isEliminado()
+                );
+        if (isInPromocion) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en una promocion");
+        }
+        facade.deleteById(id);
+        return ResponseEntity.ok("La entidad fue borrada correctamente");
     }
 
 
