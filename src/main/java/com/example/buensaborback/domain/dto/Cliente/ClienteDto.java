@@ -1,6 +1,7 @@
 package com.example.buensaborback.domain.dto.Cliente;
 
 import com.example.buensaborback.domain.dto.BaseDto;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioShortDto;
 import com.example.buensaborback.domain.dto.ImagenCliente.ImagenClienteDto;
@@ -32,7 +33,7 @@ public class ClienteDto extends BaseDto {
     private ImagenClienteDto imagenCliente;
 
 
-    private Set<DomicilioShortDto> domicilios;
+    private Set<DomicilioDto> domicilios;
 
 
     private Set<PedidoShortDto> pedidos;
