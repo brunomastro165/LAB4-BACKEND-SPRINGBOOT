@@ -98,10 +98,8 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     }
     private void restarStockArticulos(Articulo articulo,Integer cantidad){
         if(articulo instanceof ArticuloInsumo){
-            System.out.println("estoy restando insumos");
             ArticuloInsumo articuloInsumo = articuloInsumoService.getById(articulo.getId());
             articuloInsumo.setStockActual(articuloInsumo.getStockActual()-cantidad);
-            System.out.println("");
             articuloInsumoService.update(articuloInsumo, articulo.getId());
         }
         if(articulo instanceof ArticuloManufacturado){

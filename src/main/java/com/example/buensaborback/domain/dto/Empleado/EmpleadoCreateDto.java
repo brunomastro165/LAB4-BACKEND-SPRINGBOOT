@@ -21,13 +21,7 @@ public class EmpleadoCreateDto extends BaseDto {
     private String apellido;
     private String telefono;
     private String email;
-
-
     private Set<DomicilioCreateDto> domicilios = new HashSet<>();
-
-
     private Rol tipoEmpleado;
-
-
-    private SucursalDto sucursal;
+    private Long idSucursal;
 }
