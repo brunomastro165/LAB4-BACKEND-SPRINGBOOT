@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/detallePedido/**").hasAnyAuthority("ADMIN", "CAJERO")
                                 .requestMatchers("/domicilio/**").hasAnyAuthority("ADMIN", "CAJERO")
                                 .requestMatchers("/empleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
-                                .requestMatchers("/empresa/**").hasAuthority("ADMIN")
+                                .requestMatchers("/empresa/**").hasAuthority("COCINERO")
                                 .requestMatchers("/factura/**").hasAnyAuthority("ADMIN", "CAJERO")
                                 .requestMatchers("/imagenArticulo/**").hasAuthority("ADMIN")
                                 .requestMatchers("/imagenCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
@@ -79,37 +79,7 @@ public class SecurityConfiguration {
                 );
 
         return http.build();
-    }/*
-    .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ArticuloManufacturado/**").hasAnyAuthority("ADMIN", "COCINERO")
-                                .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAnyAuthority("ADMIN", "COCINERO")
-                                .requestMatchers("/Categoria/**").permitAll()
-                                .requestMatchers("/Cliente/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/DetallePedido/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/Domicilio/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/Empleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
-                                .requestMatchers("/Empresa/**").hasAuthority("ADMIN")
-                                .requestMatchers("/Factura/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/ImagenArticulo/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ImagenCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/ImagenEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
-                                .requestMatchers("/ImagenEmpresa/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ImagenPromocion/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ImagenSucursal/**").hasAuthority("ADMIN")
-                                .requestMatchers("/Localidad/**").permitAll()
-                                .requestMatchers("/MercadoPago/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/Pais/**").permitAll()
-                                .requestMatchers("/Pedido/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/PreferenceMP/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/Promocion/**").hasAuthority("ADMIN")
-                                .requestMatchers("/PromocionDetalle/**").hasAuthority("ADMIN")
-                                .requestMatchers("/Provincia/**").permitAll()
-                                .requestMatchers("/Sucursal/**").hasAuthority("ADMIN")
-                                .requestMatchers("/UnidadMedida/**").hasAuthority("ADMIN")
-                                .requestMatchers("/UsuarioCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/UsuarioEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
-                                .anyRequest().authenticated()
-                                */
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -152,5 +122,5 @@ public class SecurityConfiguration {
     }
 }
 /*ESTAS SON LAS VARIABLES DE ENTORNO
-    AUTH0_AUDIENCE=http://api_auth0_buenSabor;AUTH0_ISSUER_URI=https://dev-ni2b3u711x5zx2x7.us.auth0.com/;CORS_ALLOWED_ORIGINS=http://localhost:5173;SPRING_SECURITY_DEBUG=INFO;WEB_SECURITY_DEBUG=true
+    AUTH0_AUDIENCE=http://api_auth0_buenSabor/;AUTH0_ISSUER_URI=https://dev-ni2b3u711x5zx2x7.us.auth0.com/;CORS_ALLOWED_ORIGINS=http://localhost:5173;SPRING_SECURITY_DEBUG=INFO;WEB_SECURITY_DEBUG=true
  */
