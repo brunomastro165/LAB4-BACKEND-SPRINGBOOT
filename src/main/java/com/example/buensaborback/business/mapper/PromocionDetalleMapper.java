@@ -9,7 +9,7 @@ import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto
 import com.example.buensaborback.domain.entities.PromocionDetalle;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {ArticuloManufacturadoService.class, ArticuloManufacturadoFacade.class, ArticuloInsumoFacade.class, ArticuloInsumoService.class})
+//@Mapper(componentModel = "spring")
 public interface PromocionDetalleMapper extends BaseMapper<PromocionDetalle, PromocionDetalleDto, PromocionDetalleCreateDto, PromocionDetalleCreateDto> {
 
 }

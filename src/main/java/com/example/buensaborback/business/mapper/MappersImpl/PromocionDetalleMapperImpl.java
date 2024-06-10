@@ -20,7 +20,6 @@ import com.example.buensaborback.repositories.ArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/*
 @Component
 public class PromocionDetalleMapperImpl implements PromocionDetalleMapper {
     @Autowired
@@ -33,6 +32,7 @@ public class PromocionDetalleMapperImpl implements PromocionDetalleMapper {
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
     @Autowired
     ArticuloInsumoMapper articuloInsumoMapper;
+
     @Override
     public PromocionDetalleDto toDTO(PromocionDetalle source) {
         if ( source == null ) {
@@ -132,4 +132,3 @@ public class PromocionDetalleMapperImpl implements PromocionDetalleMapper {
         return list;
     }
 }
-*/

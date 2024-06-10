@@ -31,9 +31,9 @@ import com.example.buensaborback.repositories.ArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/*
 @Component
 public class DetallePedidoMapperImpl implements DetallePedidoMapper {
+
     @Autowired
     ArticuloInsumoService articuloInsumoService;
     @Autowired
@@ -44,7 +44,6 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
     @Autowired
     ArticuloInsumoMapper articuloInsumoMapper;
-
     @Autowired
     private PromocionService promocionService;
 
@@ -66,10 +65,10 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         if(source.getArticulo() instanceof ArticuloInsumo){
             detallePedidoDto.setArticuloInsumo(articuloInsumoMapper.toDTO(articuloInsumoService.getById(source.getArticulo().getId())));
         }
-
         if(source.getArticulo() instanceof ArticuloManufacturado){
             detallePedidoDto.setArticuloManufacturado(articuloManufacturadoMapper.toDTO(articuloManufacturadoService.getById(source.getArticulo().getId())));
         }
+
 
         return detallePedidoDto;
     }
@@ -92,7 +91,6 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         if(source.getArticuloManufacturado() != null)
             detallePedido.articulo(articuloManufacturadoService.getById(source.getArticuloManufacturado().getId()));
 
-
         return detallePedido.build();
     }
 
@@ -107,7 +105,7 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         entity.setCantidad( source.getCantidad() );
         entity.setSubTotal( source.getSubTotal() );
         if(source.getIdPromocion() !=null)
-        entity.setPromocion(promocionService.getById(source.getIdPromocion()));
+            entity.setPromocion(promocionService.getById(source.getIdPromocion()));
         else {
             if(articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloInsumo)
                 entity.setArticulo(articuloInsumoService.getById(source.getIdArticulo()));
@@ -139,18 +137,18 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         }
 
         DetallePedido.DetallePedidoBuilder<?, ?> detallePedido = DetallePedido.builder();
-        if(source.getIdPromocion() != null)
-        detallePedido.promocion( promocionService.getById( source.getIdPromocion() ) );
-        else{
+        detallePedido.id( source.getId() );
+        detallePedido.eliminado( source.isEliminado() );
+        detallePedido.cantidad( source.getCantidad() );
+        detallePedido.subTotal( source.getSubTotal() );
+        if(source.getIdPromocion() != 0 )
+            detallePedido.promocion(promocionService.getById(source.getIdPromocion()));
+        else {
             if(articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloInsumo)
                 detallePedido.articulo(articuloInsumoService.getById(source.getIdArticulo()));
             if(articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloManufacturado)
                 detallePedido.articulo(articuloManufacturadoService.getById(source.getIdArticulo()));
         }
-        detallePedido.id( source.getId() );
-        detallePedido.eliminado( source.isEliminado() );
-        detallePedido.cantidad( source.getCantidad() );
-        detallePedido.subTotal( source.getSubTotal() );
 
         return detallePedido.build();
     }
@@ -379,7 +377,6 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         }
 
         ImagenPromocion.ImagenPromocionBuilder<?, ?> imagenPromocion = ImagenPromocion.builder();
-
         imagenPromocion.name( imagenPromocionDto.getName() );
         imagenPromocion.url( imagenPromocionDto.getUrl() );
 
@@ -571,4 +568,3 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         return promocion.build();
     }
 }
-*/

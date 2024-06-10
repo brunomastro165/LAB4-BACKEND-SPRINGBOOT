@@ -17,5 +17,4 @@ public class PromocionDetalleDto extends BaseDto {
     private ArticuloInsumoDto insumos;
 
     private ArticuloManufacturadoDto articulosManufacturados;
-    private PromocionDto promocion;
 }

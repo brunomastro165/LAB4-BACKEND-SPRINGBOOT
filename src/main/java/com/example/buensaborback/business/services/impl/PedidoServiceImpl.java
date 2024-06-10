@@ -28,91 +28,131 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     @Override
     public Pedido create(Pedido request) {
         System.out.println("Estoy en service");
-        System.out.println(request);
-
-        boolean denegar = calcularSubtotalesYVerificarCondiciones(request);
-        if (!denegar) {
-            denegar = actualizarStocks(request);
-        }
-
+        request = calcularSubtotales(request);
         // Configurar el estado del pedido
         request.setHoraEstimadaFinalizacion(LocalTime.now());
-        request.setEstado(denegar ? Estado.RECHAZADO : Estado.PENDIENTE);
+        request.setEstado(actualizarStocks(request) ? Estado.RECHAZADO : Estado.PENDIENTE);
         request.setFechaPedido(LocalDate.now());
 
         var newEntity = baseRepository.save(request);
         return newEntity;
     }
 
-    private boolean calcularSubtotalesYVerificarCondiciones(Pedido request) {
-        boolean denegar = false;
-        double costoTotal = 0;
+    // Funcion para calcular los totales
+    private Pedido calcularSubtotales(Pedido request) {
+        double totalCosto = 0;
         double total = 0;
-
         for (DetallePedido detalle : request.getDetallesPedido()) {
-            Articulo articulo = articuloRepository.getById(detalle.getArticulo().getId());
-
-            // Calcular y establecer el subtotal
-            double subTotal = articulo.getPrecioVenta() * detalle.getCantidad();
-            detalle.setSubTotal(subTotal);
-
-            // Acumular el total
-            total += detalle.getSubTotal();
-
-            // Verificar condiciones y calcular costo total
-            if (articulo instanceof ArticuloInsumo) {
-                ArticuloInsumo articuloInsumo = (ArticuloInsumo) articulo;
-                costoTotal += articuloInsumo.getPrecioCompra();
-                if (articuloInsumo.getStockActual() <= articuloInsumo.getStockMinimo()) {
-                    denegar = true;
-                }
-            } else if (articulo instanceof ArticuloManufacturado) {
-                ArticuloManufacturado articuloManufacturado = (ArticuloManufacturado) articulo;
-                for (ArticuloManufacturadoDetalle detalle1 : articuloManufacturado.getArticuloManufacturadoDetalles()) {
-                    if (detalle1.getArticuloInsumo().getStockActual() <= detalle1.getArticuloInsumo().getStockMinimo()) {
-                        denegar = true;
-                    }
-                    costoTotal += detalle1.getArticuloInsumo().getPrecioVenta() * detalle.getCantidad();
-                }
+            if(detalle.getPromocion() != null){
+                detalle.setSubTotal(detalle.getPromocion().getPrecioPromocional() * detalle.getCantidad());
+                total += detalle.getSubTotal();
+                totalCosto += totalCostoPromocion(detalle.getPromocion()) * detalle.getCantidad();
+            }else{
+                detalle.setSubTotal(detalle.getArticulo().getPrecioVenta() * detalle.getCantidad());
+                total += detalle.getSubTotal();
+                totalCosto += totalCostoArticulo(detalle.getArticulo()) * detalle.getCantidad();
             }
         }
-
         request.setTotal(total);
-        request.setTotalCosto(costoTotal);
-
-        return denegar;
+        request.setTotalCosto(totalCosto);
+        return request;
+    }
+    private double totalCostoArticulo(Articulo articulo){
+        double totalCosto = 0;
+        if(articulo instanceof ArticuloInsumo)
+            totalCosto = ((ArticuloInsumo) articulo).getPrecioCompra();
+        if(articulo instanceof ArticuloManufacturado){
+            for (ArticuloManufacturadoDetalle detalle:
+                 ((ArticuloManufacturado) articulo).getArticuloManufacturadoDetalles()) {
+                totalCosto += totalCostoArticulo(detalle.getArticuloInsumo())*detalle.getCantidad();
+            }
+        }
+        return totalCosto;
+    }
+    private double totalCostoPromocion(Promocion promocion){
+        double totalCosto = 0;
+        for (PromocionDetalle detalle:
+             promocion.getDetalles()) {
+            totalCosto += totalCostoArticulo(detalle.getArticulo()) * detalle.getCantidad();
+        }
+        return totalCosto;
+    }
+    //Funcion principal para llamar a la comprabacion de stock resta de este
+    private boolean actualizarStocks(Pedido request){
+        if(!comprobarStock(request)){
+            restarStock(request);
+            return false;
+        }
+        return true;
     }
 
-    private boolean actualizarStocks(Pedido request) {
-        boolean denegar = false;
 
+    //Funciones para restar stock
+    private void restarStock(Pedido request) {
         for (DetallePedido detalle : request.getDetallesPedido()) {
-            Articulo articulo = articuloRepository.getById(detalle.getArticulo().getId());
-
-            if (articulo instanceof ArticuloInsumo) {
-                ArticuloInsumo articuloInsumo = (ArticuloInsumo) articulo;
-                if (articuloInsumo.getStockActual() - detalle.getCantidad() <= articuloInsumo.getStockMinimo()) {
-                    denegar = true;
-                    break;
-                }
-                articuloInsumo.setStockActual(articuloInsumo.getStockActual() - detalle.getCantidad());
-                articuloInsumoService.update(articuloInsumo,articuloInsumo.getId());
-            } else if (articulo instanceof ArticuloManufacturado) {
-                ArticuloManufacturado articuloManufacturado = (ArticuloManufacturado) articulo;
-                for (ArticuloManufacturadoDetalle detalle1 : articuloManufacturado.getArticuloManufacturadoDetalles()) {
-                    ArticuloInsumo articuloInsumo = detalle1.getArticuloInsumo();
-                    if (articuloInsumo.getStockActual() - detalle1.getCantidad() * detalle.getCantidad() <= articuloInsumo.getStockMinimo()) {
-                        denegar = true;
-                        break;
-                    }
-                    articuloInsumo.setStockActual(articuloInsumo.getStockActual() - detalle1.getCantidad() * detalle.getCantidad());
-                    articuloInsumoService.update(articuloInsumo,articuloInsumo.getId());
-                }
-                if (denegar) break;
+            if (detalle.getPromocion() == null) {
+                restarStockArticulos(detalle.getArticulo(),detalle.getCantidad());
+            }else
+                restarStockPromociones(detalle.getPromocion(), detalle.getCantidad());
+        }
+    }
+    private void restarStockArticulos(Articulo articulo,Integer cantidad){
+        if(articulo instanceof ArticuloInsumo){
+            System.out.println("estoy restando insumos");
+            ArticuloInsumo articuloInsumo = articuloInsumoService.getById(articulo.getId());
+            articuloInsumo.setStockActual(articuloInsumo.getStockActual()-cantidad);
+            System.out.println("");
+            articuloInsumoService.update(articuloInsumo, articulo.getId());
+        }
+        if(articulo instanceof ArticuloManufacturado){
+            for (ArticuloManufacturadoDetalle detalle:
+                    ((ArticuloManufacturado) articulo).getArticuloManufacturadoDetalles()) {
+                 restarStockArticulos(detalle.getArticuloInsumo(),detalle.getCantidad()*cantidad);
             }
         }
+    }
+    private void restarStockPromociones(Promocion promocion,Integer cantidad){
+        for (PromocionDetalle detalle:
+                promocion.getDetalles()) {
+            restarStockArticulos(detalle.getArticulo(), detalle.getCantidad()*cantidad);
 
-        return denegar;
+        }
+    }
+
+
+    //Funciones para comprobar stock
+    private boolean comprobarStock(Pedido request) {
+        for (DetallePedido detalle : request.getDetallesPedido()) {
+            if (detalle.getPromocion() == null) {
+                if(comprobarArticulos(detalle.getArticulo(),detalle.getCantidad()))
+                    return true;
+            }else
+                if(comprobarPromociones(detalle.getPromocion(), detalle.getCantidad()))
+                    return true;
+        }
+        return false;
+    }
+    private boolean comprobarArticulos(Articulo articulo,Integer cantidad){
+        if(articulo instanceof ArticuloInsumo){
+            if(((ArticuloInsumo) articulo).getStockActual() - cantidad < ((ArticuloInsumo) articulo).getStockMinimo())
+                return true;
+        }
+        if(articulo instanceof ArticuloManufacturado){
+            for (ArticuloManufacturadoDetalle detalle:
+                 ((ArticuloManufacturado) articulo).getArticuloManufacturadoDetalles()) {
+                if( comprobarArticulos(detalle.getArticuloInsumo(),detalle.getCantidad()*cantidad))
+                    return true;
+            }
+        }
+        return false;
+    }
+    private boolean comprobarPromociones(Promocion promocion,Integer cantidad){
+        for (PromocionDetalle detalle:
+             promocion.getDetalles()) {
+             if(comprobarArticulos(detalle.getArticulo(), detalle.getCantidad()*cantidad))
+                 return true;
+        }
+        return false;
     }
 
 

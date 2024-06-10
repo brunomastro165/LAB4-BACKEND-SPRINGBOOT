@@ -72,7 +72,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     @PostMapping("/create")
     public ResponseEntity<?> crear(@RequestBody ClienteCreateDto cliente){
         var clientes = facade.getAll();
-        System.out.println(cliente.getUsuario().getUserName());
         if (!clientes.isEmpty()) {
             for (ClienteDto c : clientes) {
                 if (c.getUsuario().getUserName().equals(cliente.getUsuario().getUserName())) {
