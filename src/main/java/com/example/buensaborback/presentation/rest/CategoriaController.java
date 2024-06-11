@@ -1,8 +1,6 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.CategoriaFacadeImpl;
-import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
-import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
 import com.example.buensaborback.business.mapper.CategoriaMapper;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
@@ -27,7 +25,6 @@ import java.util.stream.Collectors;
 public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long, CategoriaFacadeImpl> {
     @Autowired
     CategoriaMapper categoriaMapper;
-
 
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
@@ -108,14 +105,22 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        CategoriaDto categoria = facade.getById(id);
 
-        facade.deleteById(id);
-        try {
-            facade.getById(id);
-        }catch (Exception e){
-            return ResponseEntity.ok("No se logro borrar la categoria por que posiblemente tiene articulos no borrados");
+        // Comprobar si la categoría tiene insumos o artículos manufacturados
+        if (!categoriaMapper.toEntity(categoria).getArticulos().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("La categoría tiene insumos o artículos manufacturados asociados y no puede ser eliminada");
         }
-
+        if (!categoria.getSubCategorias().isEmpty()) {
+            for (CategoriaShortDto categoriaShort :
+                    categoria.getSubCategorias()) {
+                ResponseEntity<?> response = deleteById(categoriaShort.getId());
+                if (response.getStatusCode() == HttpStatus.CONFLICT) {
+                    return response;
+                }
+            }
+        }
+        facade.deleteById(id);
         return ResponseEntity.ok("Se borro la categoria con exito");
     }
 

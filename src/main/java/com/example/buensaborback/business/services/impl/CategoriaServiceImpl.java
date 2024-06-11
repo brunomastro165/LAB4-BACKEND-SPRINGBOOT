@@ -72,7 +72,10 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
                 .forEach(sucursalService::create); // Suponiendo que sucursalService tiene un método save para guardar sucursales
         return entitySaved;
     }
+    /*
     public boolean coprobarDelete(Long id){
+        try {
+
         Categoria categoria = getById(id);
         // Comprobar si la categoría tiene insumos o artículos manufacturados
         if (!categoria.getArticulos().isEmpty()) {
@@ -83,23 +86,34 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
                     .allMatch(subCategoria -> coprobarDelete(subCategoria.getId()));
         }
         return true;
+
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public void deleteAllSub(Long id){
-        Categoria categoria = getById(id);
-        if(!categoria.getSubCategorias().isEmpty()){
-            categoria.getSubCategorias().stream()
-                    .forEach(subCategoria -> deleteAllSub(subCategoria.getId()));
+        try {
+            Categoria categoria = getById(id);
+            if(!categoria.getSubCategorias().isEmpty()){
+                categoria.getSubCategorias().stream()
+                        .forEach(subCategoria -> deleteAllSub(subCategoria.getId()));
+            }
+            baseRepository.delete(categoria);
+        }catch (Exception e){
+
         }
-        baseRepository.delete(categoria);
+
     }
 
     @Override
     public void deleteById(Long id){
-        if(!coprobarDelete(id)){
+        if(coprobarDelete(id)){
             deleteAllSub(id);
         }
     }
+
+     */
     public List<ArticuloManufacturado> getManufacturadoSubCategoria(Long idSub,String searchString) {
         Categoria categoria = getById(idSub);
         List<ArticuloManufacturado> manufacturados = new ArrayList<>();

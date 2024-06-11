@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                 .cors(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+                                /*
                                 .requestMatchers(HttpMethod.POST, "ArticuloInsumo/save/{id}").hasAnyAuthority("ADMIN", "COCINERO")
                                 .requestMatchers(HttpMethod.PUT, "ArticuloInsumo/save/{id}").hasAnyAuthority("ADMIN", "COCINERO")
                                 .requestMatchers(HttpMethod.DELETE, "/ArticuloInsumo/{id}").hasAnyAuthority("ADMIN", "COCINERO")
@@ -73,7 +74,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/UnidadMedida").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO")
                                 .requestMatchers(HttpMethod.PUT, "/UnidadMedida").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO")
                                 .requestMatchers(HttpMethod.DELETE, "/UnidadMedida").hasAuthority("ADMIN")
-
+*/
                                 .anyRequest().permitAll() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
