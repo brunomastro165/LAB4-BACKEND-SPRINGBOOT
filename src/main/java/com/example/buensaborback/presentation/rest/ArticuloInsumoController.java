@@ -157,6 +157,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        /*
         //Aca se comprueba que el insumo no esta en un manufacturado
         boolean isInManufacturado = articuloManufacturadoFacade.getAll().stream()
                 .flatMap(articuloManufacturado -> articuloManufacturado.getArticuloManufacturadoDetalles().stream())
@@ -173,8 +174,17 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         if (isInPromocion) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en una promocion");
         }
-        facade.deleteById(id);
-        return ResponseEntity.ok("La entidad fue borrada correctamente");
+
+         */
+        try {
+            facade.deleteById(id);
+            facade.getById(id);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("No se ha podido borrar el articulo manufacturado");
+        }catch (Exception e){
+            return ResponseEntity.ok("La entidad fue borrada correctamente");
+        }
+
+
     }
 
 
