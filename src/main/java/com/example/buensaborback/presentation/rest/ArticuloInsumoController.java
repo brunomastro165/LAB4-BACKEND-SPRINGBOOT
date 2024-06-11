@@ -41,19 +41,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         super(facade);
     }
 
-    //Este ya esta en categoria
-    /*
-    @PermitAll
-    @GetMapping("/getArticulosCategoria/{idCategoria}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorCategorias(@PathVariable Long idCategoria) {
-        List<ArticuloInsumoDto> allArticulos = facade.getAll();
-        List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getCategoria().getId().equals(idCategoria)
-                        && !a.isEliminado())
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(filteredArticulos);
-    }
-*/
     @GetMapping("/getArticulos/{searchString}/{idSucursal}")
     public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<Articulo> articulos = articuloRepository.getAll();
@@ -64,7 +51,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
         List<Articulo> articulosResponse = new ArrayList<>();
-
         // Establece la categoría e imágenes en null después de filtrar
         for (Articulo articulo : filteredArticulos) {
             ArticuloInsumo articuloInsumo = new ArticuloInsumo();
@@ -76,15 +62,14 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
             articulosResponse.add(articuloInsumo);
         }
         if (startId != null) {
-            articulosResponse = articulos.stream()
-                    .filter(item -> item.getId() > startId)
-                    .collect(Collectors.toList());
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, articulosResponse.size());
+            if (startIndex < articulosResponse.size()) {
+                articulosResponse = articulosResponse.subList(startIndex, endIndex);
+            } else {
+                articulosResponse = new ArrayList<>();
+            }
         }
-
-        if (limit != null && articulosResponse.size() > limit) {
-            articulosResponse = filteredArticulos.subList(0, limit);
-        }
-
         return ResponseEntity.ok(articulosResponse);
     }
 
@@ -101,18 +86,17 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
         if (startId != null) {
-            filteredArticulos = filteredArticulos.stream()
-                    .filter(item -> item.getId() > startId)
-                    .collect(Collectors.toList());
-        }
-
-        if (limit != null && filteredArticulos.size() > limit) {
-            filteredArticulos = filteredArticulos.subList(0, limit);
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
+            if (startIndex < filteredArticulos.size()) {
+                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
+            } else {
+                filteredArticulos = new ArrayList<>();
+            }
         }
         return ResponseEntity.ok(filteredArticulos);
     }
 
-    //Este se llama de esta forma /ArticuloInsumo/buscar/hola/1?limit=5&startId=0
     @GetMapping("/buscar/{searchString}/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
@@ -122,16 +106,17 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
         if (startId != null) {
-            filteredArticulos = filteredArticulos.stream()
-                    .filter(item -> item.getId() > startId)
-                    .collect(Collectors.toList());
-        }
-
-        if (limit != null && filteredArticulos.size() > limit) {
-            filteredArticulos = filteredArticulos.subList(0, limit);
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
+            if (startIndex < filteredArticulos.size()) {
+                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
+            } else {
+                filteredArticulos = new ArrayList<>();
+            }
         }
         return ResponseEntity.ok(filteredArticulos);
     }
+
 
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloInsumoEditDto entity,

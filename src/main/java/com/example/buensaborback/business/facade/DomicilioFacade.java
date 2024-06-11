@@ -5,4 +5,7 @@ import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 
 public interface DomicilioFacade extends BaseFacade<DomicilioDto, DomicilioCreateDto, DomicilioCreateDto, Long> {
+    DomicilioDto addDomiciliaACliente(DomicilioCreateDto domicilioCreateDto,Long idCliente);
+
+
 }

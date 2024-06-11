@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,17 +40,18 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         List<D> allItems = facade.getAll();
 
         if (startId != null) {
-            allItems = allItems.stream()
-                    .filter(item -> item.getId() > startId)
-                    .collect(Collectors.toList());
-        }
-
-        if (limit != null && allItems.size() > limit) {
-            allItems = allItems.subList(0, limit);
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, allItems.size());
+            if (startIndex < allItems.size()) {
+                allItems = allItems.subList(startIndex, endIndex);
+            } else {
+                allItems = new ArrayList<>();
+            }
         }
 
         return ResponseEntity.ok(allItems);
     }
+
 
 
     @GetMapping("/eliminados")

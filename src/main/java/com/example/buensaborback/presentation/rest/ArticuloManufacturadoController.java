@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,16 +40,17 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
         if (startId != null) {
-            filteredArticulos = filteredArticulos.stream()
-                    .filter(item -> item.getId() > startId)
-                    .collect(Collectors.toList());
-        }
-
-        if (limit != null && filteredArticulos.size() > limit) {
-            filteredArticulos = filteredArticulos.subList(0, limit);
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
+            if (startIndex < filteredArticulos.size()) {
+                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
+            } else {
+                filteredArticulos = new ArrayList<>();
+            }
         }
         return ResponseEntity.ok(filteredArticulos);
     }
+
 
     @GetMapping("/buscar/{idSucursal}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorSucursal(@PathVariable Long idSucursal) {

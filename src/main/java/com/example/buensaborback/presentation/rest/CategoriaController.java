@@ -30,28 +30,32 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         super(facade);
     }
 
-    @GetMapping("/getInsumos/{idCategoria}{searchString}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria,@PathVariable String searchString,@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
-        List<ArticuloInsumoDto> articuloInsumoDtos = facade.getInsumoSubCategoria(idCategoria,searchString);
-        articuloInsumoDtos = articuloInsumoDtos.stream()
-                .filter(a -> a.getId() > startId)
-                .collect(Collectors.toList());
-        if (articuloInsumoDtos.size() > limit) {
-            articuloInsumoDtos = articuloInsumoDtos.subList(0, limit);
+    @GetMapping("/getInsumos/{idCategoria}/{searchString}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria, @PathVariable String searchString, @PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+        List<ArticuloInsumoDto> articuloInsumoDtos = facade.getInsumoSubCategoria(idCategoria, searchString);
+        int startIndex = (startId.intValue() - 1) * limit;
+        int endIndex = Math.min(startIndex + limit, articuloInsumoDtos.size());
+        if (startIndex < articuloInsumoDtos.size()) {
+            articuloInsumoDtos = articuloInsumoDtos.subList(startIndex, endIndex);
+        } else {
+            articuloInsumoDtos = new ArrayList<>();
         }
         return ResponseEntity.ok(articuloInsumoDtos);
     }
+
     @GetMapping("/getManufacturados/{idCategoria}/{searchString}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria,@PathVariable String searchString,@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
-        List<ArticuloManufacturadoDto> articuloManufacturadoDtos = facade.getManufacturadoSubCategoria(idCategoria,searchString);
-        articuloManufacturadoDtos = articuloManufacturadoDtos.stream()
-                .filter(a -> a.getId() > startId)
-                .collect(Collectors.toList());
-        if (articuloManufacturadoDtos.size() > limit) {
-            articuloManufacturadoDtos = articuloManufacturadoDtos.subList(0, limit);
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria, @PathVariable String searchString, @PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+        List<ArticuloManufacturadoDto> articuloManufacturadoDtos = facade.getManufacturadoSubCategoria(idCategoria, searchString);
+        int startIndex = (startId.intValue() - 1) * limit;
+        int endIndex = Math.min(startIndex + limit, articuloManufacturadoDtos.size());
+        if (startIndex < articuloManufacturadoDtos.size()) {
+            articuloManufacturadoDtos = articuloManufacturadoDtos.subList(startIndex, endIndex);
+        } else {
+            articuloManufacturadoDtos = new ArrayList<>();
         }
         return ResponseEntity.ok(articuloManufacturadoDtos);
     }
+
 
     @GetMapping("/insumo")
     public ResponseEntity<List<CategoriaDto>> getCategoriasInsumo() {
@@ -103,26 +107,47 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         }
     }
 
+
+    // Comprueba si una categoría y todas sus subcategorías pueden ser eliminadas
+    private boolean canDeleteCategoria(CategoriaDto categoria) {
+        if (!categoriaMapper.toEntity(categoria).getArticulos().isEmpty()) {
+            return false;
+        }
+        if (!categoria.getSubCategorias().isEmpty()) {
+            for (CategoriaShortDto subCategoria : categoria.getSubCategorias()) {
+                CategoriaDto subCategoriaDto = facade.getById(subCategoria.getId());
+                if (!canDeleteCategoria(subCategoriaDto)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Elimina una categoría y todas sus subcategorías
+    private void deleteCategoria(CategoriaDto categoria) {
+        if (!categoria.getSubCategorias().isEmpty()) {
+            for (CategoriaShortDto subCategoria : categoria.getSubCategorias()) {
+                CategoriaDto subCategoriaDto = facade.getById(subCategoria.getId());
+                deleteCategoria(subCategoriaDto);
+            }
+        }
+        facade.deleteById(categoria.getId());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         CategoriaDto categoria = facade.getById(id);
 
-        // Comprobar si la categoría tiene insumos o artículos manufacturados
-        if (!categoriaMapper.toEntity(categoria).getArticulos().isEmpty()) {
+        if (!canDeleteCategoria(categoria)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("La categoría tiene insumos o artículos manufacturados asociados y no puede ser eliminada");
         }
-        if (!categoria.getSubCategorias().isEmpty()) {
-            for (CategoriaShortDto categoriaShort :
-                    categoria.getSubCategorias()) {
-                ResponseEntity<?> response = deleteById(categoriaShort.getId());
-                if (response.getStatusCode() == HttpStatus.CONFLICT) {
-                    return response;
-                }
-            }
-        }
-        facade.deleteById(id);
+
+        deleteCategoria(categoria);
+
         return ResponseEntity.ok("Se borro la categoria con exito");
     }
+
 
     @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
     public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
