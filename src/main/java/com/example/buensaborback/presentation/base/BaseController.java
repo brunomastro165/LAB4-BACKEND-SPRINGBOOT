@@ -3,7 +3,6 @@ package com.example.buensaborback.presentation.base;
 import com.example.buensaborback.domain.dto.BaseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,10 +1,8 @@
 package com.example.buensaborback.domain.dto.Pedido;
 
 import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteShortDto;
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoDto;
-import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.dto.Empleado.EmpleadoDto;
 import com.example.buensaborback.domain.dto.Factura.FacturaDto;
@@ -19,7 +17,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 
 @Getter

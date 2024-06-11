@@ -1,4 +1,5 @@
 package com.example.buensaborback.configuration;
+
 import com.example.buensaborback.audit.Revision;
 import org.hibernate.envers.RevisionListener;
 

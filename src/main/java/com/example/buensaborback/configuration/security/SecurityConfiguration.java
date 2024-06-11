@@ -1,7 +1,9 @@
 package com.example.buensaborback.configuration.security;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -36,11 +39,56 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(withDefaults()) // Por defecto Spring va a buscar un bean con el nombre "corsConfigurationSource"
+                .csrf(csrf -> csrf
+                        .disable())
+                .cors(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-/*
+                                .requestMatchers(HttpMethod.POST, "ArticuloInsumo/save/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "ArticuloInsumo/save/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.DELETE, "/ArticuloInsumo/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "/ArticuloInsumo/activate/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "/ArticuloManufacturado/save/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.POST, "/ArticuloManufacturado/save").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.DELETE, "/ArticuloManufacturado/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/addInsumo/{idCategoria}/{idInsumo}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/addArticuloManufacturado/{idCategoria}/{idArticulo}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/addSubCategoria/{idCategoria}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.DELETE, "/categoria/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.GET, "/cliente/{id}").hasAnyAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/cliente").hasAnyAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/empleado/getPorSucursal/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.PUT, "/empleado/save/{id}").hasAnyAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/empleado/save").hasAnyAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/pedido/getPorCliente/{id}").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .requestMatchers(HttpMethod.GET, "/pedido/{id}").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/pedido/cambiarEstado/{id}").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .requestMatchers(HttpMethod.POST, "/pedido").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/pedido/api/create_preference_mp").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/pedido/cancelar/{id}").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/promocion/save/{id}").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.POST, "/promocion/save").hasAnyAuthority("ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.POST, "/sucursal/save").hasAnyAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/UnidadMedida/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO")
+                                .requestMatchers(HttpMethod.POST, "/UnidadMedida").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO")
+                                .requestMatchers(HttpMethod.PUT, "/UnidadMedida").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO")
+                                .requestMatchers(HttpMethod.DELETE, "/UnidadMedida").hasAuthority("ADMIN")
+
+                                .anyRequest().permitAll() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
+                )
+                .oauth2ResourceServer(oauth2ResourceServer ->
+                        oauth2ResourceServer
+                                .jwt(jwt -> jwt
+                                        .decoder(jwtDecoder())
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                )
+                );
+
+        return http.build();
+    }
+    /*
+                                .requestMatchers("/empresa/save/**").hasAuthority("ADMIN")
+
                                 .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
                                 .requestMatchers("/ArticuloManufacturado/**").hasAuthority("ADMIN")
                                 .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAuthority("ADMIN")
@@ -71,18 +119,6 @@ public class SecurityConfiguration {
                                 .requestMatchers("/usuarioEmpleado/**").hasAuthority("ADMIN")
 */
 
-                                .anyRequest().permitAll() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
-                )
-                .oauth2ResourceServer(oauth2ResourceServer ->
-                        oauth2ResourceServer
-                                .jwt(jwt -> jwt
-                                        .decoder(jwtDecoder())
-                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                                )
-                );
-
-        return http.build();
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -91,7 +127,7 @@ public class SecurityConfiguration {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setExposedHeaders(Arrays.asList("X-Get-Header"));
+        configuration.setExposedHeaders(List.of("X-Get-Header"));
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -116,6 +152,8 @@ public class SecurityConfiguration {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        //IMPORTANTE se hace asi porque la variable de entorno tiene una / al final, si le saco esa / no funciona nada pero si
+        //la tiene esto no funciona
         converter.setAuthoritiesClaimName(audience + "/roles");
         converter.setAuthorityPrefix("");
 

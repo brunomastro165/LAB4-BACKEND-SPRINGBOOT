@@ -2,7 +2,7 @@ package com.example.buensaborback.presentation.rest;
 
 
 public class PreferenceMP {
-    
+
     private String id;
     private int statusCode;
 
@@ -21,5 +21,5 @@ public class PreferenceMP {
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
-    
+
 }

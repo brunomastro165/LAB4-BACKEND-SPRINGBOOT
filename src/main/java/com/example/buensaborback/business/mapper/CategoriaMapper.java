@@ -46,6 +46,7 @@ public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto, Cat
                 .map(articulo -> ArticuloManufacturadoMapper.INSTANCE.toDTO((ArticuloManufacturado) articulo))
                 .collect(Collectors.toSet());
     }
+
     CategoriaShortDto dtoToShortDto(CategoriaDto source);
 
 }

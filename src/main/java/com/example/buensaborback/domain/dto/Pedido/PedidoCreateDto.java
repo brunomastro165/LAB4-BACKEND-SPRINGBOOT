@@ -1,13 +1,10 @@
 package com.example.buensaborback.domain.dto.Pedido;
 
 import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
-import com.example.buensaborback.domain.dto.Cliente.ClienteShortDto;
 import com.example.buensaborback.domain.dto.DetallePedido.DetallePedidoCreateDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
 import com.example.buensaborback.domain.dto.Empleado.EmpleadoDto;
 import com.example.buensaborback.domain.dto.Factura.FacturaCreateDto;
-import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.enums.Estado;
 import com.example.buensaborback.domain.enums.FormaPago;
 import com.example.buensaborback.domain.enums.TipoEnvio;

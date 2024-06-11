@@ -22,7 +22,8 @@ public interface BaseRepository<E extends Base, ID extends Serializable> extends
         entity.setEliminado(true);
         save(entity);
     }
-    default E getEliminadoById(ID id){
+
+    default E getEliminadoById(ID id) {
         logger.info("EJECUTANDO GEY BY ID SOBREESCRITO");
         var optionalEntity = findById(id);
 

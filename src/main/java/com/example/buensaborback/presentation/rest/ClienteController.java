@@ -1,15 +1,12 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.ClienteFacadeImpl;
-import com.example.buensaborback.business.services.ClienteService;
 import com.example.buensaborback.business.services.ImagenClienteService;
 import com.example.buensaborback.business.services.UsuarioClienteService;
 import com.example.buensaborback.domain.dto.Cliente.ClienteCreateDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
-import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteCreateDto;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import com.example.buensaborback.domain.entities.Cliente;
-import com.example.buensaborback.domain.entities.UsuarioCliente;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
@@ -20,18 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import okhttp3.OkHttpClient;
-//import okhttp3.RequestBody;
-import okhttp3.Request;
-import okhttp3.Response;
-import com.google.gson.Gson;
-import java.io.IOException;
-
 
 @RestController
 @RequestMapping("/cliente")
-@CrossOrigin(value = "*",allowedHeaders = "*")
+@CrossOrigin(value = "*", allowedHeaders = "*")
 public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, ClienteCreateDto, ClienteCreateDto, Long, ClienteFacadeImpl> {
     @Autowired
     private ImagenClienteService imageService;
@@ -43,7 +32,7 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     }
 
     @GetMapping("/exists/{nombreUsuario}")
-    public ResponseEntity<Boolean> existsByUsername(@PathVariable String nombreUsuario){
+    public ResponseEntity<Boolean> existsByUsername(@PathVariable String nombreUsuario) {
         return ResponseEntity.ok().body(usuarioClienteService.existsByUsername(nombreUsuario));
     }
 
@@ -70,7 +59,7 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> crear(@RequestBody ClienteCreateDto cliente){
+    public ResponseEntity<?> crear(@RequestBody ClienteCreateDto cliente) {
         var clientes = facade.getAll();
         if (!clientes.isEmpty()) {
             for (ClienteDto c : clientes) {
@@ -105,11 +94,9 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
                     }
                 }
             }
-            System.out.println("puto");
             // Encriptar la clave usando SHA3
             SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512();
             byte[] digest = digestSHA3.digest(entity.getUsuario().getClave().getBytes());
-            System.out.println("puto");
 
             // Convertir el hash a hexadecimal
             String claveEncriptada = Hex.toHexString(digest);

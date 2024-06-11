@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface EmpleadoRepository extends BaseRepository<Empleado, Long> {
-        @Query("SELECT e FROM Empleado e WHERE e.sucursal.id = ?1")
-        List<Empleado> findEmpleadosBySucursalId(Long sucursalId);
+    @Query("SELECT e FROM Empleado e WHERE e.sucursal.id = ?1")
+    List<Empleado> findEmpleadosBySucursalId(Long sucursalId);
 
 }

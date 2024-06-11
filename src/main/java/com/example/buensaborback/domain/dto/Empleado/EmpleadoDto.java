@@ -6,7 +6,6 @@ import com.example.buensaborback.domain.dto.ImagenEmpleado.ImagenEmpleadoDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.dto.UsuarioEmpleado.UsuarioEmpleadoDto;
-import com.example.buensaborback.domain.entities.UsuarioEmpleado;
 import com.example.buensaborback.domain.enums.Rol;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

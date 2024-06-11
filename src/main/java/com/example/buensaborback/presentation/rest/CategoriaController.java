@@ -10,14 +10,11 @@ import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.entities.Categoria;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import com.example.buensaborback.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +25,7 @@ import java.util.stream.Collectors;
 public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long, CategoriaFacadeImpl> {
     @Autowired
     CategoriaMapper categoriaMapper;
+
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
     }
@@ -42,12 +40,12 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         if (!categoria.getSubCategorias().isEmpty()) {
             for (CategoriaShortDto subCategoria :
                     categoria.getSubCategorias()) {
-                if(!subCategoria.isEliminado()){
+                if (!subCategoria.isEliminado()) {
                     List<ArticuloInsumoDto> ins = getInsumoSubCategoria(subCategoria.getId());
                     for (ArticuloInsumoDto i :
                             ins) {
-                        if(!i.isEliminado())
-                        insumos.add(i);
+                        if (!i.isEliminado())
+                            insumos.add(i);
                     }
                 }
             }
@@ -55,6 +53,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         return insumos;
 
     }
+
     public List<ArticuloManufacturadoDto> getManufacturadoSubCategoria(Long idSub) {
         List<ArticuloManufacturadoDto> manufacturados = new ArrayList<>();
         var categoria = facade.getById(idSub);
@@ -65,18 +64,19 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         if (!categoria.getSubCategorias().isEmpty()) {
             for (CategoriaShortDto subCategoria :
                     categoria.getSubCategorias()) {
-                if(!subCategoria.isEliminado()){
+                if (!subCategoria.isEliminado()) {
                     List<ArticuloManufacturadoDto> manu = getManufacturadoSubCategoria(subCategoria.getId());
                     for (ArticuloManufacturadoDto m :
                             manu) {
-                        if(!m.isEliminado())
-                        manufacturados.add(m);
+                        if (!m.isEliminado())
+                            manufacturados.add(m);
                     }
                 }
             }
         }
         return manufacturados;
     }
+
     @GetMapping("/getInsumos/{idCategoria}")
     public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria) {
         return ResponseEntity.ok(getInsumoSubCategoria(idCategoria));
@@ -99,12 +99,12 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
                 .collect(Collectors.toList());
         return ResponseEntity.ok(noInsumos);
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @PutMapping("/addInsumo/{idCategoria}/{idInsumo}")
     public ResponseEntity<CategoriaDto> addArticuloInsumo(@PathVariable Long idCategoria, @PathVariable Long idInsumo) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(facade.addInsumo(idCategoria, idInsumo));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -115,39 +115,39 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
 
         return ResponseEntity.ok(getManufacturadoSubCategoria(idCategoria));
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @PutMapping("/addArticuloManufacturado/{idCategoria}/{idArticulo}")
     public ResponseEntity<CategoriaDto> addArticuloManufacturado(@PathVariable Long idCategoria, @PathVariable Long idArticulo) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(facade.addManufacturado(idCategoria, idArticulo));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @PutMapping("/addSubCategoria/{idCategoria}")
     public ResponseEntity<CategoriaDto> addSubCategoria(@PathVariable Long idCategoria, @RequestBody CategoriaCreateDto subCategoria) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(facade.addSubCategoria(idCategoria, subCategoria));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         CategoriaDto categoria = facade.getById(id);
         // Comprobar si la categoría tiene insumos o artículos manufacturados
-        if(!categoria.getInsumos().isEmpty() || !categoria.getArticulosManufacturados().isEmpty()){
+        if (!categoria.getInsumos().isEmpty() || !categoria.getArticulosManufacturados().isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("La categoría tiene insumos o artículos manufacturados asociados y no puede ser eliminada");
         }
-        if(!categoria.getSubCategorias().isEmpty()){
-            for (CategoriaShortDto categoriaShort:
+        if (!categoria.getSubCategorias().isEmpty()) {
+            for (CategoriaShortDto categoriaShort :
                     categoria.getSubCategorias()) {
                 ResponseEntity<?> response = deleteById(categoriaShort.getId());
-                if(response.getStatusCode() == HttpStatus.CONFLICT){
+                if (response.getStatusCode() == HttpStatus.CONFLICT) {
                     return response;
                 }
             }
@@ -155,18 +155,19 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         facade.deleteById(id);
         return ResponseEntity.ok("Se borro la categoria con exito");
     }
+
     @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
-    public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable (required = false) Integer limit, @PathVariable (required = false) Long startId){
+    public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
         if (limit == null || startId == null) {
             return ResponseEntity.badRequest().build();
         }
         List<CategoriaDto> categorias = facade.getAll();
         List<CategoriaShortDto> categoriasShort = new ArrayList<>();
-        for (CategoriaDto categoria: categorias) {
+        for (CategoriaDto categoria : categorias) {
             categoriasShort.add(categoriaMapper.dtoToShortDto(categoria));
         }
         categoriasShort = categoriasShort.stream()
-                .filter(a ->  a.getId() > startId)
+                .filter(a -> a.getId() > startId)
                 .collect(Collectors.toList());
         if (categoriasShort.size() > limit) {
             categoriasShort = categoriasShort.subList(0, limit);

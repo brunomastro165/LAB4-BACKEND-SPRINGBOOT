@@ -1,9 +1,7 @@
 package com.example.buensaborback.domain.dto.Cliente;
 
 import com.example.buensaborback.domain.dto.BaseDto;
-import com.example.buensaborback.domain.dto.ImagenCliente.ImagenClienteDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalShortDto;
-import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

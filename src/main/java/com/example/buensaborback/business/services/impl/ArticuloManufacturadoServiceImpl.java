@@ -1,15 +1,11 @@
 package com.example.buensaborback.business.services.impl;
 
-import com.example.buensaborback.business.facade.ArticuloInsumoFacade;
-import com.example.buensaborback.business.facade.PromocionFacade;
 import com.example.buensaborback.business.services.ArticuloManufacturadoService;
 import com.example.buensaborback.business.services.PromocionService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
-import com.example.buensaborback.domain.entities.*;
-import com.example.buensaborback.repositories.ArticuloManufacturadoDetalleRepository;
+import com.example.buensaborback.domain.entities.ArticuloManufacturado;
+import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +13,7 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
 
     @Autowired
     private PromocionService promocionService;
+
     @Override
     public void deleteById(Long id) {
         var entity = getById(id);
@@ -25,10 +22,11 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
                 .flatMap(promocion -> promocion.getDetalles().stream())
                 .anyMatch(detalle -> detalle.getArticulo().getId() == id);
         //Borra si no esta en un promo que este activa
-        if (!isInPromocion ) {
-                baseRepository.delete(entity);
+        if (!isInPromocion) {
+            baseRepository.delete(entity);
         }
     }
+
     @Override
     public void activateById(Long id) {
         var entity = baseRepository.getEliminadoById(id);

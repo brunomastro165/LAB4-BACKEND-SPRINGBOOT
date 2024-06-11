@@ -1,7 +1,6 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.domain.dto.Pedido.PedidoCreateDto;
-import com.example.buensaborback.domain.entities.Pedido;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.client.preference.PreferenceClient;
@@ -25,12 +24,12 @@ public class MercadoPagoController {
             MercadoPagoConfig.setAccessToken("TEST-4479067771027558-060504-052cb3541b7f6cc58be11bfeed44259f-694496798");
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                     .id(pedido.getId().toString())
-                    .title("pedido de id:"+pedido.getId().toString())
+                    .title("pedido de id:" + pedido.getId().toString())
                     .description("Pedido realizado desde el carrito de compra")
                     .pictureUrl("https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/4e4293857c03d819e4ae51de1e86d66a.jpg")
                     .quantity(1)
                     .currencyId("ARG")
-                    .unitPrice(new BigDecimal(pedido.getTotal()))
+                    .unitPrice(BigDecimal.valueOf(pedido.getTotal()))
                     .build();
             List<PreferenceItemRequest> items = new ArrayList<>();
             items.add(itemRequest);

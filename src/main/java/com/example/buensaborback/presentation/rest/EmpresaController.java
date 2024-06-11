@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,7 @@ public class EmpresaController extends BaseControllerImpl<Empresa, EmpresaDto, E
     public EmpresaController(EmpresaFacadeImpl facade) {
         super(facade);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") EmpresaCreateDto entity, @RequestPart("files") MultipartFile[] files) {
         try {
@@ -44,7 +43,6 @@ public class EmpresaController extends BaseControllerImpl<Empresa, EmpresaDto, E
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/sucursales/{idEmpresa}")
     public ResponseEntity<EmpresaLargeDto> getEmpresaSucursales(@PathVariable Long idEmpresa) {
         return ResponseEntity.ok(facade.getEmpresaSucursales(idEmpresa));

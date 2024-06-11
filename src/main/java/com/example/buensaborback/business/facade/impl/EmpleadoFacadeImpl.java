@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 public class EmpleadoFacadeImpl extends BaseFacadeImpl<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto, Long> implements EmpleadoFacade {
     @Autowired
     EmpleadoService empleadoService;
+
     public EmpleadoFacadeImpl(BaseService<Empleado, Long> baseService, BaseMapper<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto> baseMapper) {
         super(baseService, baseMapper);
     }
-    public List<EmpleadoDto> getPorSucursal(Long id){
+
+    public List<EmpleadoDto> getPorSucursal(Long id) {
         List<Empleado> empleados = empleadoService.getPorSucursal(id);
         return empleados.stream()
                 .map(baseMapper::toDTO)

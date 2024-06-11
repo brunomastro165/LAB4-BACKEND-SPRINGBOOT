@@ -7,9 +7,7 @@ import com.example.buensaborback.business.mapper.BaseMapper;
 import com.example.buensaborback.business.services.base.BaseService;
 import com.example.buensaborback.domain.dto.Pedido.PedidoCreateDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
-import com.example.buensaborback.domain.entities.DetallePedido;
 import com.example.buensaborback.domain.entities.Pedido;
-import com.example.buensaborback.domain.entities.PromocionDetalle;
 import org.springframework.stereotype.Service;
 
 @Service

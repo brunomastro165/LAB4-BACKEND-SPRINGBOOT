@@ -16,6 +16,7 @@ public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, Articul
 
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
     ArticuloInsumo toEntityCreate(ArticuloInsumoCreateDto source);
+
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
     ArticuloInsumo toUpdate(ArticuloInsumoEditDto source);
 

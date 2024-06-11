@@ -1,13 +1,9 @@
 package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
-import com.example.buensaborback.business.facade.PromocionFacade;
 import com.example.buensaborback.business.services.ArticuloInsumoService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
-import com.example.buensaborback.domain.entities.ArticuloManufacturado;
-import com.example.buensaborback.domain.entities.Promocion;
-import com.example.buensaborback.domain.entities.PromocionDetalle;
 import com.example.buensaborback.repositories.PromocionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +15,7 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
     private PromocionRepository promocionRepository;
     @Autowired
     private ArticuloManufacturadoFacade articuloManufacturadoFacade;
+
     @Override
     public void deleteById(Long id) {
         var entity = getById(id);

@@ -1,4 +1,5 @@
 package com.example.buensaborback.audit;
+
 import com.example.buensaborback.configuration.CustomRevisionListener;
 import jakarta.persistence.*;
 import lombok.Data;

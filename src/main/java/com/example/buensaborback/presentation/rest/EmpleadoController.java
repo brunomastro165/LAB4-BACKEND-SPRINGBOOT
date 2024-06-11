@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -27,17 +28,29 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
     public EmpleadoController(EmpleadoFacadeImpl facade) {
         super(facade);
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @GetMapping("/getPorSucursal/{id}")
-    public ResponseEntity<?> getPorSucursal(@PathVariable Long id){
+    public ResponseEntity<?> getPorSucursal(@PathVariable Long id) {
         return ResponseEntity.ok(empleadoFacade.getPorSucursal(id));
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
+    @PostMapping("/getPorMail")
+    public ResponseEntity<?> getPorMail(@RequestBody String mail) {
+        List<EmpleadoDto> empleados = facade.getAll();
+        for (EmpleadoDto empleado :
+                empleados) {
+            if (empleado.getEmail().equals(mail)) {
+                return ResponseEntity.ok(empleado);
+            }
+        }
+        return ResponseEntity.ok("No se encontro un empleado con ese mail");
+    }
+
     @PutMapping(value = "/save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> edit(@RequestPart("entity") EmpleadoCreateDto entity, @RequestPart("file") MultipartFile file,@PathVariable Long id) {
+    public ResponseEntity<?> edit(@RequestPart("entity") EmpleadoCreateDto entity, @RequestPart("file") MultipartFile file, @PathVariable Long id) {
         try {
             System.out.println("Estoy en controller");
-            EmpleadoDto empleado = facade.update(entity,id);
+            EmpleadoDto empleado = facade.update(entity, id);
             try {
                 empleado.setImagenPersona(imageService.uploadImagesE(file, empleado.getId()));
             } catch (Exception e) {
@@ -49,7 +62,7 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el empleado.");
         }
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") EmpleadoCreateDto entity, @RequestPart("file") MultipartFile file) {
         try {

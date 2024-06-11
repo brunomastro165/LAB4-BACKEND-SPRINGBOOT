@@ -2,7 +2,6 @@ package com.example.buensaborback.domain.dto.Empleado;
 
 import com.example.buensaborback.domain.dto.BaseDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
-import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.dto.UsuarioEmpleado.UsuarioEmpleadoCreateDto;
 import com.example.buensaborback.domain.enums.Rol;
 import lombok.AllArgsConstructor;

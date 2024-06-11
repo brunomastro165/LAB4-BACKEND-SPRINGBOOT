@@ -8,7 +8,6 @@ import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufa
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 @Service

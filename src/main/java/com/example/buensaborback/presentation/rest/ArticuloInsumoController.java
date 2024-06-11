@@ -3,34 +3,21 @@ package com.example.buensaborback.presentation.rest;
 import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
 import com.example.buensaborback.business.facade.PromocionFacade;
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
-import com.example.buensaborback.business.services.ArticuloManufacturadoService;
 import com.example.buensaborback.business.services.ImagenArticuloService;
-import com.example.buensaborback.domain.dto.Articulo.ArticuloDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto;
-import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
-import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
-import com.example.buensaborback.domain.dto.ArticuloManufacturadoDetalle.ArticuloManufacturadoDetalleDto;
-import com.example.buensaborback.domain.dto.ImagenArticuloDto.ImagenArticuloDto;
-import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
-import com.example.buensaborback.domain.dto.PromocionDetalle.PromocionDetalleDto;
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
-import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
-import com.example.buensaborback.domain.entities.Promocion;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
-import com.example.buensaborback.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +40,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
+
     //Este ya esta en categoria
     /*
     @PermitAll
@@ -67,7 +55,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     }
 */
     @GetMapping("/getArticulos/{searchString}/{idSucursal}")
-    public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal,@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<Articulo> articulos = articuloRepository.getAll();
         List<Articulo> filteredArticulos = articulos.stream()
                 .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
@@ -99,6 +87,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
         return ResponseEntity.ok(articulosResponse);
     }
+
     @GetMapping("/getArticulosInsumos/{searchString}/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         if (limit == null || startId == null) {
@@ -122,9 +111,10 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         }
         return ResponseEntity.ok(filteredArticulos);
     }
+
     //Este se llama de esta forma /ArticuloInsumo/buscar/hola/1?limit=5&startId=0
     @GetMapping("/buscar/{searchString}/{idSucursal}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal,@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
                 .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
@@ -142,19 +132,19 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         }
         return ResponseEntity.ok(filteredArticulos);
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloInsumoEditDto entity,
-                                                         @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
+                                  @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
         try {
-            facade.update(entity,id);
-        }catch (Exception e){
+            facade.update(entity, id);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir actualizar el insumo");
         }
 
         try {
             imageService.uploadImagesA(files, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
         }
 
@@ -162,7 +152,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         return ResponseEntity.ok(facade.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
@@ -170,16 +159,16 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
             ArticuloInsumoDto articulo = facade.createNew(entity);
             try {
                 articulo.setImagenes(imageService.uploadImagesA(files, articulo.getId()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
             }
             return ResponseEntity.ok(articulo);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
+
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,12 +34,12 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
     public SucursalController(SucursalFacadeImpl facade) {
         super(facade);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") SucursalCreateDto entity, @RequestPart("files") MultipartFile[] files) {
         try {
-            for (Sucursal sucursal: sucursalRepository.getAll()) {
-                if(sucursal.getEsCasaMatriz() && sucursal.getEmpresa().getId() == entity.getIdEmpresa())
+            for (Sucursal sucursal : sucursalRepository.getAll()) {
+                if (sucursal.getEsCasaMatriz() && sucursal.getEmpresa().getId() == entity.getIdEmpresa())
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe una sucursal que es casa matriz.");
             }
             SucursalDto sucursal = facade.createNew(entity);
@@ -56,7 +55,6 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear la sucursal.");
         }
     }
-
 
 
     @GetMapping("/getInsumos/{idSucursal}")

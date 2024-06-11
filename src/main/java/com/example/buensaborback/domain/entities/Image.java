@@ -3,7 +3,6 @@ package com.example.buensaborback.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.envers.Audited;
 
 import java.io.Serializable;
 import java.util.UUID;

@@ -30,7 +30,7 @@ public abstract class BaseImagenControllerImpl<E extends Image, ID extends Seria
             @RequestParam(value = "uploads", required = true) MultipartFile[] files, @PathVariable Long id) {
         try {
             return imageService.uploadImages(files, id); // Llama al método del servicio para subir imágenes
-        }  catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
