@@ -113,7 +113,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
                 .filter(articuloManufacturadoDto -> articuloManufacturadoDto.getCategoria().getId().equals(idSub) && articuloManufacturadoDto.getDenominacion().contains(searchString))
                 .collect(Collectors.toList());
         for (ArticuloManufacturado articulo:
-                articulos) {
+                filteredArticulos) {
             manufacturados.add(articulo);
         }
         return manufacturados;
@@ -133,7 +133,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
                 .filter(articuloInsumoDto -> articuloInsumoDto.getCategoria().getId().equals(idSub) && articuloInsumoDto.getDenominacion().contains(searchString))
                 .collect(Collectors.toList());
         for (ArticuloInsumo articulo:
-             articulos) {
+             filteredArticulos) {
             insumos.add(articulo);
         }
         return insumos;
