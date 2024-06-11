@@ -1,6 +1,8 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.CategoriaFacadeImpl;
+import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
+import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
 import com.example.buensaborback.business.mapper.CategoriaMapper;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
@@ -26,60 +28,32 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     @Autowired
     CategoriaMapper categoriaMapper;
 
+
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
     }
 
-    public List<ArticuloInsumoDto> getInsumoSubCategoria(Long idSub) {
-        List<ArticuloInsumoDto> insumos = new ArrayList<>();
-        var categoria = facade.getById(idSub);
-        for (ArticuloInsumoDto insumo :
-                categoria.getInsumos()) {
-            insumos.add(insumo);
+    @GetMapping("/getInsumos/{idCategoria}{searchString}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria,@PathVariable String searchString,@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+        List<ArticuloInsumoDto> articuloInsumoDtos = facade.getInsumoSubCategoria(idCategoria,searchString);
+        articuloInsumoDtos = articuloInsumoDtos.stream()
+                .filter(a -> a.getId() > startId)
+                .collect(Collectors.toList());
+        if (articuloInsumoDtos.size() > limit) {
+            articuloInsumoDtos = articuloInsumoDtos.subList(0, limit);
         }
-        if (!categoria.getSubCategorias().isEmpty()) {
-            for (CategoriaShortDto subCategoria :
-                    categoria.getSubCategorias()) {
-                if (!subCategoria.isEliminado()) {
-                    List<ArticuloInsumoDto> ins = getInsumoSubCategoria(subCategoria.getId());
-                    for (ArticuloInsumoDto i :
-                            ins) {
-                        if (!i.isEliminado())
-                            insumos.add(i);
-                    }
-                }
-            }
-        }
-        return insumos;
-
+        return ResponseEntity.ok(articuloInsumoDtos);
     }
-
-    public List<ArticuloManufacturadoDto> getManufacturadoSubCategoria(Long idSub) {
-        List<ArticuloManufacturadoDto> manufacturados = new ArrayList<>();
-        var categoria = facade.getById(idSub);
-        for (ArticuloManufacturadoDto manufacturado :
-                categoria.getArticulosManufacturados()) {
-            manufacturados.add(manufacturado);
+    @GetMapping("/getManufacturados/{idCategoria}/{searchString}")
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria,@PathVariable String searchString,@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+        List<ArticuloManufacturadoDto> articuloManufacturadoDtos = facade.getManufacturadoSubCategoria(idCategoria,searchString);
+        articuloManufacturadoDtos = articuloManufacturadoDtos.stream()
+                .filter(a -> a.getId() > startId)
+                .collect(Collectors.toList());
+        if (articuloManufacturadoDtos.size() > limit) {
+            articuloManufacturadoDtos = articuloManufacturadoDtos.subList(0, limit);
         }
-        if (!categoria.getSubCategorias().isEmpty()) {
-            for (CategoriaShortDto subCategoria :
-                    categoria.getSubCategorias()) {
-                if (!subCategoria.isEliminado()) {
-                    List<ArticuloManufacturadoDto> manu = getManufacturadoSubCategoria(subCategoria.getId());
-                    for (ArticuloManufacturadoDto m :
-                            manu) {
-                        if (!m.isEliminado())
-                            manufacturados.add(m);
-                    }
-                }
-            }
-        }
-        return manufacturados;
-    }
-
-    @GetMapping("/getInsumos/{idCategoria}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria) {
-        return ResponseEntity.ok(getInsumoSubCategoria(idCategoria));
+        return ResponseEntity.ok(articuloManufacturadoDtos);
     }
 
     @GetMapping("/insumo")
@@ -110,11 +84,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         }
     }
 
-    @GetMapping("/getArticulosCategoria/{idCategoria}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria) {
 
-        return ResponseEntity.ok(getManufacturadoSubCategoria(idCategoria));
-    }
 
     @PutMapping("/addArticuloManufacturado/{idCategoria}/{idArticulo}")
     public ResponseEntity<CategoriaDto> addArticuloManufacturado(@PathVariable Long idCategoria, @PathVariable Long idArticulo) {
@@ -138,21 +108,14 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        CategoriaDto categoria = facade.getById(id);
-        // Comprobar si la categoría tiene insumos o artículos manufacturados
-        if (!categoria.getInsumos().isEmpty() || !categoria.getArticulosManufacturados().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("La categoría tiene insumos o artículos manufacturados asociados y no puede ser eliminada");
-        }
-        if (!categoria.getSubCategorias().isEmpty()) {
-            for (CategoriaShortDto categoriaShort :
-                    categoria.getSubCategorias()) {
-                ResponseEntity<?> response = deleteById(categoriaShort.getId());
-                if (response.getStatusCode() == HttpStatus.CONFLICT) {
-                    return response;
-                }
-            }
-        }
+
         facade.deleteById(id);
+        try {
+            facade.getById(id);
+        }catch (Exception e){
+            return ResponseEntity.ok("No se logro borrar la categoria por que posiblemente tiene articulos no borrados");
+        }
+
         return ResponseEntity.ok("Se borro la categoria con exito");
     }
 

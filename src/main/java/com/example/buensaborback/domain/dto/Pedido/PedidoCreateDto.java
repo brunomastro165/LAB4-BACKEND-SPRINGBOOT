@@ -30,7 +30,7 @@ public class PedidoCreateDto extends BaseDto {
     private TipoEnvio tipoEnvio;
     private FormaPago formaPago;
     private LocalDate fechaPedido;
-    private DomicilioCreateDto domicilio;
+    private Long idDomicilio;
 
     private Long idCliente;
     private Long idSucursal;

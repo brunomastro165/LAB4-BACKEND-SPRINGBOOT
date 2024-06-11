@@ -25,9 +25,12 @@ public class CategoriaDto extends BaseDto {
     private Set<SucursalShortDto> sucursales;
 
     private Set<CategoriaShortDto> subCategorias;
+    /*
 
     private Set<ArticuloInsumoDto> insumos;
 
     private Set<ArticuloManufacturadoDto> articulosManufacturados;
+
+     */
 
 }

@@ -27,14 +27,12 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         this.facade = facade;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<D> getById(@PathVariable ID id) {
         logger.info("INICIO GET BY ID {}", id);
         return ResponseEntity.ok(facade.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public ResponseEntity<List<D>> getAll(@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         logger.info("INICIO GET ALL");
@@ -54,7 +52,6 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/eliminados")
     public ResponseEntity<List<D>> getEliminados() {
         logger.info("INICIO GET ELIMINADOS");
@@ -88,7 +85,6 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<D> edit(@RequestBody DE entity, @PathVariable ID id) {
 
@@ -96,7 +92,6 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         return ResponseEntity.ok(facade.update(entity, id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable ID id) {
         logger.info("INICIO DELETE BY ID");
@@ -104,7 +99,6 @@ public abstract class BaseControllerImpl<E extends Base, D extends BaseDto, DC, 
         return ResponseEntity.ok("La entidad fue borrada con exito");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/activate/{id}")
     public ResponseEntity<?> activateById(@PathVariable ID id) {
         logger.info("INICIO DELETE BY ID");

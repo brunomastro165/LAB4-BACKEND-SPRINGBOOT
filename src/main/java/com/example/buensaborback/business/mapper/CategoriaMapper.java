@@ -26,9 +26,11 @@ public interface CategoriaMapper extends BaseMapper<Categoria, CategoriaDto, Cat
     @Mapping(target = "sucursales", source = "idSucursales", qualifiedByName = "getById")
     Categoria toEntityCreate(CategoriaCreateDto source);
 
-
+/*
     @Mapping(target = "insumos", expression = "java(filterArticulosInsumo(source))")
     @Mapping(target = "articulosManufacturados", expression = "java(filterArticulosManufacturados(source))")
+
+ */
     CategoriaDto toDTO(Categoria source);
 
     // Este método filtra y mapea los artículos de insumo de la categoría

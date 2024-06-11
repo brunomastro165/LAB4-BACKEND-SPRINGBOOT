@@ -31,9 +31,6 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
 
     @GetMapping("/getArticulosManufacturados/{searchString}/{idSucursal}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-        if (limit == null || startId == null) {
-            return ResponseEntity.badRequest().build();
-        }
         List<ArticuloManufacturadoDto> articulos = facade.getAll();
         List<ArticuloManufacturadoDto> filteredArticulos = articulos.stream()
                 .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
