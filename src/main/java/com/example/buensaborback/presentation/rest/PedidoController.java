@@ -64,14 +64,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     @PostMapping()
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoCreateDto entity) {
         try {
-            entity.getFactura().setFormaPago(FormaPago.EFECTIVO);
-            entity.getFactura().setFechaFcturacion(LocalDate.now());
-            entity.getFactura().setTotalVenta(entity.getTotal());
-
-            PedidoDto pedido = facade.createNew(entity);
-
-
-            return ResponseEntity.ok(pedido);
+            return ResponseEntity.ok(facade.createNew(entity));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -84,14 +77,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         //Aca hay que calcular el total del pedido
         MercadoPagoController cMercadoPago = new MercadoPagoController();
         PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
-
-        pedido.getFactura().setFormaPago(FormaPago.MERCADO_PAGO);
-        pedido.getFactura().setFechaFcturacion(LocalDate.now());
-        pedido.getFactura().setTotalVenta(pedido.getTotal());
-        pedido.getFactura().setMpPreferenceId(preference.getId());
-        //pedido.getFactura().setMpMerchantOrderId();
-        //pedido.getFactura().setMpPaymentId(preference.getId());
-        create(pedido);
         return preference;
     }
 

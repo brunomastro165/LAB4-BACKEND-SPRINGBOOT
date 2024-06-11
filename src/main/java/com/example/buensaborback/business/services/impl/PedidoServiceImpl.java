@@ -32,7 +32,8 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         request.setHoraEstimadaFinalizacion(LocalTime.now());
         request.setEstado(actualizarStocks(request) ? Estado.RECHAZADO : Estado.PENDIENTE);
         request.setFechaPedido(LocalDate.now());
-
+        request.getFactura().setFechaFcturacion(LocalDate.now());
+        request.getFactura().setTotalVenta(request.getTotal());
         var newEntity = baseRepository.save(request);
         return newEntity;
     }

@@ -96,7 +96,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
 
     @Override
     public void deleteById(Long id){
-        if(coprobarDelete(id)){
+        if(!coprobarDelete(id)){
             deleteAllSub(id);
         }
     }
