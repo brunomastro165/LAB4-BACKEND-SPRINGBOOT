@@ -30,6 +30,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,8 +53,9 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
-
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+    //Este ya esta en categoria
+    /*
+    @PermitAll
     @GetMapping("/getArticulosCategoria/{idCategoria}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorCategorias(@PathVariable Long idCategoria) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
@@ -63,9 +65,9 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
-
+*/
     @GetMapping("/getArticulos/{searchString}/{idSucursal}")
-    public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal) {
+    public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal,@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<Articulo> articulos = articuloRepository.getAll();
         List<Articulo> filteredArticulos = articulos.stream()
                 .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
@@ -85,38 +87,62 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
             articuloInsumo.setEliminado(articulo.isEliminado());
             articulosResponse.add(articuloInsumo);
         }
+        if (startId != null) {
+            articulosResponse = articulos.stream()
+                    .filter(item -> item.getId() > startId)
+                    .collect(Collectors.toList());
+        }
+
+        if (limit != null && articulosResponse.size() > limit) {
+            articulosResponse = filteredArticulos.subList(0, limit);
+        }
 
         return ResponseEntity.ok(articulosResponse);
     }
-    @GetMapping("/getArticulosInsumos/{searchString}/{idSucursal}/{limit}/{startId}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @PathVariable Integer limit, @PathVariable Long startId) {
+    @GetMapping("/getArticulosInsumos/{searchString}/{idSucursal}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         if (limit == null || startId == null) {
             return ResponseEntity.badRequest().build();
         }
         List<ArticuloInsumoDto> articulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = articulos.stream()
                 .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
-                        && a.getId() > startId
                         && !a.isEliminado()
                         && a.getCategoria() != null
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
-        if (filteredArticulos.size() > limit) {
+        if (startId != null) {
+            filteredArticulos = filteredArticulos.stream()
+                    .filter(item -> item.getId() > startId)
+                    .collect(Collectors.toList());
+        }
+
+        if (limit != null && filteredArticulos.size() > limit) {
             filteredArticulos = filteredArticulos.subList(0, limit);
         }
         return ResponseEntity.ok(filteredArticulos);
     }
-
+    //Este se llama de esta forma /ArticuloInsumo/buscar/hola/1?limit=5&startId=0
     @GetMapping("/buscar/{searchString}/{idSucursal}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal) {
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal,@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> allArticulos = facade.getAll();
         List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
                 .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
                         && !a.isEliminado()
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
+        if (startId != null) {
+            filteredArticulos = filteredArticulos.stream()
+                    .filter(item -> item.getId() > startId)
+                    .collect(Collectors.toList());
+        }
+
+        if (limit != null && filteredArticulos.size() > limit) {
+            filteredArticulos = filteredArticulos.subList(0, limit);
+        }
         return ResponseEntity.ok(filteredArticulos);
     }
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloInsumoEditDto entity,
                                                          @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
@@ -136,7 +162,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         return ResponseEntity.ok(facade.getById(id));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") ArticuloInsumoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
@@ -153,6 +179,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {

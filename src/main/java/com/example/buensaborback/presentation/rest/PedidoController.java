@@ -18,6 +18,7 @@ import com.example.buensaborback.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -38,6 +39,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public PedidoController(PedidoFacadeImpl facade) {
         super(facade);
     }
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO') || hasRole('CAJERO')|| hasRole('DELIVERY')")
     @GetMapping("/getPorCliente/{id}")
     public ResponseEntity<List<PedidoDto>> getPorCliente(@PathVariable Long id) {
         // Obtén todos los pedidos con el facade
@@ -50,7 +52,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     }
 
 
-
+    @PreAuthorize("isAuthenticated()")
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> getById(@PathVariable Long id) {
@@ -58,6 +60,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         PedidoDto pedido = facade.getById(id);
         return ResponseEntity.ok(pedido);
     }
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO') || hasRole('CAJERO')|| hasRole('DELIVERY')")
     @PutMapping("/cambiarEstado/{id}")
     public ResponseEntity<?> cambiarEstado(@RequestBody Estado entity, @PathVariable Long id) {
         try {
@@ -70,6 +73,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         }
 
     }
+    @PreAuthorize("isAuthenticated()")
     @PostMapping()
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoCreateDto entity) {
         try {
@@ -86,6 +90,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PreAuthorize("isAuthenticated()")
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/api/create_preference_mp")
     public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido){
@@ -102,6 +107,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         create(pedido);
         return preference;
     }
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<?> cancelar(@PathVariable Long id) {
         Pedido pedido = pedidoRepository.getById(id);

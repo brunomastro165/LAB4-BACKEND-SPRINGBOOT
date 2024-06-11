@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,26 +41,29 @@ import java.util.stream.Collectors;
 public class ArticuloManufacturadoController extends BaseControllerImpl<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto, Long, ArticuloManufacturadoFacadeImpl> {
     @Autowired
     private ImagenArticuloService imageService;
-    @Autowired
-    private PromocionFacade promocionFacade;
 
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImpl facade) {
         super(facade);
     }
-    @GetMapping("/getArticulosManufacturados/{searchString}/{idSucursal}/{limit}/{startId}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @PathVariable Integer limit, @PathVariable Long startId) {
+    @GetMapping("/getArticulosManufacturados/{searchString}/{idSucursal}")
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         if (limit == null || startId == null) {
             return ResponseEntity.badRequest().build();
         }
         List<ArticuloManufacturadoDto> articulos = facade.getAll();
         List<ArticuloManufacturadoDto> filteredArticulos = articulos.stream()
                 .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
-                        && a.getId() > startId
                         && !a.isEliminado()
                         && a.getCategoria() != null
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
-        if (filteredArticulos.size() > limit) {
+        if (startId != null) {
+            filteredArticulos = filteredArticulos.stream()
+                    .filter(item -> item.getId() > startId)
+                    .collect(Collectors.toList());
+        }
+
+        if (limit != null && filteredArticulos.size() > limit) {
             filteredArticulos = filteredArticulos.subList(0, limit);
         }
         return ResponseEntity.ok(filteredArticulos);
@@ -74,6 +78,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
                 .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloManufacturadoEditDto entity,
                                   @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
@@ -93,7 +98,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
         return ResponseEntity.ok(facade.getById(id));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestPart("entity") ArticuloManufacturadoCreateDto entity, @RequestPart(value = "files", required = false) MultipartFile[] files) {
         try {
@@ -111,20 +116,20 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el artículo manufacturado.");
         }
     }
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        //Aca se comprueba que el insumo no esta en una promocion
-        boolean isInPromocion = promocionFacade.getAll().stream()
-                .flatMap(promocion -> promocion.getDetalles().stream())
-                .anyMatch(promocionDetalle ->
-                        promocionDetalle.getArticulosManufacturados() != null && promocionDetalle.getArticulosManufacturados().isEliminado()
-                );
-        if (isInPromocion) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el manufacturado porque esta en una promocion");
-        }
+
         facade.deleteById(id);
-        return ResponseEntity.ok("La entidad fue borrada correctamente");
+        try {
+            facade.getById(id);
+            return ResponseEntity.ok("No se ha podido borrar el articulo manufacturado");
+        }catch (Exception e){
+            return ResponseEntity.ok("La entidad fue borrada correctamente");
+        }
+
+
     }
 
 }

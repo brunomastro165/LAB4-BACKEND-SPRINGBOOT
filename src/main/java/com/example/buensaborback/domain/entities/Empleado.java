@@ -4,6 +4,7 @@ import com.example.buensaborback.domain.enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import java.util.HashSet;
@@ -15,14 +16,14 @@ import java.util.Set;
 @Setter
 @Getter
 @SuperBuilder
-//@Audited
+@Audited
 public class Empleado extends Base {
     protected String nombre;
     protected String apellido;
     protected String telefono;
     protected String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     protected UsuarioEmpleado usuario;
 
     @OneToOne

@@ -15,11 +15,10 @@ public interface ArticuloManufacturadoMapper extends BaseMapper<ArticuloManufact
     // Esta es una instancia estática de la interfaz, que se utiliza para obtener una instancia del Mapper.
     ArticuloManufacturadoMapper INSTANCE = Mappers.getMapper(ArticuloManufacturadoMapper.class);
 
-    // Este método define la transformación de un ArticuloManufacturadoCreateDto a una entidad ArticuloManufacturado.
-    // Utiliza la anotación @Mappings para especificar múltiples mapeos entre los campos del DTO y la entidad.
-
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
     ArticuloManufacturado toEntityCreate(ArticuloManufacturadoCreateDto source);
+    @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
+    ArticuloManufacturado toUpdate(ArticuloManufacturadoEditDto source);
 
 
 }

@@ -14,8 +14,10 @@ import com.example.buensaborback.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,7 +77,6 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         }
         return manufacturados;
     }
-
     @GetMapping("/getInsumos/{idCategoria}")
     public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria) {
         return ResponseEntity.ok(getInsumoSubCategoria(idCategoria));
@@ -98,7 +99,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
                 .collect(Collectors.toList());
         return ResponseEntity.ok(noInsumos);
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PutMapping("/addInsumo/{idCategoria}/{idInsumo}")
     public ResponseEntity<CategoriaDto> addArticuloInsumo(@PathVariable Long idCategoria, @PathVariable Long idInsumo) {
         try {
@@ -114,7 +115,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
 
         return ResponseEntity.ok(getManufacturadoSubCategoria(idCategoria));
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PutMapping("/addArticuloManufacturado/{idCategoria}/{idArticulo}")
     public ResponseEntity<CategoriaDto> addArticuloManufacturado(@PathVariable Long idCategoria, @PathVariable Long idArticulo) {
         try {
@@ -124,7 +125,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PutMapping("/addSubCategoria/{idCategoria}")
     public ResponseEntity<CategoriaDto> addSubCategoria(@PathVariable Long idCategoria, @RequestBody CategoriaCreateDto subCategoria) {
         try {
@@ -134,7 +135,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         CategoriaDto categoria = facade.getById(id);
@@ -152,7 +153,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
             }
         }
         facade.deleteById(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok("Se borro la categoria con exito");
     }
     @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
     public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable (required = false) Integer limit, @PathVariable (required = false) Long startId){

@@ -12,10 +12,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring", uses = {CategoriaService.class})
 public interface ArticuloInsumoMapper extends BaseMapper<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoEditDto> {
 
-    // Esta es una instancia estática de la interfaz, que se utiliza para obtener una instancia del Mapper.
     ArticuloInsumoMapper INSTANCE = Mappers.getMapper(ArticuloInsumoMapper.class);
 
     @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
     ArticuloInsumo toEntityCreate(ArticuloInsumoCreateDto source);
+    @Mapping(target = "categoria", source = "idCategoria", qualifiedByName = "getById")
+    ArticuloInsumo toUpdate(ArticuloInsumoEditDto source);
 
 }

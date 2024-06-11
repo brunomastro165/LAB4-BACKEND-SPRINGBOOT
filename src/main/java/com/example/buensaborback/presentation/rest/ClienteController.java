@@ -126,28 +126,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, C
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el cliente y subir la imagen.");
         }
     }
-/*
-    private String getAuth0Token(UsuarioClienteCreateDto usuario) throws IOException {
-
-        OkHttpClient client = new OkHttpClient();
-
-        okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
-        okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\"email\":\"test@example.com\",\"password\":\"secret\",\"connection\":\"Username-Password-Authentication\"}");
-        Request request = new Request.Builder()
-                .url("https://YOUR_DOMAIN.auth0.com/api/v2/users")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("Authorization", "Bearer YOUR_MANAGEMENT_API_TOKEN")
-                .build();
-
-        Response response = client.newCall(request).execute();
-
-
-        String token = parseToken(responseBody);
-
-        return token;
-    }
-*/
 
 }
 

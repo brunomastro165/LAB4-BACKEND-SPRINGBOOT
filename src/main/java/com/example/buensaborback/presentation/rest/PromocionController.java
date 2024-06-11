@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,7 +42,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         super(facade);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO')")
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") PromocionEditDto entity,
                                   @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
@@ -55,7 +56,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         }
 
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('COCINERO') ")
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> create(@RequestPart("entity") PromocionCreateDto entity,
                                     @RequestPart("files") MultipartFile[] files) {

@@ -1,4 +1,4 @@
-package com.example.buensaborback.configuration;
+package com.example.buensaborback.configuration.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,34 +40,37 @@ public class SecurityConfiguration {
                 .cors(withDefaults()) // Por defecto Spring va a buscar un bean con el nombre "corsConfigurationSource"
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+/*
                                 .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ArticuloManufacturado/**").hasAnyAuthority("ADMIN", "COCINERO")
-                                .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAnyAuthority("ADMIN", "COCINERO")
-                                .requestMatchers("/categoria/**").hasAuthority("COCINERO")
-                                .requestMatchers("/cliente/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/detallePedido/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/domicilio/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/empleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
-                                .requestMatchers("/empresa/**").hasAuthority("COCINERO")
-                                .requestMatchers("/factura/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/ArticuloManufacturado/**").hasAuthority("ADMIN")
+                                .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAuthority("ADMIN")
+                                .requestMatchers("/categoria/**").hasAuthority("ADMIN")
+                                .requestMatchers("/cliente/**").hasAuthority("ADMIN")
+                                .requestMatchers("/detallePedido/**").hasAuthority("ADMIN")
+                                .requestMatchers("/domicilio/**").hasAuthority("ADMIN")
+                                .requestMatchers("/empleado/**").hasAuthority("ADMIN")
+                                .requestMatchers("/empresa/**").hasAuthority("ADMIN")
+                                .requestMatchers("/factura/**").hasAuthority("ADMIN")
                                 .requestMatchers("/imagenArticulo/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/imagenEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .requestMatchers("/imagenCliente/**").hasAuthority("ADMIN")
+                                .requestMatchers("/imagenEmpleado/**").hasAuthority("ADMIN")
                                 .requestMatchers("/imagenEmpresa/**").hasAuthority("ADMIN")
                                 .requestMatchers("/imagenPromocion/**").hasAuthority("ADMIN")
                                 .requestMatchers("/imagenSucursal/**").hasAuthority("ADMIN")
-                                .requestMatchers("/localidad/**").permitAll()
-                                .requestMatchers("/mercadoPago/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/pais/**").permitAll()
-                                .requestMatchers("/pedido/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/preferenceMP/**").hasAnyAuthority("ADMIN", "CAJERO")
+                                .requestMatchers("/localidad/**").hasAuthority("ADMIN")
+                                .requestMatchers("/mercadoPago/**").hasAuthority("ADMIN")
+                                .requestMatchers("/pais/**").hasAuthority("ADMIN")
+                                .requestMatchers("/pedido/**").hasAuthority("ADMIN")
+                                .requestMatchers("/preferenceMP/**").hasAuthority("ADMIN")
                                 .requestMatchers("/promocion/**").hasAuthority("ADMIN")
                                 .requestMatchers("/promocionDetalle/**").hasAuthority("ADMIN")
-                                .requestMatchers("/provincia/**").permitAll()
-                                .requestMatchers("/sucursal/**").hasAuthority("CONINERO")
-                                .requestMatchers("/UnidadMedida/**").hasAuthority("COCINERO")
-                                .requestMatchers("/usuarioCliente/**").hasAnyAuthority("ADMIN", "CAJERO")
-                                .requestMatchers("/usuarioEmpleado/**").hasAnyAuthority("ADMIN", "COCINERO", "CAJERO", "DELIVERY")
+                                .requestMatchers("/provincia/**").hasAuthority("ADMIN")
+                                .requestMatchers("/sucursal/**").hasAuthority("ADMIN")
+                                .requestMatchers("/UnidadMedida/**").hasAuthority("ADMIN")
+                                .requestMatchers("/usuarioCliente/**").hasAuthority("ADMIN")
+                                .requestMatchers("/usuarioEmpleado/**").hasAuthority("ADMIN")
+*/
+
                                 .anyRequest().permitAll() // Cualquier otro, tiene que estar al menos autenticado, es decir, que tenga un jwt válido
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->

@@ -13,4 +13,6 @@ import org.mapstruct.Mapping;
 public interface EmpleadoMapper extends BaseMapper<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto> {
     @Mapping(target = "sucursal", source = "idSucursal", qualifiedByName = "getById")
     Empleado toEntityCreate(EmpleadoCreateDto source);
+    @Mapping(target = "sucursal", source = "idSucursal", qualifiedByName = "getById")
+    Empleado toUpdate(EmpleadoCreateDto source);
 }

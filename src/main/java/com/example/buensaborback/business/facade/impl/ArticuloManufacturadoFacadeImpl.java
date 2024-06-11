@@ -17,16 +17,4 @@ public class ArticuloManufacturadoFacadeImpl extends BaseFacadeImpl<ArticuloManu
         super(baseService, baseMapper);
     }
 
-
-    public ArticuloManufacturadoCreateDto mapperJson(String articuloManufacturadoJson) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ArticuloManufacturadoCreateDto articuloManufacturadoDTO = null;
-        try {
-            articuloManufacturadoDTO = objectMapper.readValue(articuloManufacturadoJson, ArticuloManufacturadoCreateDto.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return articuloManufacturadoDTO;
-    }
-
 }
