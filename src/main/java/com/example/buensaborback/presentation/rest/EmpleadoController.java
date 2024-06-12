@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,8 +31,18 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
     }
 
     @GetMapping("/getPorSucursal/{id}")
-    public ResponseEntity<?> getPorSucursal(@PathVariable Long id) {
-        return ResponseEntity.ok(empleadoFacade.getPorSucursal(id));
+    public ResponseEntity<?> getPorSucursal(@PathVariable Long id, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+        List<EmpleadoDto> empleados = empleadoFacade.getPorSucursal(id);
+        if (startId != null) {
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, empleados.size());
+            if (startIndex < empleados.size()) {
+                empleados = empleados.subList(startIndex, endIndex);
+            } else {
+                empleados = new ArrayList<>();
+            }
+        }
+        return ResponseEntity.ok(empleados);
     }
 
     @PostMapping("/getPorMail")

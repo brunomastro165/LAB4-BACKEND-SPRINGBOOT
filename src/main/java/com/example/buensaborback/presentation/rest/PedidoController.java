@@ -1,6 +1,7 @@
 package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.PedidoFacadeImpl;
+import com.example.buensaborback.business.services.PedidoService;
 import com.example.buensaborback.domain.dto.Pedido.PedidoCreateDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.entities.Pedido;
@@ -9,11 +10,13 @@ import com.example.buensaborback.domain.enums.FormaPago;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,37 +27,44 @@ import java.util.stream.Collectors;
 public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto, Long, PedidoFacadeImpl> {
     @Autowired
     private PedidoRepository pedidoRepository;
+    @Autowired
+    private PedidoService pedidoService;
 
     public PedidoController(PedidoFacadeImpl facade) {
         super(facade);
     }
 
     @PostMapping("/ingresos")
-    public Optional<Double> getIngresos(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+    public Optional<Double> getIngresos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
         return pedidoRepository.getIngresos(fechaInicio, fechaFin);
     }
 
     @PostMapping("/cantidad-pedidos-por-cliente")
-    public List<Object[]> getCantidadPedidosPorCliente(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+    public List<Object[]> getCantidadPedidosPorCliente(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
         return pedidoRepository.getCantidadPedidosPorCliente(fechaInicio, fechaFin);
     }
 
     @PostMapping("/ganancia")
-    public Optional<Double> getGanancia(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+    public Optional<Double> getGanancia(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
         return pedidoRepository.getGanancia(fechaInicio, fechaFin);
     }
 
     @PostMapping("/ranking-articulos")
-    public List<Object[]> getRankingArticulos(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+    public List<Object[]> getRankingArticulos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
+        System.out.println(fechaFin+":"+fechaInicio);
         return pedidoRepository.getRankingArticulos(fechaInicio, fechaFin);
     }
 
     @PostMapping("/ranking-promociones")
-    public List<Object[]> getRankingPromocion(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+    public List<Object[]> getRankingPromocion(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
         return pedidoRepository.getRankingPromocion(fechaInicio, fechaFin);
     }
+    @PostMapping("/getPorFecha")
+    public ResponseEntity<List<PedidoDto>> getPorFecha(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin){
+        return ResponseEntity.ok(pedidoService.getPorFecha(fechaInicio,fechaFin));
+    }
 
-    @GetMapping("/getPorEstado/{estado}/{idCliente}")
+    @PostMapping("/getPorEstado/{estado}/{idCliente}")
     public ResponseEntity<List<PedidoDto>> getPorEstado(@PathVariable Long idCliente,@PathVariable String estado) {
 
         // Obtén todos los pedidos con el facade

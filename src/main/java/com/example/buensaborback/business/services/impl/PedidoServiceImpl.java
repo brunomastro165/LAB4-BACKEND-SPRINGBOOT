@@ -1,9 +1,12 @@
 package com.example.buensaborback.business.services.impl;
 
+import com.example.buensaborback.business.facade.PedidoFacade;
+import com.example.buensaborback.business.mapper.PedidoMapper;
 import com.example.buensaborback.business.services.ArticuloInsumoService;
 import com.example.buensaborback.business.services.ArticuloManufacturadoService;
 import com.example.buensaborback.business.services.PedidoService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
+import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.entities.*;
 import com.example.buensaborback.domain.enums.Estado;
 import com.example.buensaborback.repositories.ArticuloRepository;
@@ -13,6 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import java.time.ZoneId;
+import java.time.LocalDateTime;
 
 @Service
 public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements PedidoService {
@@ -22,6 +31,8 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     ArticuloInsumoService articuloInsumoService;
     @Autowired
     ArticuloManufacturadoService articuloManufacturadoService;
+    @Autowired
+    PedidoMapper pedidoMapper;
 
     @Transactional
     @Override
@@ -158,6 +169,23 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         }
         return false;
     }
+
+    public List<PedidoDto> getPorFecha(Date fechaInicio, Date fechaFin){
+        LocalDate inicio = fechaInicio.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate fin = fechaFin.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        List<PedidoDto> pedidos = pedidoMapper.toDTOsList(getAll());
+
+        return pedidos.stream()
+                .filter(pedido -> !pedido.getFechaPedido().isBefore(inicio) && !pedido.getFechaPedido().isAfter(fin))
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }
