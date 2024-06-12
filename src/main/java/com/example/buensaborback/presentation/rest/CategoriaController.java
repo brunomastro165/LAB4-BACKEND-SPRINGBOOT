@@ -34,7 +34,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     }
 
     @GetMapping("/getInsumos/{idCategoria}/{searchString}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria, @PathVariable String searchString, @PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria, @PathVariable String searchString, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> articuloInsumoDtos = facade.getInsumoSubCategoria(idCategoria, searchString);
         if (startId != null) {
             int startIndex = (startId.intValue() - 1) * limit;
@@ -49,7 +49,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     }
 
     @GetMapping("/getManufacturados/{idCategoria}/{searchString}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria, @PathVariable String searchString, @PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria, @PathVariable String searchString, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloManufacturadoDto> articuloManufacturadoDtos = facade.getManufacturadoSubCategoria(idCategoria, searchString);
         if (startId != null) {
             int startIndex = (startId.intValue() - 1) * limit;
