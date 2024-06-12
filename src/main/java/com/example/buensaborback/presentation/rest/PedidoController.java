@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,29 +37,39 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @PostMapping("/ingresos")
     public Optional<Double> getIngresos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        return pedidoRepository.getIngresos(fechaInicio, fechaFin);
+        LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return pedidoRepository.getIngresos(inicio, fin);
     }
 
     @PostMapping("/cantidad-pedidos-por-cliente")
     public List<Object[]> getCantidadPedidosPorCliente(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        return pedidoRepository.getCantidadPedidosPorCliente(fechaInicio, fechaFin);
+        LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return pedidoRepository.getCantidadPedidosPorCliente(inicio, fin);
     }
 
     @PostMapping("/ganancia")
     public Optional<Double> getGanancia(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        return pedidoRepository.getGanancia(fechaInicio, fechaFin);
+        LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return pedidoRepository.getGanancia(inicio, fin);
     }
 
     @PostMapping("/ranking-articulos")
     public List<Object[]> getRankingArticulos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        System.out.println(fechaFin+":"+fechaInicio);
-        return pedidoRepository.getRankingArticulos(fechaInicio, fechaFin);
+        LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return pedidoRepository.getRankingArticulos(inicio, fin);
     }
 
     @PostMapping("/ranking-promociones")
     public List<Object[]> getRankingPromocion(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        return pedidoRepository.getRankingPromocion(fechaInicio, fechaFin);
+        LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return pedidoRepository.getRankingPromocion(inicio, fin);
     }
+
     @PostMapping("/getPorFecha")
     public ResponseEntity<List<PedidoDto>> getPorFecha(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin){
         return ResponseEntity.ok(pedidoService.getPorFecha(fechaInicio,fechaFin));
