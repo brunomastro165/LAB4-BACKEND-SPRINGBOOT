@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface ArticuloRepository extends BaseRepository<Articulo, Long> {
     @Query("SELECT i FROM Articulo i WHERE i.id = :idArticulo")
     Optional<Articulo> findById(@Param("idArticulo") Long idArticulo);
+
+
 }

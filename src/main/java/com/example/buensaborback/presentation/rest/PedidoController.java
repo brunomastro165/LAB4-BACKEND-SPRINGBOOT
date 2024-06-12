@@ -27,6 +27,20 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public PedidoController(PedidoFacadeImpl facade) {
         super(facade);
     }
+    @GetMapping("/getPorEstado/{estado}/{idCliente}")
+    public ResponseEntity<List<PedidoDto>> getPorEstado(@PathVariable Long idCliente,@PathVariable String estado) {
+
+        // Obtén todos los pedidos con el facade
+        List<PedidoDto> pedidos = facade.getAll();
+        List<PedidoDto> filteredPedidos = pedidos.stream()
+                .filter(a -> a.getCliente() != null
+                        && a.getCliente().getId().equals(idCliente)
+                        && !a.isEliminado()
+                        && a.getEstado().toString().equals(estado))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredPedidos);
+    }
+
 
     @GetMapping("/getPorCliente/{id}")
     public ResponseEntity<List<PedidoDto>> getPorCliente(@PathVariable Long id) {
