@@ -157,7 +157,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
 
 
     @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
-    public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
+    public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         if (limit == null || startId == null) {
             return ResponseEntity.badRequest().build();
         }
