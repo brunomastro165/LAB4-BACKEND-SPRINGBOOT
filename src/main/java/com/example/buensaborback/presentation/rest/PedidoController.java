@@ -29,27 +29,27 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         super(facade);
     }
 
-    @GetMapping("/ingresos")
+    @PostMapping("/ingresos")
     public Optional<Double> getIngresos(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
         return pedidoRepository.getIngresos(fechaInicio, fechaFin);
     }
 
-    @GetMapping("/cantidad-pedidos-por-cliente")
+    @PostMapping("/cantidad-pedidos-por-cliente")
     public List<Object[]> getCantidadPedidosPorCliente(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
         return pedidoRepository.getCantidadPedidosPorCliente(fechaInicio, fechaFin);
     }
 
-    @GetMapping("/ganancia")
+    @PostMapping("/ganancia")
     public Optional<Double> getGanancia(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
         return pedidoRepository.getGanancia(fechaInicio, fechaFin);
     }
 
-    @GetMapping("/ranking-articulos")
+    @PostMapping("/ranking-articulos")
     public List<Object[]> getRankingArticulos(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
         return pedidoRepository.getRankingArticulos(fechaInicio, fechaFin);
     }
 
-    @GetMapping("/ranking-promociones")
+    @PostMapping("/ranking-promociones")
     public List<Object[]> getRankingPromocion(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
         return pedidoRepository.getRankingPromocion(fechaInicio, fechaFin);
     }
