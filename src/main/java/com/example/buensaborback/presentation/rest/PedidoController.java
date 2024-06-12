@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,6 +28,32 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     public PedidoController(PedidoFacadeImpl facade) {
         super(facade);
     }
+
+    @GetMapping("/ingresos")
+    public Optional<Double> getIngresos(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+        return pedidoRepository.getIngresos(fechaInicio, fechaFin);
+    }
+
+    @GetMapping("/cantidad-pedidos-por-cliente")
+    public List<Object[]> getCantidadPedidosPorCliente(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+        return pedidoRepository.getCantidadPedidosPorCliente(fechaInicio, fechaFin);
+    }
+
+    @GetMapping("/ganancia")
+    public Optional<Double> getGanancia(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+        return pedidoRepository.getGanancia(fechaInicio, fechaFin);
+    }
+
+    @GetMapping("/ranking-articulos")
+    public List<Object[]> getRankingArticulos(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+        return pedidoRepository.getRankingArticulos(fechaInicio, fechaFin);
+    }
+
+    @GetMapping("/ranking-promociones")
+    public List<Object[]> getRankingPromocion(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+        return pedidoRepository.getRankingPromocion(fechaInicio, fechaFin);
+    }
+
     @GetMapping("/getPorEstado/{estado}/{idCliente}")
     public ResponseEntity<List<PedidoDto>> getPorEstado(@PathVariable Long idCliente,@PathVariable String estado) {
 

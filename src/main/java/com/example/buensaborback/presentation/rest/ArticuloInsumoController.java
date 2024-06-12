@@ -11,6 +11,7 @@ import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.ArticuloRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -184,11 +185,11 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
          */
         try {
             facade.deleteById(id);
-            facade.getById(id);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("No se ha podido borrar el articulo manufacturado");
-        }catch (Exception e){
             return ResponseEntity.ok("La entidad fue borrada correctamente");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en una promocion o en un articulo manufacturado");
         }
+
 
 
     }

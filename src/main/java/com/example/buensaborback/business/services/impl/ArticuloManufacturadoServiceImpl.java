@@ -20,11 +20,13 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
         boolean isInPromocion = promocionService.getAll().stream()
                 .filter(promocion -> !promocion.isEliminado())
                 .flatMap(promocion -> promocion.getDetalles().stream())
-                .anyMatch(detalle -> detalle.getArticulo().getId() == id);
+                .anyMatch(detalle -> detalle.getArticulo() != null
+                        && detalle.getArticulo().getId() == id);
         //Borra si no esta en un promo que este activa
         if (!isInPromocion) {
             baseRepository.delete(entity);
-        }
+        }else
+            throw new RuntimeException("No se puede borrar la entidad porque está en una promoción activa o en un ArticuloManufacturado activo");
     }
 
     @Override

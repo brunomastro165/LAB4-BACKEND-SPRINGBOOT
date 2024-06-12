@@ -114,12 +114,11 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         try {
             facade.deleteById(id);
-            facade.getById(id); // Intenta obtener la entidad después de borrarla
-            // Si la entidad todavía existe después de intentar borrarla, devuelve un estado 409
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("No se ha podido borrar el articulo manufacturado");
-        } catch (Exception e) {
             // Si la entidad no existe (lo que significa que fue borrada correctamente), devuelve un estado 200
             return ResponseEntity.ok("La entidad fue borrada correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se ha podido borrar el articulo manufacturado");
+
         }
     }
 
