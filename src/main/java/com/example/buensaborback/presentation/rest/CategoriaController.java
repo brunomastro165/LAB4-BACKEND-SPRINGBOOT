@@ -2,6 +2,7 @@ package com.example.buensaborback.presentation.rest;
 
 import com.example.buensaborback.business.facade.impl.CategoriaFacadeImpl;
 import com.example.buensaborback.business.mapper.CategoriaMapper;
+import com.example.buensaborback.business.services.CategoriaService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long, CategoriaFacadeImpl> {
     @Autowired
     CategoriaMapper categoriaMapper;
+    @Autowired
+    CategoriaService categoriaService;
 
     public CategoriaController(CategoriaFacadeImpl facade) {
         super(facade);
@@ -33,12 +36,14 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     @GetMapping("/getInsumos/{idCategoria}/{searchString}")
     public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria, @PathVariable String searchString, @PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
         List<ArticuloInsumoDto> articuloInsumoDtos = facade.getInsumoSubCategoria(idCategoria, searchString);
-        int startIndex = (startId.intValue() - 1) * limit;
-        int endIndex = Math.min(startIndex + limit, articuloInsumoDtos.size());
-        if (startIndex < articuloInsumoDtos.size()) {
-            articuloInsumoDtos = articuloInsumoDtos.subList(startIndex, endIndex);
-        } else {
-            articuloInsumoDtos = new ArrayList<>();
+        if (startId != null) {
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, articuloInsumoDtos.size());
+            if (startIndex < articuloInsumoDtos.size()) {
+                articuloInsumoDtos = articuloInsumoDtos.subList(startIndex, endIndex);
+            } else {
+                articuloInsumoDtos = new ArrayList<>();
+            }
         }
         return ResponseEntity.ok(articuloInsumoDtos);
     }
@@ -46,12 +51,14 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     @GetMapping("/getManufacturados/{idCategoria}/{searchString}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria, @PathVariable String searchString, @PathVariable(required = false) Integer limit, @PathVariable(required = false) Long startId) {
         List<ArticuloManufacturadoDto> articuloManufacturadoDtos = facade.getManufacturadoSubCategoria(idCategoria, searchString);
-        int startIndex = (startId.intValue() - 1) * limit;
-        int endIndex = Math.min(startIndex + limit, articuloManufacturadoDtos.size());
-        if (startIndex < articuloManufacturadoDtos.size()) {
-            articuloManufacturadoDtos = articuloManufacturadoDtos.subList(startIndex, endIndex);
-        } else {
-            articuloManufacturadoDtos = new ArrayList<>();
+        if (startId != null) {
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, articuloManufacturadoDtos.size());
+            if (startIndex < articuloManufacturadoDtos.size()) {
+                articuloManufacturadoDtos = articuloManufacturadoDtos.subList(startIndex, endIndex);
+            } else {
+                articuloManufacturadoDtos = new ArrayList<>();
+            }
         }
         return ResponseEntity.ok(articuloManufacturadoDtos);
     }
@@ -110,7 +117,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
 
     // Comprueba si una categoría y todas sus subcategorías pueden ser eliminadas
     private boolean canDeleteCategoria(CategoriaDto categoria) {
-        if (!categoriaMapper.toEntity(categoria).getArticulos().isEmpty()) {
+        if (!categoriaService.getById(categoria.getId()).getArticulos().isEmpty()) {
             return false;
         }
         if (!categoria.getSubCategorias().isEmpty()) {
