@@ -71,7 +71,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     }
 
     @GetMapping("/getArticulos/{idSucursal}")
-    public ResponseEntity<List<Articulo>> getAllArticulos(@RequestParam String searchString , @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public ResponseEntity<List<Articulo>> getAllArticulos(@RequestParam(required = false) String searchString , @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<Articulo> articulos = articuloRepository.getAll();
         List<Articulo> filteredArticulos;
         if(searchString == null || searchString == "") {
@@ -112,13 +112,13 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     }
 
     @GetMapping("/getArticulosInsumos/{idSucursal}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> filteredArticulos = filtrarArticulos(searchString, idSucursal, limit, startId);
         return ResponseEntity.ok(filteredArticulos);
     }
 
     @GetMapping("/buscar/{idSucursal}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@RequestParam String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> filteredArticulos =   filtrarArticulos(searchString, idSucursal, limit, startId);
         return ResponseEntity.ok(filteredArticulos);
     }
