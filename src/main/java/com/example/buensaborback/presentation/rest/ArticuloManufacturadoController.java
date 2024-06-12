@@ -30,15 +30,25 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
         super(facade);
     }
 
-    @GetMapping("/getArticulosManufacturados/{searchString}/{idSucursal}")
+    @GetMapping("/getArticulosManufacturados/{idSucursal}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloManufacturadoDto> articulos = facade.getAll();
-        List<ArticuloManufacturadoDto> filteredArticulos = articulos.stream()
-                .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
-                        && !a.isEliminado()
+        List<ArticuloManufacturadoDto> filteredArticulos;
+        if(searchString == null || searchString == "")
+        filteredArticulos = articulos.stream()
+                .filter(a ->
+                        !a.isEliminado()
                         && a.getCategoria() != null
                         && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                 .collect(Collectors.toList());
+        else
+            filteredArticulos = articulos.stream()
+                    .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
+                            && !a.isEliminado()
+                            && a.getCategoria() != null
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
+
         if (startId != null) {
             int startIndex = (startId.intValue() - 1) * limit;
             int endIndex = Math.min(startIndex + limit, filteredArticulos.size());

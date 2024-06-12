@@ -33,8 +33,8 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         super(facade);
     }
 
-    @GetMapping("/getInsumos/{idCategoria}/{searchString}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria, @PathVariable String searchString, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    @GetMapping("/getInsumos/{idCategoria}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idCategoria, @RequestParam(required = false) String searchString, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloInsumoDto> articuloInsumoDtos = facade.getInsumoSubCategoria(idCategoria, searchString);
         if (startId != null) {
             int startIndex = (startId.intValue() - 1) * limit;
@@ -48,8 +48,8 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
         return ResponseEntity.ok(articuloInsumoDtos);
     }
 
-    @GetMapping("/getManufacturados/{idCategoria}/{searchString}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria, @PathVariable String searchString, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    @GetMapping("/getManufacturados/{idCategoria}")
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorCategorias(@PathVariable Long idCategoria, @RequestParam(required = false) String searchString, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<ArticuloManufacturadoDto> articuloManufacturadoDtos = facade.getManufacturadoSubCategoria(idCategoria, searchString);
         if (startId != null) {
             int startIndex = (startId.intValue() - 1) * limit;
@@ -156,7 +156,7 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     }
 
 
-    @GetMapping("/getCategoriasSinArticulos/{limit}/{startId}")
+    @GetMapping("/getCategoriasSinArticulos")
     public ResponseEntity<List<CategoriaShortDto>> getCategoriasSinArticulos(@RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         if (limit == null || startId == null) {
             return ResponseEntity.badRequest().build();

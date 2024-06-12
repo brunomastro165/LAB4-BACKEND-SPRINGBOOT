@@ -118,14 +118,24 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
         Categoria categoria = getById(idSub);
         List<ArticuloManufacturado> manufacturados = new ArrayList<>();
         if(!categoria.getSubCategorias().isEmpty()){
-            manufacturados = categoria.getSubCategorias().stream()
-                    .flatMap(c -> getManufacturadoSubCategoria(c.getId(), searchString).stream())
-                    .collect(Collectors.toList());
+                manufacturados = categoria.getSubCategorias().stream()
+                        .flatMap(c -> getManufacturadoSubCategoria(c.getId(), searchString).stream())
+                        .collect(Collectors.toList());
+
         }
         var articulos = articuloManufacturadoFacade.getAll();
-        List<ArticuloManufacturado> filteredArticulos = articulos.stream()
-                .filter(articuloManufacturadoDto -> articuloManufacturadoDto.getCategoria().getId().equals(idSub) && articuloManufacturadoDto.getDenominacion().contains(searchString))
-                .collect(Collectors.toList());
+        List<ArticuloManufacturado> filteredArticulos;
+        if(searchString == null || searchString == ""){
+            filteredArticulos = articulos.stream()
+                    .filter(articuloManufacturadoDto -> articuloManufacturadoDto.getCategoria().getId().equals(idSub))
+                    .collect(Collectors.toList());
+        }
+        else{
+            filteredArticulos = articulos.stream()
+                    .filter(articuloManufacturadoDto -> articuloManufacturadoDto.getCategoria().getId().equals(idSub) && articuloManufacturadoDto.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
         for (ArticuloManufacturado articulo:
                 filteredArticulos) {
             manufacturados.add(articulo);
@@ -143,9 +153,16 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
                     .collect(Collectors.toList());
         }
         var articulos = articuloInsumoFacade.getAll();
-        List<ArticuloInsumo> filteredArticulos = articulos.stream()
-                .filter(articuloInsumoDto -> articuloInsumoDto.getCategoria().getId().equals(idSub) && articuloInsumoDto.getDenominacion().contains(searchString))
-                .collect(Collectors.toList());
+        List<ArticuloInsumo> filteredArticulos;
+        if(searchString == null || searchString == "") {
+            filteredArticulos = articulos.stream()
+                    .filter(articuloInsumoDto -> articuloInsumoDto.getCategoria().getId().equals(idSub))
+                    .collect(Collectors.toList());
+        }else {
+            filteredArticulos = articulos.stream()
+                    .filter(articuloInsumoDto -> articuloInsumoDto.getCategoria().getId().equals(idSub) && articuloInsumoDto.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
         for (ArticuloInsumo articulo:
              filteredArticulos) {
             insumos.add(articulo);

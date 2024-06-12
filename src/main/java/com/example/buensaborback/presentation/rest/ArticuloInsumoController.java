@@ -41,15 +41,53 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         super(facade);
     }
 
-    @GetMapping("/getArticulos/{searchString}/{idSucursal}")
-    public ResponseEntity<List<Articulo>> getAllArticulos(@PathVariable String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public List<ArticuloInsumoDto> filtrarArticulos( String searchString, Long idSucursal, Integer limit, Long startId){
+        List<ArticuloInsumoDto> allArticulos = facade.getAll();
+        List<ArticuloInsumoDto> filteredArticulos;
+        if(searchString == null || searchString == ""){
+            filteredArticulos = allArticulos.stream()
+                    .filter(a ->
+                            !a.isEliminado()
+                                    && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
+        }else {
+            filteredArticulos = allArticulos.stream()
+                    .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
+                            && !a.isEliminado()
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
+        }
+
+        if (startId != null) {
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
+            if (startIndex < filteredArticulos.size()) {
+                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
+            } else {
+                filteredArticulos = new ArrayList<>();
+            }
+        }
+        return filteredArticulos;
+    }
+
+    @GetMapping("/getArticulos/{idSucursal}")
+    public ResponseEntity<List<Articulo>> getAllArticulos(@RequestParam String searchString , @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
         List<Articulo> articulos = articuloRepository.getAll();
-        List<Articulo> filteredArticulos = articulos.stream()
-                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
-                        && !a.isEliminado()
-                        && a.getCategoria() != null
-                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                .collect(Collectors.toList());
+        List<Articulo> filteredArticulos;
+        if(searchString == null || searchString == "") {
+            filteredArticulos = articulos.stream()
+                    .filter(a ->
+                            !a.isEliminado()
+                            && a.getCategoria() != null
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
+        }else
+            filteredArticulos = articulos.stream()
+                    .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
+                            && !a.isEliminado()
+                            && a.getCategoria() != null
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
         List<Articulo> articulosResponse = new ArrayList<>();
         // Establece la categoría e imágenes en null después de filtrar
         for (Articulo articulo : filteredArticulos) {
@@ -73,47 +111,15 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         return ResponseEntity.ok(articulosResponse);
     }
 
-    @GetMapping("/getArticulosInsumos/{searchString}/{idSucursal}")
+    @GetMapping("/getArticulosInsumos/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@PathVariable(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-        if (limit == null || startId == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        List<ArticuloInsumoDto> articulos = facade.getAll();
-        List<ArticuloInsumoDto> filteredArticulos = articulos.stream()
-                .filter(a -> (searchString == null || a.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
-                        && !a.isEliminado()
-                        && a.getCategoria() != null
-                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                .collect(Collectors.toList());
-        if (startId != null) {
-            int startIndex = (startId.intValue() - 1) * limit;
-            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
-            if (startIndex < filteredArticulos.size()) {
-                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
-            } else {
-                filteredArticulos = new ArrayList<>();
-            }
-        }
+        List<ArticuloInsumoDto> filteredArticulos = filtrarArticulos(searchString, idSucursal, limit, startId);
         return ResponseEntity.ok(filteredArticulos);
     }
 
-    @GetMapping("/buscar/{searchString}/{idSucursal}")
-    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@PathVariable String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-        List<ArticuloInsumoDto> allArticulos = facade.getAll();
-        List<ArticuloInsumoDto> filteredArticulos = allArticulos.stream()
-                .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
-                        && !a.isEliminado()
-                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                .collect(Collectors.toList());
-        if (startId != null) {
-            int startIndex = (startId.intValue() - 1) * limit;
-            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
-            if (startIndex < filteredArticulos.size()) {
-                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
-            } else {
-                filteredArticulos = new ArrayList<>();
-            }
-        }
+    @GetMapping("/buscar/{idSucursal}")
+    public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@RequestParam String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+        List<ArticuloInsumoDto> filteredArticulos =   filtrarArticulos(searchString, idSucursal, limit, startId);
         return ResponseEntity.ok(filteredArticulos);
     }
 
