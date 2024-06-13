@@ -7,7 +7,7 @@ import com.example.buensaborback.domain.entities.Empleado;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {SucursalService.class})
+@Mapper(componentModel = "spring", uses = {SucursalService.class,PedidoMapper.class})
 public interface EmpleadoMapper extends BaseMapper<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto> {
     @Mapping(target = "sucursal", source = "idSucursal", qualifiedByName = "getById")
     Empleado toEntityCreate(EmpleadoCreateDto source);

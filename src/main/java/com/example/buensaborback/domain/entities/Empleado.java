@@ -31,11 +31,13 @@ public class Empleado extends Base {
     protected ImagenEmpleado imagenEmpleado;
 
     private Rol tipoEmpleado;
-
+/*
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
     private Set<Pedido> pedidos = new HashSet<>();
+
+ */
 
     @ManyToOne
     @ToString.Exclude
