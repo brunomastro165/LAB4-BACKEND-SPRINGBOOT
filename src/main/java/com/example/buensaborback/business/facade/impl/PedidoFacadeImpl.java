@@ -11,16 +11,17 @@ import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.entities.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class PedidoFacadeImpl extends BaseFacadeImpl<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto, Long> implements PedidoFacade {
     @Autowired
     PedidoService pedidoService;
+
     public PedidoFacadeImpl(BaseService<Pedido, Long> baseService, BaseMapper<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto> baseMapper) {
         super(baseService, baseMapper);
     }
-    public PedidoDto asignarEmpleado(Long idEmpleado, Long idPedido){
+
+    public PedidoDto asignarEmpleado(Long idEmpleado, Long idPedido) {
         return baseMapper.toDTO(pedidoService.asignarEmpleado(idEmpleado, idPedido));
     }
 }

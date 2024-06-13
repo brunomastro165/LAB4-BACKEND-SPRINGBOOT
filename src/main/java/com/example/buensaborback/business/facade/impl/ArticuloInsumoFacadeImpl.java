@@ -19,14 +19,17 @@ import java.util.List;
 public class ArticuloInsumoFacadeImpl extends BaseFacadeImpl<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoEditDto, Long> implements ArticuloInsumoFacade {
     @Autowired
     ArticuloInsumoService articuloInsumoService;
+
     public ArticuloInsumoFacadeImpl(BaseService<ArticuloInsumo, Long> baseService, BaseMapper<ArticuloInsumo, ArticuloInsumoDto, ArticuloInsumoCreateDto, ArticuloInsumoEditDto> baseMapper) {
         super(baseService, baseMapper);
     }
-    public List<Articulo> getAllArticulos(String searchString , Long idSucursal, Integer limit, Long startId){
-        return articuloInsumoService.getAllArticulos(searchString,idSucursal,limit,startId);
+
+    public List<Articulo> getAllArticulos(String searchString, Long idSucursal, Integer limit, Long startId) {
+        return articuloInsumoService.getAllArticulos(searchString, idSucursal, limit, startId);
     }
-    public List<ArticuloInsumoDto> filtrarArticulos(String searchString, Long idSucursal, Integer limit, Long startId){
-        return baseMapper.toDTOsList(articuloInsumoService.filtrarArticulos(searchString,idSucursal,limit,startId));
+
+    public List<ArticuloInsumoDto> filtrarArticulos(String searchString, Long idSucursal, Integer limit, Long startId) {
+        return baseMapper.toDTOsList(articuloInsumoService.filtrarArticulos(searchString, idSucursal, limit, startId));
     }
 
 

@@ -6,10 +6,7 @@ import com.example.buensaborback.business.services.base.BaseServiceImpl;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,7 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
         //Borra si no esta en un promo que este activa
         if (!isInPromocion) {
             baseRepository.delete(entity);
-        }else
+        } else
             throw new RuntimeException("No se puede borrar la entidad porque está en una promoción activa o en un ArticuloManufacturado activo");
     }
 
@@ -50,10 +47,10 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
         }
     }
 
-    public List<ArticuloManufacturado> getPorString(String searchString, Long idSucursal, Integer limit,  Long startId) {
+    public List<ArticuloManufacturado> getPorString(String searchString, Long idSucursal, Integer limit, Long startId) {
         List<ArticuloManufacturado> articulos = getAll();
         List<ArticuloManufacturado> filteredArticulos;
-        if(searchString == null || searchString == "")
+        if (searchString == null || searchString == "")
             filteredArticulos = articulos.stream()
                     .filter(a ->
                             !a.isEliminado()

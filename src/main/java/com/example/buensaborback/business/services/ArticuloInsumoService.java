@@ -7,6 +7,7 @@ import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import java.util.List;
 
 public interface ArticuloInsumoService extends BaseService<ArticuloInsumo, Long> {
-    List<Articulo> getAllArticulos(String searchString , Long idSucursal, Integer limit, Long startId);
+    List<Articulo> getAllArticulos(String searchString, Long idSucursal, Integer limit, Long startId);
+
     List<ArticuloInsumo> filtrarArticulos(String searchString, Long idSucursal, Integer limit, Long startId);
 }

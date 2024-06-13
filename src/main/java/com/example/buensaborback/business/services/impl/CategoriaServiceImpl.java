@@ -1,17 +1,8 @@
 package com.example.buensaborback.business.services.impl;
 
-import com.example.buensaborback.business.facade.ArticuloInsumoFacade;
-import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
-import com.example.buensaborback.business.mapper.ArticuloInsumoMapper;
-import com.example.buensaborback.business.mapper.ArticuloManufacturadoMapper;
-import com.example.buensaborback.business.services.ArticuloInsumoService;
 import com.example.buensaborback.business.services.CategoriaService;
 import com.example.buensaborback.business.services.SucursalService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
-import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
-import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.Categoria;
@@ -20,8 +11,6 @@ import com.example.buensaborback.repositories.ArticuloInsumoRepository;
 import com.example.buensaborback.repositories.ArticuloManufacturadoRepository;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,29 +62,28 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
         return entitySaved;
     }
 
-    public List<ArticuloManufacturado> getManufacturadoSubCategoria(Long idSub,String searchString) {
+    public List<ArticuloManufacturado> getManufacturadoSubCategoria(Long idSub, String searchString) {
         Categoria categoria = getById(idSub);
         List<ArticuloManufacturado> manufacturados = new ArrayList<>();
-        if(!categoria.getSubCategorias().isEmpty()){
-                manufacturados = categoria.getSubCategorias().stream()
-                        .flatMap(c -> getManufacturadoSubCategoria(c.getId(), searchString).stream())
-                        .collect(Collectors.toList());
+        if (!categoria.getSubCategorias().isEmpty()) {
+            manufacturados = categoria.getSubCategorias().stream()
+                    .flatMap(c -> getManufacturadoSubCategoria(c.getId(), searchString).stream())
+                    .collect(Collectors.toList());
 
         }
         var articulos = articuloManufacturadoFacade.getAll();
         List<ArticuloManufacturado> filteredArticulos;
-        if(searchString == null || searchString == ""){
+        if (searchString == null || searchString == "") {
             filteredArticulos = articulos.stream()
                     .filter(articuloManufacturadoDto -> articuloManufacturadoDto.getCategoria().getId().equals(idSub))
                     .collect(Collectors.toList());
-        }
-        else{
+        } else {
             filteredArticulos = articulos.stream()
                     .filter(articuloManufacturadoDto -> articuloManufacturadoDto.getCategoria().getId().equals(idSub) && articuloManufacturadoDto.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
                     .collect(Collectors.toList());
         }
 
-        for (ArticuloManufacturado articulo:
+        for (ArticuloManufacturado articulo :
                 filteredArticulos) {
             manufacturados.add(articulo);
         }
@@ -103,27 +91,27 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
     }
 
     @Override
-    public List<ArticuloInsumo> getInsumoSubCategoria(Long idSub,String searchString) {
+    public List<ArticuloInsumo> getInsumoSubCategoria(Long idSub, String searchString) {
         Categoria categoria = getById(idSub);
         List<ArticuloInsumo> insumos = new ArrayList<>();
-        if(!categoria.getSubCategorias().isEmpty()){
+        if (!categoria.getSubCategorias().isEmpty()) {
             insumos = categoria.getSubCategorias().stream()
                     .flatMap(c -> getInsumoSubCategoria(c.getId(), searchString).stream())
                     .collect(Collectors.toList());
         }
         var articulos = articuloInsumoFacade.getAll();
         List<ArticuloInsumo> filteredArticulos;
-        if(searchString == null || searchString == "") {
+        if (searchString == null || searchString == "") {
             filteredArticulos = articulos.stream()
                     .filter(articuloInsumoDto -> articuloInsumoDto.getCategoria().getId().equals(idSub))
                     .collect(Collectors.toList());
-        }else {
+        } else {
             filteredArticulos = articulos.stream()
                     .filter(articuloInsumoDto -> articuloInsumoDto.getCategoria().getId().equals(idSub) && articuloInsumoDto.getDenominacion().toLowerCase().contains(searchString.toLowerCase()))
                     .collect(Collectors.toList());
         }
-        for (ArticuloInsumo articulo:
-             filteredArticulos) {
+        for (ArticuloInsumo articulo :
+                filteredArticulos) {
             insumos.add(articulo);
         }
         return insumos;

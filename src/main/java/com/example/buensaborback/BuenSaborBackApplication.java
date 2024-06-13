@@ -1,14 +1,9 @@
 package com.example.buensaborback;
 
-import com.example.buensaborback.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 @SpringBootApplication

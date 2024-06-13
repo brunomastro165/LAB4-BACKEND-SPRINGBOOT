@@ -1,7 +1,5 @@
 package com.example.buensaborback.presentation.rest;
 
-import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
-import com.example.buensaborback.business.facade.PromocionFacade;
 import com.example.buensaborback.business.facade.impl.ArticuloInsumoFacadeImpl;
 import com.example.buensaborback.business.services.ImagenArticuloService;
 import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoCreateDto;
@@ -10,7 +8,6 @@ import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoEditDto
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
-import com.example.buensaborback.repositories.ArticuloRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -36,9 +31,8 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     }
 
 
-
     @GetMapping("/getArticulos/{idSucursal}")
-    public ResponseEntity<List<Articulo>> getAllArticulos(@RequestParam(required = false) String searchString , @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
+    public ResponseEntity<List<Articulo>> getAllArticulos(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
 
         return ResponseEntity.ok(facade.getAllArticulos(searchString, idSucursal, limit, startId));
     }
@@ -98,7 +92,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en una promocion o en un articulo manufacturado");
         }
-
 
 
     }

@@ -6,9 +6,9 @@ import com.example.buensaborback.domain.dto.Pedido.PedidoCreateDto;
 import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.entities.Pedido;
 import com.example.buensaborback.domain.enums.Estado;
-import com.example.buensaborback.domain.enums.FormaPago;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.PedidoRepository;
+import com.mercadopago.resources.preference.Preference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -71,12 +71,12 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     }
 
     @GetMapping("/getPorFecha/{idSucursal}")
-    public ResponseEntity<List<PedidoDto>> getPorFecha(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal){
-        return ResponseEntity.ok(pedidoService.getPorFecha(fechaInicio,fechaFin, idSucursal));
+    public ResponseEntity<List<PedidoDto>> getPorFecha(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
+        return ResponseEntity.ok(pedidoService.getPorFecha(fechaInicio, fechaFin, idSucursal));
     }
 
     @PostMapping("/getPorEstado/{estado}/{idCliente}")
-    public ResponseEntity<List<PedidoDto>> getPorEstado(@PathVariable Long idCliente,@PathVariable String estado) {
+    public ResponseEntity<List<PedidoDto>> getPorEstado(@PathVariable Long idCliente, @PathVariable String estado) {
 
         // Obtén todos los pedidos con el facade
         List<PedidoDto> pedidos = facade.getAll();
@@ -109,8 +109,9 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         PedidoDto pedido = facade.getById(id);
         return ResponseEntity.ok(pedido);
     }
+
     @PutMapping("/asignarEmpleado/{idEmpleado}/{idPedido}")
-    public ResponseEntity<?> asignarEmpleado(@PathVariable Long idEmpleado,@PathVariable Long idPedido){
+    public ResponseEntity<?> asignarEmpleado(@PathVariable Long idEmpleado, @PathVariable Long idPedido) {
         return ResponseEntity.ok(facade.asignarEmpleado(idEmpleado, idPedido));
     }
 
@@ -139,11 +140,19 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/api/create_preference_mp")
-    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
-        //Aca hay que calcular el total del pedido
+    public ResponseEntity<PedidoDto> crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
         MercadoPagoController cMercadoPago = new MercadoPagoController();
-        PreferenceMP preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
-        return preference;
+
+        Preference preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
+        pedido.getFactura().setMpPaymentId(preference.getCollectorId().intValue());
+        pedido.getFactura().setMpPaymentType(preference.getPaymentMethods().toString());
+        pedido.getFactura().setMpMerchantOrderId(Integer.getInteger(preference.getExternalReference()));
+        pedido.getFactura().setMpPreferenceId(preference.getId());
+
+        PreferenceMP preferenceMP = new PreferenceMP();
+        preferenceMP.setStatusCode(preference.getResponse().getStatusCode());
+        preferenceMP.setId(preference.getId());
+        return create(pedido);
     }
 
     @PutMapping("/cancelar/{id}")

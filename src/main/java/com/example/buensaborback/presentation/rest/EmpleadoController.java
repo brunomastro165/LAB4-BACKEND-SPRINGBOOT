@@ -31,8 +31,8 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
     }
 
     @GetMapping("/getPorSucursal/{id}")
-    public ResponseEntity<?> getPorSucursal(@PathVariable Long id, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId,@RequestParam(required = false) String searchString) {
-        List<EmpleadoDto> empleados = empleadoFacade.getPorSucursal(id,searchString);
+    public ResponseEntity<?> getPorSucursal(@PathVariable Long id, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId, @RequestParam(required = false) String searchString) {
+        List<EmpleadoDto> empleados = empleadoFacade.getPorSucursal(id, searchString);
         if (startId != null) {
             int startIndex = (startId.intValue() - 1) * limit;
             int endIndex = Math.min(startIndex + limit, empleados.size());

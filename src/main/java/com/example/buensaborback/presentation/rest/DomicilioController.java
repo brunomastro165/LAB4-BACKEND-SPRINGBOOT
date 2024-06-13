@@ -14,8 +14,9 @@ public class DomicilioController extends BaseControllerImpl<Domicilio, Domicilio
     public DomicilioController(DomicilioFacadeImpl facade) {
         super(facade);
     }
+
     @PostMapping("/addDomicilioCliente/{idCliente}")
-    public DomicilioDto addDomiciliaACliente(@RequestBody DomicilioCreateDto domicilioCreateDto, @PathVariable Long idCliente){
-        return facade.addDomiciliaACliente(domicilioCreateDto,idCliente);
+    public DomicilioDto addDomiciliaACliente(@RequestBody DomicilioCreateDto domicilioCreateDto, @PathVariable Long idCliente) {
+        return facade.addDomiciliaACliente(domicilioCreateDto, idCliente);
     }
 }

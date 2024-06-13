@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EmpleadoFacadeImpl extends BaseFacadeImpl<Empleado, EmpleadoDto, EmpleadoCreateDto, EmpleadoCreateDto, Long> implements EmpleadoFacade {
@@ -24,8 +23,8 @@ public class EmpleadoFacadeImpl extends BaseFacadeImpl<Empleado, EmpleadoDto, Em
         super(baseService, baseMapper);
     }
 
-    public List<EmpleadoDto> getPorSucursal(Long id,String searchString) {
-        List<Empleado> empleados = empleadoService.getPorSucursal(id,searchString);
+    public List<EmpleadoDto> getPorSucursal(Long id, String searchString) {
+        List<Empleado> empleados = empleadoService.getPorSucursal(id, searchString);
         return baseMapper.toDTOsList(empleados);
     }
 

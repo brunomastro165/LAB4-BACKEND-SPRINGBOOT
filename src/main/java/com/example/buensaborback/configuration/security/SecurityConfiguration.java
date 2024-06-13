@@ -3,7 +3,6 @@ package com.example.buensaborback.configuration.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -234,39 +233,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-    /*
-                                .requestMatchers("/empresa/save/**").hasAuthority("ADMIN")
-
-                                .requestMatchers("/ArticuloInsumo/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ArticuloManufacturado/**").hasAuthority("ADMIN")
-                                .requestMatchers("/ArticuloManufacturadoDetalle/**").hasAuthority("ADMIN")
-                                .requestMatchers("/categoria/**").hasAuthority("ADMIN")
-                                .requestMatchers("/cliente/**").hasAuthority("ADMIN")
-                                .requestMatchers("/detallePedido/**").hasAuthority("ADMIN")
-                                .requestMatchers("/domicilio/**").hasAuthority("ADMIN")
-                                .requestMatchers("/empleado/**").hasAuthority("ADMIN")
-                                .requestMatchers("/empresa/**").hasAuthority("ADMIN")
-                                .requestMatchers("/factura/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenArticulo/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenCliente/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenEmpleado/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenEmpresa/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenPromocion/**").hasAuthority("ADMIN")
-                                .requestMatchers("/imagenSucursal/**").hasAuthority("ADMIN")
-                                .requestMatchers("/localidad/**").hasAuthority("ADMIN")
-                                .requestMatchers("/mercadoPago/**").hasAuthority("ADMIN")
-                                .requestMatchers("/pais/**").hasAuthority("ADMIN")
-                                .requestMatchers("/pedido/**").hasAuthority("ADMIN")
-                                .requestMatchers("/preferenceMP/**").hasAuthority("ADMIN")
-                                .requestMatchers("/promocion/**").hasAuthority("ADMIN")
-                                .requestMatchers("/promocionDetalle/**").hasAuthority("ADMIN")
-                                .requestMatchers("/provincia/**").hasAuthority("ADMIN")
-                                .requestMatchers("/sucursal/**").hasAuthority("ADMIN")
-                                .requestMatchers("/UnidadMedida/**").hasAuthority("ADMIN")
-                                .requestMatchers("/usuarioCliente/**").hasAuthority("ADMIN")
-                                .requestMatchers("/usuarioEmpleado/**").hasAuthority("ADMIN")
-*/
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

@@ -3,18 +3,12 @@ package com.example.buensaborback.business.services.impl;
 import com.example.buensaborback.business.facade.ArticuloManufacturadoFacade;
 import com.example.buensaborback.business.services.ArticuloInsumoService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
-import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
 import com.example.buensaborback.domain.entities.Articulo;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
-import com.example.buensaborback.domain.entities.Promocion;
-import com.example.buensaborback.domain.entities.PromocionDetalle;
 import com.example.buensaborback.repositories.ArticuloRepository;
 import com.example.buensaborback.repositories.PromocionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,23 +43,24 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
         // Borra si no está en una promo que esté activa y si no está en un ArticuloManufacturado que esté activo
         if (!isInPromocion && !isInManufacturadoActivo) {
             baseRepository.delete(entity);
-        }else{
+        } else {
             throw new RuntimeException("No se puede borrar la entidad porque está en una promoción activa o en un ArticuloManufacturado activo");
 
         }
 
     }
-    public List<Articulo> getAllArticulos(String searchString ,Long idSucursal,Integer limit,Long startId) {
+
+    public List<Articulo> getAllArticulos(String searchString, Long idSucursal, Integer limit, Long startId) {
         List<Articulo> articulos = articuloRepository.getAll();
         List<Articulo> filteredArticulos;
-        if(searchString == null || searchString == "") {
+        if (searchString == null || searchString == "") {
             filteredArticulos = articulos.stream()
                     .filter(a ->
                             !a.isEliminado()
                                     && a.getCategoria() != null
                                     && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                     .collect(Collectors.toList());
-        }else
+        } else
             filteredArticulos = articulos.stream()
                     .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
                             && !a.isEliminado()
@@ -94,16 +89,17 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
         }
         return articulosResponse;
     }
-    public List<ArticuloInsumo> filtrarArticulos(String searchString, Long idSucursal, Integer limit, Long startId){
+
+    public List<ArticuloInsumo> filtrarArticulos(String searchString, Long idSucursal, Integer limit, Long startId) {
         List<ArticuloInsumo> allArticulos = getAll();
         List<ArticuloInsumo> filteredArticulos;
-        if(searchString == null || searchString == ""){
+        if (searchString == null || searchString == "") {
             filteredArticulos = allArticulos.stream()
                     .filter(a ->
                             !a.isEliminado()
                                     && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                     .collect(Collectors.toList());
-        }else {
+        } else {
             filteredArticulos = allArticulos.stream()
                     .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
                             && !a.isEliminado()

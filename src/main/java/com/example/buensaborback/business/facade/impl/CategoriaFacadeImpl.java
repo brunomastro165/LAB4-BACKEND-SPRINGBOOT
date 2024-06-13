@@ -12,7 +12,6 @@ import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufa
 import com.example.buensaborback.domain.dto.Categoria.CategoriaCreateDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaDto;
 import com.example.buensaborback.domain.dto.Categoria.CategoriaEditDto;
-import com.example.buensaborback.domain.dto.Categoria.CategoriaShortDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.Categoria;
@@ -27,13 +26,11 @@ import java.util.List;
 @Transactional
 public class CategoriaFacadeImpl extends BaseFacadeImpl<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto, Long> implements CategoriaFacade {
     @Autowired
-    private CategoriaService categoriaService;
-
-    @Autowired
     ArticuloInsumoMapper articuloInsumoMapper;
-
     @Autowired
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
+    @Autowired
+    private CategoriaService categoriaService;
 
     public CategoriaFacadeImpl(BaseService<Categoria, Long> baseService, BaseMapper<Categoria, CategoriaDto, CategoriaCreateDto, CategoriaEditDto> baseMapper) {
         super(baseService, baseMapper);
@@ -54,20 +51,22 @@ public class CategoriaFacadeImpl extends BaseFacadeImpl<Categoria, CategoriaDto,
         Categoria subCategoriaToCreate = baseMapper.toEntityCreate(subCategoria);
         return baseMapper.toDTO(categoriaService.addSubCategoria(idCategoria, subCategoriaToCreate));
     }
+
     @Override
-    public List<ArticuloManufacturadoDto> getManufacturadoSubCategoria(Long idSub,String searchString) {
+    public List<ArticuloManufacturadoDto> getManufacturadoSubCategoria(Long idSub, String searchString) {
         List<ArticuloManufacturadoDto> articuloManufacturadoDtos = new ArrayList<>();
-        for (ArticuloManufacturado articuloManufacturado:
-        categoriaService.getManufacturadoSubCategoria(idSub,searchString)) {
+        for (ArticuloManufacturado articuloManufacturado :
+                categoriaService.getManufacturadoSubCategoria(idSub, searchString)) {
             articuloManufacturadoDtos.add(articuloManufacturadoMapper.toDTO(articuloManufacturado));
         }
         return articuloManufacturadoDtos;
     }
+
     @Override
-    public List<ArticuloInsumoDto> getInsumoSubCategoria(Long idSub,String searchString) {
+    public List<ArticuloInsumoDto> getInsumoSubCategoria(Long idSub, String searchString) {
         List<ArticuloInsumoDto> articuloInsumoDtos = new ArrayList<>();
-        for (ArticuloInsumo articuloInsumo:
-                categoriaService.getInsumoSubCategoria(idSub,searchString)) {
+        for (ArticuloInsumo articuloInsumo :
+                categoriaService.getInsumoSubCategoria(idSub, searchString)) {
             articuloInsumoDtos.add(articuloInsumoMapper.toDTO(articuloInsumo));
         }
         return articuloInsumoDtos;

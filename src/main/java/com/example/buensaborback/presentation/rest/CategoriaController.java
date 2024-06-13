@@ -93,7 +93,6 @@ public class CategoriaController extends BaseControllerImpl<Categoria, Categoria
     }
 
 
-
     @PutMapping("/addArticuloManufacturado/{idCategoria}/{idArticulo}")
     public ResponseEntity<CategoriaDto> addArticuloManufacturado(@PathVariable Long idCategoria, @PathVariable Long idArticulo) {
         try {

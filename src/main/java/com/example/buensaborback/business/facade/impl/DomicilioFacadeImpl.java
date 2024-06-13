@@ -15,10 +15,12 @@ import org.springframework.stereotype.Service;
 public class DomicilioFacadeImpl extends BaseFacadeImpl<Domicilio, DomicilioDto, DomicilioCreateDto, DomicilioCreateDto, Long> implements DomicilioFacade {
     @Autowired
     private ClienteService clienteService;
+
     public DomicilioFacadeImpl(BaseService<Domicilio, Long> baseService, BaseMapper<Domicilio, DomicilioDto, DomicilioCreateDto, DomicilioCreateDto> baseMapper) {
         super(baseService, baseMapper);
     }
-    public DomicilioDto addDomiciliaACliente(DomicilioCreateDto domicilioCreateDto,Long idCliente){
+
+    public DomicilioDto addDomiciliaACliente(DomicilioCreateDto domicilioCreateDto, Long idCliente) {
         Domicilio domicilio = baseMapper.toEntityCreate(domicilioCreateDto);
         domicilio.getClientes().add(clienteService.getById(idCliente));
         domicilio = baseService.create(domicilio);

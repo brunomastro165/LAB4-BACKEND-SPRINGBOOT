@@ -4,7 +4,6 @@ import com.example.buensaborback.business.facade.base.BaseFacade;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoCreateDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoEditDto;
-import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 
 import java.util.List;
 

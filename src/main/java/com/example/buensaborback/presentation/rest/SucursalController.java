@@ -10,7 +10,6 @@ import com.example.buensaborback.domain.dto.Promocion.PromocionDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalCreateDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalDto;
 import com.example.buensaborback.domain.dto.Sucursal.SucursalEditDto;
-import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.domain.entities.Sucursal;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
 import com.example.buensaborback.repositories.SucursalRepository;
@@ -63,14 +62,13 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalDto
 
     @GetMapping("/getInsumos/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getArticulos(@PathVariable Long idSucursal) {
-        ;
         List<ArticuloInsumoDto> insumos = new ArrayList<>();
         var categorias = facade.findAllCategoriasByIdSucursal(idSucursal);
         for (CategoriaDto categoria :
                 categorias) {
-            for (ArticuloInsumoDto articuloInsumo:
-                 articuloInsumoFacade.getAll()) {
-                if(articuloInsumo.getCategoria().getId().equals(categoria.getId())){
+            for (ArticuloInsumoDto articuloInsumo :
+                    articuloInsumoFacade.getAll()) {
+                if (articuloInsumo.getCategoria().getId().equals(categoria.getId())) {
                     insumos.add(articuloInsumo);
                 }
             }

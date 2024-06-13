@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class MercadoPagoController {
 
-    public PreferenceMP getPreferenciaIdMercadoPago(PedidoCreateDto pedido) {
+    public Preference getPreferenciaIdMercadoPago(PedidoCreateDto pedido) {
 
         try {
             MercadoPagoConfig.setAccessToken("TEST-4479067771027558-060504-052cb3541b7f6cc58be11bfeed44259f-694496798");
@@ -45,19 +45,17 @@ public class MercadoPagoController {
             System.out.println(client.create(preferenceRequest));
             Preference preference = client.create(preferenceRequest);
 
-            PreferenceMP mpPreference = new PreferenceMP();
-            mpPreference.setStatusCode(preference.getResponse().getStatusCode());
-            mpPreference.setId(preference.getId());
-            return mpPreference;
+
+            return preference;
 
         } catch (MPApiException e) {
             // Obtener los detalles del error de la API
             System.err.println("API Error: " + e.getApiResponse().getContent());
             e.printStackTrace();
-            return new PreferenceMP(); // Devuelve un objeto vacío para evitar null
+            return new Preference(); // Devuelve un objeto vacío para evitar null
         } catch (MPException e) {
             e.printStackTrace();
-            return new PreferenceMP(); // Devuelve un objeto vacío para evitar null
+            return new Preference(); // Devuelve un objeto vacío para evitar null
         }
     }
 

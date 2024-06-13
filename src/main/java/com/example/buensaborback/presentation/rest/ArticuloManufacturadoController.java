@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     @GetMapping("/getArticulosManufacturados/{idSucursal}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
 
-        return ResponseEntity.ok(facade.getPorString(searchString,idSucursal,limit,startId));
+        return ResponseEntity.ok(facade.getPorString(searchString, idSucursal, limit, startId));
     }
 
 
@@ -41,17 +40,17 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorSucursal(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal) {
         List<ArticuloManufacturadoDto> allArticulos = facade.getAll();
         List<ArticuloManufacturadoDto> filteredArticulos;
-        if(searchString == null || searchString == "")
+        if (searchString == null || searchString == "")
             filteredArticulos = allArticulos.stream()
                     .filter(a -> !a.isEliminado()
                             && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
                     .collect(Collectors.toList());
         else
             filteredArticulos = allArticulos.stream()
-                .filter(a -> !a.isEliminado()
-                        && a.getDenominacion().toLowerCase().equals(searchString.toLowerCase())
-                        && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                .collect(Collectors.toList());
+                    .filter(a -> !a.isEliminado()
+                            && a.getDenominacion().equalsIgnoreCase(searchString)
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
         return ResponseEntity.ok(filteredArticulos);
     }
 

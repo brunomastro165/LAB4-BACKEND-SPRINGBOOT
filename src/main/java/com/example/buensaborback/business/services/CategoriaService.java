@@ -1,8 +1,6 @@
 package com.example.buensaborback.business.services;
 
 import com.example.buensaborback.business.services.base.BaseService;
-import com.example.buensaborback.domain.dto.ArticuloInsumo.ArticuloInsumoDto;
-import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.entities.ArticuloInsumo;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.Categoria;
