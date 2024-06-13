@@ -170,7 +170,7 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         return false;
     }
 
-    public List<PedidoDto> getPorFecha(Date fechaInicio, Date fechaFin){
+    public List<PedidoDto> getPorFecha(Date fechaInicio, Date fechaFin, Long idSucursal){
         LocalDate inicio = fechaInicio.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
@@ -181,7 +181,9 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         List<PedidoDto> pedidos = pedidoMapper.toDTOsList(getAll());
 
         return pedidos.stream()
-                .filter(pedido -> !pedido.getFechaPedido().isBefore(inicio) && !pedido.getFechaPedido().isAfter(fin))
+                .filter(pedido -> !pedido.getFechaPedido().isBefore(inicio)
+                        && !pedido.getFechaPedido().isAfter(fin)
+                        && pedido.getSucursal().equals(idSucursal))
                 .collect(Collectors.toList());
     }
 
