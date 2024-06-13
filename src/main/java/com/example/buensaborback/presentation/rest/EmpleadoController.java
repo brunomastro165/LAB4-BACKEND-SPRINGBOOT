@@ -90,5 +90,9 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al crear el empleado.");
         }
     }
+    @GetMapping("/getEmpleados")
+    public ResponseEntity<List<EmpleadoDto>> getDeliverys(){
+        return ResponseEntity.ok(facade.getDeliverys());
+    }
 
 }

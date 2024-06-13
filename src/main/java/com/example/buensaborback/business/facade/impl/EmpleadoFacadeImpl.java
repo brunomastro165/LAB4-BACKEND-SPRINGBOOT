@@ -27,5 +27,8 @@ public class EmpleadoFacadeImpl extends BaseFacadeImpl<Empleado, EmpleadoDto, Em
         List<Empleado> empleados = empleadoService.getPorSucursal(id, searchString);
         return baseMapper.toDTOsList(empleados);
     }
+    public List<EmpleadoDto> getDeliverys(){
+        return baseMapper.toDTOsList(empleadoService.getDeliverys());
+    }
 
 }

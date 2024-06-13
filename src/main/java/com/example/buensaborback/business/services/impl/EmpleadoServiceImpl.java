@@ -2,7 +2,9 @@ package com.example.buensaborback.business.services.impl;
 
 import com.example.buensaborback.business.services.EmpleadoService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
+import com.example.buensaborback.domain.dto.Empleado.EmpleadoDto;
 import com.example.buensaborback.domain.entities.Empleado;
+import com.example.buensaborback.domain.enums.Rol;
 import com.example.buensaborback.repositories.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ public class EmpleadoServiceImpl extends BaseServiceImpl<Empleado, Long> impleme
                             && (empleado.getNombre().equalsIgnoreCase(searchString)
                             || empleado.getApellido().equalsIgnoreCase(searchString)))
                     .collect(Collectors.toList());
+    }
+    public List<Empleado> getDeliverys(){
+        return getAll().stream().filter(empleado -> empleado.getTipoEmpleado().equals(Rol.DELIVERY)).collect(Collectors.toList());
     }
 
 
