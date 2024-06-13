@@ -30,46 +30,32 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     }
 
     @GetMapping("/getArticulosManufacturados/{idSucursal}")
-    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-
+    public ResponseEntity<List<ArticuloManufacturadoDto>> getPorString(@RequestParam(required = false) String searchString,
+                                                                       @PathVariable Long idSucursal,
+                                                                       @RequestParam(required = false) Integer limit,
+                                                                       @RequestParam(required = false) Long startId) {
         return ResponseEntity.ok(facade.getPorString(searchString, idSucursal, limit, startId));
     }
 
 
     @GetMapping("/buscar/{idSucursal}")
     public ResponseEntity<List<ArticuloManufacturadoDto>> getPorSucursal(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal) {
-        List<ArticuloManufacturadoDto> allArticulos = facade.getAll();
-        List<ArticuloManufacturadoDto> filteredArticulos;
-        if (searchString == null || searchString == "")
-            filteredArticulos = allArticulos.stream()
-                    .filter(a -> !a.isEliminado()
-                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                    .collect(Collectors.toList());
-        else
-            filteredArticulos = allArticulos.stream()
-                    .filter(a -> !a.isEliminado()
-                            && a.getDenominacion().equalsIgnoreCase(searchString)
-                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                    .collect(Collectors.toList());
-        return ResponseEntity.ok(filteredArticulos);
+        return ResponseEntity.ok(facade.getPorSucursal(searchString,idSucursal));
     }
 
     @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloManufacturadoEditDto entity,
                                   @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
         try {
-
             facade.update(entity, id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al actualizar el artículo manufacturado");
         }
-
         try {
             imageService.uploadImagesA(files, id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
         }
-
         return ResponseEntity.ok(facade.getById(id));
     }
 
@@ -83,7 +69,6 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir las imágenes.");
             }
-
             return ResponseEntity.ok(articulo);
         } catch (Exception e) {
             e.printStackTrace();

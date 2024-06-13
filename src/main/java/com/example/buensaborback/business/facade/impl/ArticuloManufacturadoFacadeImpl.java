@@ -26,5 +26,7 @@ public class ArticuloManufacturadoFacadeImpl extends BaseFacadeImpl<ArticuloManu
     public List<ArticuloManufacturadoDto> getPorString(String searchString, Long idSucursal, Integer limit, Long startId) {
         return baseMapper.toDTOsList(articuloManufacturadoService.getPorString(searchString, idSucursal, limit, startId));
     }
-
+    public List<ArticuloManufacturadoDto> getPorSucursal( String searchString, Long idSucursal){
+        return baseMapper.toDTOsList(articuloManufacturadoService.getPorSucursal(searchString,idSucursal));
+    }
 }

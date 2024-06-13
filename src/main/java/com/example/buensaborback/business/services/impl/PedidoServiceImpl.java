@@ -177,13 +177,11 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         LocalDate fin = fechaFin.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
-
         List<PedidoDto> pedidos = pedidoMapper.toDTOsList(getAll());
-
         return pedidos.stream()
-                .filter(pedido -> !pedido.getFechaPedido().isBefore(inicio)
-                        && !pedido.getFechaPedido().isAfter(fin)
-                        && pedido.getSucursal().equals(idSucursal))
+                .filter(pedido -> pedido.getFechaPedido().isBefore(fin)
+                        && pedido.getFechaPedido().isAfter(inicio)
+                        && pedido.getSucursal().getId().equals(idSucursal))
                 .collect(Collectors.toList());
     }
 

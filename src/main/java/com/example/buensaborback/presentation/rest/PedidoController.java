@@ -14,11 +14,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -128,6 +131,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     }
 
+
     @PostMapping()
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoCreateDto entity) {
         try {
@@ -140,19 +144,14 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/api/create_preference_mp")
-    public ResponseEntity<PedidoDto> crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
+    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
         MercadoPagoController cMercadoPago = new MercadoPagoController();
-
         Preference preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
-        pedido.getFactura().setMpPaymentId(preference.getCollectorId().intValue());
-        pedido.getFactura().setMpPaymentType(preference.getPaymentMethods().toString());
-        pedido.getFactura().setMpMerchantOrderId(Integer.getInteger(preference.getExternalReference()));
-        pedido.getFactura().setMpPreferenceId(preference.getId());
-
         PreferenceMP preferenceMP = new PreferenceMP();
+
         preferenceMP.setStatusCode(preference.getResponse().getStatusCode());
         preferenceMP.setId(preference.getId());
-        return create(pedido);
+        return preferenceMP;
     }
 
     @PutMapping("/cancelar/{id}")

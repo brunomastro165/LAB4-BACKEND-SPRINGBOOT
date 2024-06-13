@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,6 +19,18 @@ public abstract class BaseServiceImpl<E extends Base, ID extends Serializable> i
 
     @Autowired
     protected BaseRepository<E, ID> baseRepository;
+    public List<E> paginar(Integer limit, Long startId, List<E> allItems){
+        if (startId != null) {
+            int startIndex = (startId.intValue() - 1) * limit;
+            int endIndex = Math.min(startIndex + limit, allItems.size());
+            if (startIndex < allItems.size()) {
+                allItems = allItems.subList(startIndex, endIndex);
+            } else {
+                allItems = new ArrayList<>();
+            }
+        }
+        return allItems;
+    }
 
     @Override
     public E create(E request) {

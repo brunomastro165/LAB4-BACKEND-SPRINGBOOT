@@ -45,7 +45,6 @@ public class MercadoPagoController {
             System.out.println(client.create(preferenceRequest));
             Preference preference = client.create(preferenceRequest);
 
-
             return preference;
 
         } catch (MPApiException e) {

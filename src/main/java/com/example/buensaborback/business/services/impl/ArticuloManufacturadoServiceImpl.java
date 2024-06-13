@@ -3,6 +3,7 @@ package com.example.buensaborback.business.services.impl;
 import com.example.buensaborback.business.services.ArticuloManufacturadoService;
 import com.example.buensaborback.business.services.PromocionService;
 import com.example.buensaborback.business.services.base.BaseServiceImpl;
+import com.example.buensaborback.domain.dto.ArticuloManufacturado.ArticuloManufacturadoDto;
 import com.example.buensaborback.domain.entities.ArticuloManufacturado;
 import com.example.buensaborback.domain.entities.ArticuloManufacturadoDetalle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,22 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
                 filteredArticulos = new ArrayList<>();
             }
         }
+        return filteredArticulos;
+    }
+    public List<ArticuloManufacturado> getPorSucursal(String searchString, Long idSucursal){
+        List<ArticuloManufacturado> allArticulos = getAll();
+        List<ArticuloManufacturado> filteredArticulos;
+        if (searchString == null || searchString == "")
+            filteredArticulos = allArticulos.stream()
+                    .filter(a -> !a.isEliminado()
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
+        else
+            filteredArticulos = allArticulos.stream()
+                    .filter(a -> !a.isEliminado()
+                            && a.getDenominacion().equalsIgnoreCase(searchString)
+                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
+                    .collect(Collectors.toList());
         return filteredArticulos;
     }
 
