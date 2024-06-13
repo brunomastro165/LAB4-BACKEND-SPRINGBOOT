@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface PedidoService extends BaseService<Pedido, Long> {
     List<PedidoDto> getPorFecha(Date fechaInicio,Date fechaFin, Long idSucursal);
+    Pedido asignarEmpleado(Long idEmpleado,Long idPedido);
 }

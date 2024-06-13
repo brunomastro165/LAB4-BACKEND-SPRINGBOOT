@@ -65,7 +65,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @GetMapping("/ranking-promociones/{idSucursal}")
     public List<Object[]> getRankingPromocion(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
-        System.out.println("puto");
         LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return pedidoRepository.getRankingPromocion(inicio, fin, idSucursal);
@@ -109,6 +108,10 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         //obtengo el pedido con el facade aca los articulos son nulos
         PedidoDto pedido = facade.getById(id);
         return ResponseEntity.ok(pedido);
+    }
+    @PutMapping("/asignarEmpleado/{idEmpleado}/{idPedido}")
+    public ResponseEntity<?> asignarEmpleado(@PathVariable Long idEmpleado,@PathVariable Long idPedido){
+        return ResponseEntity.ok(facade.asignarEmpleado(idEmpleado, idPedido));
     }
 
     @PutMapping("/cambiarEstado/{id}")

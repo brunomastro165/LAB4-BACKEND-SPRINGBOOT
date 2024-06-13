@@ -10,6 +10,7 @@ import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 import com.example.buensaborback.domain.entities.*;
 import com.example.buensaborback.domain.enums.Estado;
 import com.example.buensaborback.repositories.ArticuloRepository;
+import com.example.buensaborback.repositories.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     ArticuloManufacturadoService articuloManufacturadoService;
     @Autowired
     PedidoMapper pedidoMapper;
+    @Autowired
+    EmpleadoRepository empleadoRepository;
 
     @Transactional
     @Override
@@ -185,6 +188,11 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
                         && !pedido.getFechaPedido().isAfter(fin)
                         && pedido.getSucursal().equals(idSucursal))
                 .collect(Collectors.toList());
+    }
+    public Pedido asignarEmpleado(Long idEmpleado,Long idPedido){
+        Pedido pedido = getById(idPedido);
+        pedido.setEmpleado(empleadoRepository.getById(idEmpleado));
+        return update(pedido,idPedido);
     }
 
 
