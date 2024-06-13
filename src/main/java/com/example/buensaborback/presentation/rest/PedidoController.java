@@ -35,42 +35,43 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         super(facade);
     }
 
-    @PostMapping("/ingresos/{idSucursal}")
+    @GetMapping("/ingresos/{idSucursal}")
     public Optional<Double> getIngresos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
         LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return pedidoRepository.getIngresos(inicio, fin, idSucursal);
     }
 
-    @PostMapping("/cantidad-pedidos-por-cliente/{idSucursal}")
+    @GetMapping("/cantidad-pedidos-por-cliente/{idSucursal}")
     public List<Object[]> getCantidadPedidosPorCliente(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
         LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return pedidoRepository.getCantidadPedidosPorCliente(inicio, fin, idSucursal);
     }
 
-    @PostMapping("/ganancia/{idSucursal}")
+    @GetMapping("/ganancia/{idSucursal}")
     public Optional<Double> getGanancia(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
         LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return pedidoRepository.getGanancia(inicio, fin, idSucursal);
     }
 
-    @PostMapping("/ranking-articulos/{idSucursal}")
+    @GetMapping("/ranking-articulos/{idSucursal}")
     public List<Object[]> getRankingArticulos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
         LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return pedidoRepository.getRankingArticulos(inicio, fin, idSucursal);
     }
 
-    @PostMapping("/ranking-promociones/{idSucursal}")
+    @GetMapping("/ranking-promociones/{idSucursal}")
     public List<Object[]> getRankingPromocion(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal) {
+        System.out.println("puto");
         LocalDate inicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate fin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return pedidoRepository.getRankingPromocion(inicio, fin, idSucursal);
     }
 
-    @PostMapping("/getPorFecha/{idSucursal}")
+    @GetMapping("/getPorFecha/{idSucursal}")
     public ResponseEntity<List<PedidoDto>> getPorFecha(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin, @PathVariable Long idSucursal){
         return ResponseEntity.ok(pedidoService.getPorFecha(fechaInicio,fechaFin, idSucursal));
     }

@@ -31,6 +31,7 @@ public class CategoriaFacadeImpl extends BaseFacadeImpl<Categoria, CategoriaDto,
 
     @Autowired
     ArticuloInsumoMapper articuloInsumoMapper;
+
     @Autowired
     ArticuloManufacturadoMapper articuloManufacturadoMapper;
 

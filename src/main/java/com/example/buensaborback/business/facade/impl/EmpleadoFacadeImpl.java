@@ -24,11 +24,9 @@ public class EmpleadoFacadeImpl extends BaseFacadeImpl<Empleado, EmpleadoDto, Em
         super(baseService, baseMapper);
     }
 
-    public List<EmpleadoDto> getPorSucursal(Long id) {
-        List<Empleado> empleados = empleadoService.getPorSucursal(id);
-        return empleados.stream()
-                .map(baseMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<EmpleadoDto> getPorSucursal(Long id,String searchString) {
+        List<Empleado> empleados = empleadoService.getPorSucursal(id,searchString);
+        return baseMapper.toDTOsList(empleados);
     }
 
 }

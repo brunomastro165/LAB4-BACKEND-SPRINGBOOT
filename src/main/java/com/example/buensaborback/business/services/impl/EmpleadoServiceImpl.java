@@ -15,10 +15,12 @@ public class EmpleadoServiceImpl extends BaseServiceImpl<Empleado, Long> impleme
     @Autowired
     EmpleadoRepository empleadoRepository;
 
-    public List<Empleado> getPorSucursal(Long id) {
+    public List<Empleado> getPorSucursal(Long id,String searchString) {
         List<Empleado> empleados = empleadoRepository.findEmpleadosBySucursalId(id);
         return empleados.stream()
-                .filter(empleado -> !empleado.isEliminado())
+                .filter(empleado -> !empleado.isEliminado()
+                        && (empleado.getNombre().toLowerCase().equals(searchString.toLowerCase())
+                        || empleado.getApellido().toLowerCase().equals(searchString.toLowerCase())))
                 .collect(Collectors.toList());
     }
 

@@ -31,97 +31,26 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @Autowired
     private ImagenArticuloService imageService;
 
-    @Autowired
-    private ArticuloRepository articuloRepository;
-    @Autowired
-    private ArticuloManufacturadoFacade articuloManufacturadoFacade;
-    @Autowired
-    private PromocionFacade promocionFacade;
-
     public ArticuloInsumoController(ArticuloInsumoFacadeImpl facade) {
         super(facade);
     }
 
-    public List<ArticuloInsumoDto> filtrarArticulos( String searchString, Long idSucursal, Integer limit, Long startId){
-        List<ArticuloInsumoDto> allArticulos = facade.getAll();
-        List<ArticuloInsumoDto> filteredArticulos;
-        if(searchString == null || searchString == ""){
-            filteredArticulos = allArticulos.stream()
-                    .filter(a ->
-                            !a.isEliminado()
-                                    && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                    .collect(Collectors.toList());
-        }else {
-            filteredArticulos = allArticulos.stream()
-                    .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
-                            && !a.isEliminado()
-                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                    .collect(Collectors.toList());
-        }
 
-        if (startId != null) {
-            int startIndex = (startId.intValue() - 1) * limit;
-            int endIndex = Math.min(startIndex + limit, filteredArticulos.size());
-            if (startIndex < filteredArticulos.size()) {
-                filteredArticulos = filteredArticulos.subList(startIndex, endIndex);
-            } else {
-                filteredArticulos = new ArrayList<>();
-            }
-        }
-        return filteredArticulos;
-    }
 
     @GetMapping("/getArticulos/{idSucursal}")
     public ResponseEntity<List<Articulo>> getAllArticulos(@RequestParam(required = false) String searchString , @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-        List<Articulo> articulos = articuloRepository.getAll();
-        List<Articulo> filteredArticulos;
-        if(searchString == null || searchString == "") {
-            filteredArticulos = articulos.stream()
-                    .filter(a ->
-                            !a.isEliminado()
-                            && a.getCategoria() != null
-                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                    .collect(Collectors.toList());
-        }else
-            filteredArticulos = articulos.stream()
-                    .filter(a -> a.getDenominacion().toLowerCase().contains(searchString.toLowerCase())
-                            && !a.isEliminado()
-                            && a.getCategoria() != null
-                            && a.getCategoria().getSucursales().stream().anyMatch(s -> s.getId().equals(idSucursal)))
-                    .collect(Collectors.toList());
-        List<Articulo> articulosResponse = new ArrayList<>();
-        // Establece la categoría e imágenes en null después de filtrar
-        for (Articulo articulo : filteredArticulos) {
-            ArticuloInsumo articuloInsumo = new ArticuloInsumo();
-            articuloInsumo.setUnidadMedida(articulo.getUnidadMedida());
-            articuloInsumo.setPrecioCompra(articulo.getPrecioVenta());
-            articuloInsumo.setDenominacion(articulo.getDenominacion());
-            articuloInsumo.setId(articulo.getId());
-            articuloInsumo.setEliminado(articulo.isEliminado());
-            articulosResponse.add(articuloInsumo);
-        }
-        if (startId != null) {
-            int startIndex = (startId.intValue() - 1) * limit;
-            int endIndex = Math.min(startIndex + limit, articulosResponse.size());
-            if (startIndex < articulosResponse.size()) {
-                articulosResponse = articulosResponse.subList(startIndex, endIndex);
-            } else {
-                articulosResponse = new ArrayList<>();
-            }
-        }
-        return ResponseEntity.ok(articulosResponse);
+
+        return ResponseEntity.ok(facade.getAllArticulos(searchString, idSucursal, limit, startId));
     }
 
     @GetMapping("/getArticulosInsumos/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorString(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-        List<ArticuloInsumoDto> filteredArticulos = filtrarArticulos(searchString, idSucursal, limit, startId);
-        return ResponseEntity.ok(filteredArticulos);
+        return ResponseEntity.ok(facade.filtrarArticulos(searchString, idSucursal, limit, startId));
     }
 
     @GetMapping("/buscar/{idSucursal}")
     public ResponseEntity<List<ArticuloInsumoDto>> getPorLetras(@RequestParam(required = false) String searchString, @PathVariable Long idSucursal, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Long startId) {
-        List<ArticuloInsumoDto> filteredArticulos =   filtrarArticulos(searchString, idSucursal, limit, startId);
-        return ResponseEntity.ok(filteredArticulos);
+        return ResponseEntity.ok(facade.filtrarArticulos(searchString, idSucursal, limit, startId));
     }
 
 
@@ -133,7 +62,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al subir actualizar el insumo");
         }
-
         try {
             imageService.uploadImagesA(files, id);
         } catch (Exception e) {
@@ -164,25 +92,6 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        /*
-        //Aca se comprueba que el insumo no esta en un manufacturado
-        boolean isInManufacturado = articuloManufacturadoFacade.getAll().stream()
-                .flatMap(articuloManufacturado -> articuloManufacturado.getArticuloManufacturadoDetalles().stream())
-                .anyMatch(articuloManufacturadoDetalle -> articuloManufacturadoDetalle.getArticuloInsumo().getId() == id);
-        if (isInManufacturado) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en un manufacturado");
-        }
-        //Aca se comprueba que el insumo no esta en una promocion
-        boolean isInPromocion = promocionFacade.getAll().stream()
-                .flatMap(promocion -> promocion.getDetalles().stream())
-                .anyMatch(promocionDetalle ->
-                        promocionDetalle.getInsumos() != null && promocionDetalle.getInsumos().isEliminado()
-                );
-        if (isInPromocion) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se puede borrar el insumo porque esta en una promocion");
-        }
-
-         */
         try {
             facade.deleteById(id);
             return ResponseEntity.ok("La entidad fue borrada correctamente");
