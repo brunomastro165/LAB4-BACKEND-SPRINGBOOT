@@ -68,4 +68,19 @@ public interface BaseRepository<E extends Base, ID extends Serializable> extends
         return entities;
     }
 
+    default E getByIdSinFiltro(ID id) {
+        logger.info("EJECUTANDO GEY BY ID SOBREESCRITO");
+        var optionalEntity = findById(id);
+
+        if (optionalEntity.isEmpty()) {
+            String errMsg = "La entidad con el id " + id + " se encuentra borrada logicamente";
+            logger.error(errMsg);
+            throw new RuntimeException(errMsg);
+        }
+
+        var entity = optionalEntity.get();
+        return entity;
+    }
+
+
 }

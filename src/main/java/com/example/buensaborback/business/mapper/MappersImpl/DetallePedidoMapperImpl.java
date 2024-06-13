@@ -61,10 +61,10 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         detallePedidoDto.setSubTotal(source.getSubTotal());
         detallePedidoDto.setPromocion(promocionToPromocionDto(source.getPromocion()));
         if (source.getArticulo() instanceof ArticuloInsumo) {
-            detallePedidoDto.setArticuloInsumo(articuloInsumoMapper.toDTO(articuloInsumoService.getById(source.getArticulo().getId())));
+            detallePedidoDto.setArticuloInsumo(articuloInsumoMapper.toDTO(articuloInsumoService.getByIdSinFiltro(source.getArticulo().getId())));
         }
         if (source.getArticulo() instanceof ArticuloManufacturado) {
-            detallePedidoDto.setArticuloManufacturado(articuloManufacturadoMapper.toDTO(articuloManufacturadoService.getById(source.getArticulo().getId())));
+            detallePedidoDto.setArticuloManufacturado(articuloManufacturadoMapper.toDTO(articuloManufacturadoService.getByIdSinFiltro(source.getArticulo().getId())));
         }
 
 
@@ -85,9 +85,9 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         detallePedido.subTotal(source.getSubTotal());
         detallePedido.promocion(promocionDtoToPromocion(source.getPromocion()));
         if (source.getArticuloInsumo() != null)
-            detallePedido.articulo(articuloInsumoService.getById(source.getArticuloInsumo().getId()));
+            detallePedido.articulo(articuloInsumoService.getByIdSinFiltro(source.getArticuloInsumo().getId()));
         if (source.getArticuloManufacturado() != null)
-            detallePedido.articulo(articuloManufacturadoService.getById(source.getArticuloManufacturado().getId()));
+            detallePedido.articulo(articuloManufacturadoService.getByIdSinFiltro(source.getArticuloManufacturado().getId()));
 
         return detallePedido.build();
     }
@@ -103,12 +103,12 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         entity.setCantidad(source.getCantidad());
         entity.setSubTotal(source.getSubTotal());
         if (source.getIdPromocion() != null)
-            entity.setPromocion(promocionService.getById(source.getIdPromocion()));
+            entity.setPromocion(promocionService.getByIdSinFiltro(source.getIdPromocion()));
         else {
             if (articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloInsumo)
-                entity.setArticulo(articuloInsumoService.getById(source.getIdArticulo()));
+                entity.setArticulo(articuloInsumoService.getByIdSinFiltro(source.getIdArticulo()));
             if (articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloManufacturado)
-                entity.setArticulo(articuloManufacturadoService.getById(source.getIdArticulo()));
+                entity.setArticulo(articuloManufacturadoService.getByIdSinFiltro(source.getIdArticulo()));
         }
 
         return entity;
@@ -140,12 +140,12 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         detallePedido.cantidad(source.getCantidad());
         detallePedido.subTotal(source.getSubTotal());
         if (source.getIdPromocion() != 0)
-            detallePedido.promocion(promocionService.getById(source.getIdPromocion()));
+            detallePedido.promocion(promocionService.getByIdSinFiltro(source.getIdPromocion()));
         else {
             if (articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloInsumo)
-                detallePedido.articulo(articuloInsumoService.getById(source.getIdArticulo()));
+                detallePedido.articulo(articuloInsumoService.getByIdSinFiltro(source.getIdArticulo()));
             if (articuloRepository.getById(source.getIdArticulo()) instanceof ArticuloManufacturado)
-                detallePedido.articulo(articuloManufacturadoService.getById(source.getIdArticulo()));
+                detallePedido.articulo(articuloManufacturadoService.getByIdSinFiltro(source.getIdArticulo()));
         }
 
         return detallePedido.build();

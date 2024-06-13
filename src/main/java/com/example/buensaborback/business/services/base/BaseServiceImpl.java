@@ -81,5 +81,10 @@ public abstract class BaseServiceImpl<E extends Base, ID extends Serializable> i
         logger.info("Actualizada entidad {}", newEntity);
         return newEntity;
     }
+    public E getByIdSinFiltro(ID id){
+        var entity = baseRepository.getById(id);
+        logger.info("Obtenida entidad {}", entity);
+        return entity;
+    }
 
 }

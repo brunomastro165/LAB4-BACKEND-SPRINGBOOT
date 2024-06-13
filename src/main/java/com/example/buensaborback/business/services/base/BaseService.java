@@ -20,4 +20,6 @@ public interface BaseService<E extends Base, ID extends Serializable> {
     @Named("getById")
 // Esta notacion califica al metodo para luego se utilizado en clase mappper
     E getById(ID id);
+
+    E getByIdSinFiltro(ID id);
 }

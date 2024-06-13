@@ -119,4 +119,5 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
         return filteredArticulos;
     }
 
+
 }
