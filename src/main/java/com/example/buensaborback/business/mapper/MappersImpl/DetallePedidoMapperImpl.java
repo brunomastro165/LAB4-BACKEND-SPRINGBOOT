@@ -60,6 +60,7 @@ public class DetallePedidoMapperImpl implements DetallePedidoMapper {
         detallePedidoDto.setCantidad(source.getCantidad());
         detallePedidoDto.setSubTotal(source.getSubTotal());
         detallePedidoDto.setPromocion(promocionToPromocionDto(source.getPromocion()));
+        System.out.println("Algo esta mal");
         if (source.getArticulo() instanceof ArticuloInsumo) {
             detallePedidoDto.setArticuloInsumo(articuloInsumoMapper.toDTO(articuloInsumoService.getByIdSinFiltro(source.getArticulo().getId())));
         }

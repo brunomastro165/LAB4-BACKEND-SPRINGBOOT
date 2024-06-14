@@ -82,7 +82,7 @@ public abstract class BaseServiceImpl<E extends Base, ID extends Serializable> i
         return newEntity;
     }
     public E getByIdSinFiltro(ID id){
-        var entity = baseRepository.getById(id);
+        var entity = baseRepository.getByIdSinFiltro(id);
         logger.info("Obtenida entidad {}", entity);
         return entity;
     }
