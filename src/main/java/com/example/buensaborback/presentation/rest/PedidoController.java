@@ -182,7 +182,14 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         }else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no está en estado pendiente y no puede ser cancelado.");
 
-
+    }
+    @PutMapping("/pendiente/{id}")
+    public ResponseEntity<?> pendiente(@PathVariable Long id) {
+        if(facade.pendiente(id).getEstado() == Estado.PENDIENTE){
+            return ResponseEntity.ok("Pedido pendiente con exito");
+        }else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no se pudo poner en pendiente");
 
     }
+
 }

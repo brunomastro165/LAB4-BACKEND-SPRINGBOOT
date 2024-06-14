@@ -12,4 +12,5 @@ public interface PedidoService extends BaseService<Pedido, Long> {
 
     Pedido asignarEmpleado(Long idEmpleado, Long idPedido);
     Pedido cancelar(Long id);
+    Pedido pendiente(Long id);
 }

@@ -201,6 +201,15 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
 
 
     }
+    public Pedido pendiente(Long id){
+        Pedido pedido = getById(id);
+        pedido.setEstado(Estado.CANCELADO);
+        restarStock(pedido);
+        return update(pedido,id);
+
+
+
+    }
     //Funciones para sumar stock
     private void sumarStock(Pedido request) {
         for (DetallePedido detalle : request.getDetallesPedido()) {
