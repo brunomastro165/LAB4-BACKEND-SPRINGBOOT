@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -93,6 +96,16 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoDto
     @GetMapping("/getEmpleados")
     public ResponseEntity<List<EmpleadoDto>> getDeliverys(){
         return ResponseEntity.ok(facade.getDeliverys());
+    }
+
+    @GetMapping("/role")
+    public Map<String, Object> getUserRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = authentication.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .findFirst()
+                .orElse("No Role");
+        return Map.of("role", role);
     }
 
 }
