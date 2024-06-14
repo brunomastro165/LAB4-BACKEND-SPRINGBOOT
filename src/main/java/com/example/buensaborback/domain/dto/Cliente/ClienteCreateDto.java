@@ -1,6 +1,7 @@
 package com.example.buensaborback.domain.dto.Cliente;
 
 import com.example.buensaborback.domain.dto.BaseDto;
+import com.example.buensaborback.domain.dto.Domicilio.DomicilioCreateDto;
 import com.example.buensaborback.domain.dto.Domicilio.DomicilioDto;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteCreateDto;
 import lombok.AllArgsConstructor;
@@ -20,5 +21,5 @@ public class ClienteCreateDto extends BaseDto {
     private String telefono;
     private String email;
     private UsuarioClienteCreateDto usuario;
-    private Set<DomicilioDto> domicilios;
+    private Set<DomicilioCreateDto> domicilios;
 }
