@@ -5,6 +5,7 @@ import com.example.buensaborback.business.services.ImagenClienteService;
 import com.example.buensaborback.business.services.UsuarioClienteService;
 import com.example.buensaborback.domain.dto.Cliente.ClienteCreateDto;
 import com.example.buensaborback.domain.dto.Cliente.ClienteDto;
+import com.example.buensaborback.domain.dto.Cliente.ClienteEditDto;
 import com.example.buensaborback.domain.dto.UsuarioCliente.UsuarioClienteDto;
 import com.example.buensaborback.domain.entities.Cliente;
 import com.example.buensaborback.presentation.base.BaseControllerImpl;
@@ -21,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/cliente")
 @CrossOrigin(value = "*", allowedHeaders = "*")
-public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, ClienteCreateDto, ClienteCreateDto, Long, ClienteFacadeImpl> {
+public class ClienteController extends BaseControllerImpl<Cliente, ClienteDto, ClienteCreateDto, ClienteEditDto, Long, ClienteFacadeImpl> {
     @Autowired
     private ImagenClienteService imageService;
     @Autowired
