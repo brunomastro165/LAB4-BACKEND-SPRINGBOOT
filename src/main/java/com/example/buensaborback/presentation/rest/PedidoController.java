@@ -177,14 +177,12 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<?> cancelar(@PathVariable Long id) {
-        Pedido pedido = pedidoRepository.getById(id);
-        if (pedido.getEstado() == Estado.PENDIENTE) {
-            pedido.setEstado(Estado.CANCELADO);
-            pedidoRepository.save(pedido);
-            return ResponseEntity.ok(facade.getById(id));
-        } else {
+        if(facade.cancelar(id).getEstado() == Estado.CANCELADO){
+            return ResponseEntity.ok("Pedido cancelado con exito");
+        }else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no está en estado pendiente y no puede ser cancelado.");
-        }
+
+
 
     }
 }

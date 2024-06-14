@@ -24,4 +24,7 @@ public class PedidoFacadeImpl extends BaseFacadeImpl<Pedido, PedidoDto, PedidoCr
     public PedidoDto asignarEmpleado(Long idEmpleado, Long idPedido) {
         return baseMapper.toDTO(pedidoService.asignarEmpleado(idEmpleado, idPedido));
     }
+    public PedidoDto cancelar(Long id){
+        return baseMapper.toDTO(pedidoService.cancelar(id));
+    }
 }

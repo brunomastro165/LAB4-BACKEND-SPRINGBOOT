@@ -6,4 +6,5 @@ import com.example.buensaborback.domain.dto.Pedido.PedidoDto;
 
 public interface PedidoFacade extends BaseFacade<PedidoDto, PedidoCreateDto, PedidoCreateDto, Long> {
     PedidoDto asignarEmpleado(Long idEmpleado, Long idPedido);
+    PedidoDto cancelar(Long id);
 }

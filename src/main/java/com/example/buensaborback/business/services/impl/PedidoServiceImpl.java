@@ -190,6 +190,48 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         pedido.setEmpleado(empleadoRepository.getById(idEmpleado));
         return update(pedido, idPedido);
     }
+    public Pedido cancelar(Long id){
+        Pedido pedido = getById(id);
+        if(pedido.getEstado() == Estado.PENDIENTE){
+            pedido.setEstado(Estado.CANCELADO);
+            sumarStock(pedido);
+            return update(pedido,id);
+        }else
+            return getById(id);
+
+
+    }
+    //Funciones para sumar stock
+    private void sumarStock(Pedido request) {
+        for (DetallePedido detalle : request.getDetallesPedido()) {
+            if (detalle.getPromocion() == null) {
+                sumarStockArticulos(detalle.getArticulo(), detalle.getCantidad());
+            } else
+                sumarStockPromociones(detalle.getPromocion(), detalle.getCantidad());
+        }
+    }
+
+    private void sumarStockArticulos(Articulo articulo, Integer cantidad) {
+        if (articulo instanceof ArticuloInsumo) {
+            ArticuloInsumo articuloInsumo = articuloInsumoService.getById(articulo.getId());
+            articuloInsumo.setStockActual(articuloInsumo.getStockActual() + cantidad);
+            articuloInsumoService.update(articuloInsumo, articulo.getId());
+        }
+        if (articulo instanceof ArticuloManufacturado) {
+            for (ArticuloManufacturadoDetalle detalle :
+                    ((ArticuloManufacturado) articulo).getArticuloManufacturadoDetalles()) {
+                sumarStockArticulos(detalle.getArticuloInsumo(), detalle.getCantidad() * cantidad);
+            }
+        }
+    }
+
+    private void sumarStockPromociones(Promocion promocion, Integer cantidad) {
+        for (PromocionDetalle detalle :
+                promocion.getDetalles()) {
+            sumarStockArticulos(detalle.getArticulo(), detalle.getCantidad() * cantidad);
+        }
+    }
+
 
 
 }
