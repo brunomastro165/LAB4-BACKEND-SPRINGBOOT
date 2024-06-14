@@ -162,7 +162,16 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
     @PostMapping("/api/create_preference_mp")
     public ResponseEntity<PedidoDto> crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
         MercadoPagoController cMercadoPago = new MercadoPagoController();
+
         Preference preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
+        pedido.getFactura().setMpPaymentId(preference.getCollectorId().intValue());
+        pedido.getFactura().setMpPaymentType(preference.getPaymentMethods().toString());
+        pedido.getFactura().setMpMerchantOrderId(Integer.getInteger(preference.getExternalReference()));
+        pedido.getFactura().setMpPreferenceId(preference.getId());
+
+        PreferenceMP preferenceMP = new PreferenceMP();
+        preferenceMP.setStatusCode(preference.getResponse().getStatusCode());
+        preferenceMP.setId(preference.getId());
         return create(pedido);
     }
 
