@@ -144,14 +144,10 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/api/create_preference_mp")
-    public PreferenceMP crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
+    public ResponseEntity<PedidoDto> crearPreferenciaMercadoPago(@RequestBody PedidoCreateDto pedido) {
         MercadoPagoController cMercadoPago = new MercadoPagoController();
         Preference preference = cMercadoPago.getPreferenciaIdMercadoPago(pedido);
-        PreferenceMP preferenceMP = new PreferenceMP();
-
-        preferenceMP.setStatusCode(preference.getResponse().getStatusCode());
-        preferenceMP.setId(preference.getId());
-        return preferenceMP;
+        return create(pedido);
     }
 
     @PutMapping("/cancelar/{id}")
