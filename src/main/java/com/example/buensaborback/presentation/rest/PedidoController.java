@@ -92,6 +92,22 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
         return ResponseEntity.ok(filteredPedidos);
     }
 
+    @GetMapping("/getPorFechaYClienteYEstado/{idSucursal}/{idCliente}")
+    public ResponseEntity<List<PedidoDto>> getPorFechaYClienteYEstado(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
+            @PathVariable Long idSucursal,
+            @PathVariable Long idCliente,
+            @RequestParam String estado) {
+        List<PedidoDto> pedidos = pedidoService.getPorFecha(fechaInicio, fechaFin, idSucursal);
+        List<PedidoDto> filteredPedidos = pedidos.stream()
+                .filter(p -> p.getCliente() != null
+                        && p.getCliente().getId().equals(idCliente)
+                        && !p.isEliminado()
+                        && p.getEstado().toString().equals(estado))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(filteredPedidos);
+    }
 
     @GetMapping("/getPorCliente/{id}")
     public ResponseEntity<List<PedidoDto>> getPorCliente(@PathVariable Long id) {
