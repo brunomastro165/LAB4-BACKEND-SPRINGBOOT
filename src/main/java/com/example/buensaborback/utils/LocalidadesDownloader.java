@@ -32,7 +32,7 @@ class LocalidadesDownloader implements CommandLineRunner {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         JSONArray departamentosArray = jsonObject.getJSONArray("departamentos");
 
-// Obtener el país
+        // Obtener el país
         Pais pais = paisRepository.findById(1L).orElseGet(() -> {
             Pais newPais = new Pais();
             newPais.setId(1L);
@@ -60,11 +60,15 @@ class LocalidadesDownloader implements CommandLineRunner {
                 provincia = provinciaRepository.save(provincia);
             }
 
-            Localidad localidad = new Localidad();
-            localidad.setId(localidadId);
-            localidad.setNombre(localidadNombre);
-            localidad.setProvincia(provincia);
-            localidadRepository.save(localidad);
+            // Verificar si la localidad ya existe por id, si no, crearla y guardarla
+            Localidad localidad = localidadRepository.findById(localidadId).orElse(null);
+            if (localidad == null) {
+                localidad = new Localidad();
+                localidad.setId(localidadId);
+                localidad.setNombre(localidadNombre);
+                localidad.setProvincia(provincia);
+                localidadRepository.save(localidad);
+            }
         });
     }
 }
