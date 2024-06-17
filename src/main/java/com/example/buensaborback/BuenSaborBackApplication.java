@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 @SpringBootApplication
 public class BuenSaborBackApplication {
@@ -32,6 +35,7 @@ public class BuenSaborBackApplication {
                 "pedido",
                 "promocion",
                 "pomocionDetalle",
+                "provincia",
                 "sucursal",
                 "UnidadMedida",
                 "usuarioCliente",
@@ -44,9 +48,9 @@ public class BuenSaborBackApplication {
             System.out.println(".requestMatchers(HttpMethod.GET, \"/" + entidad + "/eliminados\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
             System.out.println(".requestMatchers(HttpMethod.GET, \"/" + entidad + "/noEliminados\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
             System.out.println(".requestMatchers(HttpMethod.POST, \"/" + entidad + "\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
+            System.out.println(".requestMatchers(HttpMethod.POST, \"/" + entidad + "/activate/{id}\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
             System.out.println(".requestMatchers(HttpMethod.PUT, \"/" + entidad + "/{id}\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
             System.out.println(".requestMatchers(HttpMethod.DELETE, \"/" + entidad + "/{id}\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
-            System.out.println(".requestMatchers(HttpMethod.POST, \"/" + entidad + "/activate/{id}\").hasAnyAuthority(\"ADMIN\", \"COCINERO\")");
         }
 */
     }

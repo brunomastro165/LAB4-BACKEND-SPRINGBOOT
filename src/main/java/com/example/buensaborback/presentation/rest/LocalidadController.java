@@ -23,7 +23,7 @@ public class LocalidadController extends BaseControllerImpl<Localidad, Localidad
         super(facade);
     }
 
-    @GetMapping("findByProvincia/{idProvincia}")
+    @GetMapping("/findByProvincia/{idProvincia}")
     public ResponseEntity<List<LocalidadDto>> getByProvincia(@PathVariable Long idProvincia) {
         logger.info("INICIO GET BY PROVINCIA");
         return ResponseEntity.ok(facade.findByProvinciaId(idProvincia));

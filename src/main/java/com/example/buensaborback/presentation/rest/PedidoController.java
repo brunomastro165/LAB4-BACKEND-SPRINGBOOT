@@ -191,5 +191,4 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoDto, Pedi
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no se pudo poner en pendiente");
 
     }
-
 }

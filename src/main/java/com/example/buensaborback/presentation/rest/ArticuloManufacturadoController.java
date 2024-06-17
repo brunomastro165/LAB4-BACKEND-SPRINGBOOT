@@ -43,7 +43,7 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
         return ResponseEntity.ok(facade.getPorSucursal(searchString,idSucursal));
     }
 
-    @PutMapping(value = "save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/save/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> edit(@RequestPart("entity") ArticuloManufacturadoEditDto entity,
                                   @RequestPart("files") MultipartFile[] files, @PathVariable Long id) {
         try {
