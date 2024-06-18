@@ -13,6 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Component
 class LocalidadesDownloader implements CommandLineRunner {
 
@@ -60,15 +62,16 @@ class LocalidadesDownloader implements CommandLineRunner {
                 provincia = provinciaRepository.save(provincia);
             }
 
-            // Verificar si la localidad ya existe por id, si no, crearla y guardarla
-            Localidad localidad = localidadRepository.findById(localidadId).orElse(null);
-            if (localidad == null) {
+            List<Localidad> localidades = localidadRepository.findByNombre(localidadNombre);
+            Localidad localidad;
+            if (localidades == null || localidades.isEmpty()) {
                 localidad = new Localidad();
                 localidad.setId(localidadId);
                 localidad.setNombre(localidadNombre);
                 localidad.setProvincia(provincia);
                 localidadRepository.save(localidad);
             }
+
         });
     }
 }
