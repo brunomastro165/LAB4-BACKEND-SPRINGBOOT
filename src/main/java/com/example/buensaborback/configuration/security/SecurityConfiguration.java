@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                                 //Endpoints cerrados y el rol que tiene acceso a ellos
                                 //ARTICULO INSUMO
                                 .requestMatchers(HttpMethod.GET, "/ArticuloInsumo/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/ArticuloInsumo").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.GET, "/ArticuloInsumo").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO","CAJERO")
                                 .requestMatchers(HttpMethod.GET, "/ArticuloInsumo/getArticulos/{idSucursal}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/ArticuloInsumo/getArticulosInsumos/{idSucursal}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/ArticuloInsumo/buscar/{idSucursal}").permitAll()
@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/ArticuloManufacturado/buscar/{idSucursal}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/ArticuloManufacturado/eliminados").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
                                 .requestMatchers(HttpMethod.GET, "/ArticuloManufacturado/noEliminados").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/ArticuloManufacturado").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
+                                .requestMatchers(HttpMethod.GET, "/ArticuloManufacturado").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO","CAJERO")
                                 .requestMatchers(HttpMethod.GET, "/ArticuloManufacturado/{id}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/ArticuloManufacturado").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
                                 .requestMatchers(HttpMethod.POST, "/ArticuloManufacturado/save").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
@@ -82,10 +82,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.DELETE, "/ArticuloManufacturadoDetalle/{id}").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
                                 .requestMatchers(HttpMethod.POST, "/ArticuloManufacturadoDetalle/activate/{id}").hasAnyAuthority("SUPERADMIN","ADMIN", "COCINERO")
                                 //CATEGORIA
-                                .requestMatchers(HttpMethod.PUT, "/categoria/addInsumo/{idCategoria}/{idInsumo}").hasAnyAuthority("SUPERADMIN","ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/categoria/addArticuloManufacturado/{idCategoria}/{idArticulo}").hasAnyAuthority("SUPERADMIN","ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/categoria/addSubCategoria/{idCategoria}").hasAnyAuthority("SUPERADMIN","ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/categoria/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
+
+
                                 .requestMatchers(HttpMethod.GET, "/categoria/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/categoria").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/categoria/getInsumos/{idCategoria}").permitAll()
@@ -96,8 +94,12 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/categoria/eliminados").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/categoria/noEliminados").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/categoria").hasAnyAuthority("SUPERADMIN","ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/categoria/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/categoria/activate/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/addInsumo/{idCategoria}/{idInsumo}").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/addArticuloManufacturado/{idCategoria}/{idArticulo}").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/categoria/addSubCategoria/{idCategoria}").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/categoria/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 //CLIENTE
                                 .requestMatchers(HttpMethod.GET, "/cliente/{id}").hasAnyAuthority("SUPERADMIN")
                                 .requestMatchers(HttpMethod.GET, "/cliente").hasAnyAuthority("SUPERADMIN")
@@ -132,10 +134,10 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/domicilio/activate/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 //EMPLEADO
                                 .requestMatchers(HttpMethod.GET, "/empleado/getPorSucursal/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/empleado/{id}").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/empleado/{id}").hasAnyAuthority("SUPERADMIN","ADMIN","CAJERO","COCINERO","DELIVERY")
                                 .requestMatchers(HttpMethod.GET, "/empleado").hasAnyAuthority("SUPERADMIN")
                                 .requestMatchers(HttpMethod.GET, "/empleado/role").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/empleado/getEmpleados").hasAnyAuthority("SUPERADMIN","ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/empleado/getEmpleados").hasAnyAuthority("SUPERADMIN","ADMIN","CAJERO","COCINERO","DELIVERY")
                                 .requestMatchers(HttpMethod.GET, "/empleado/eliminados").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/empleado/noEliminados").hasAnyAuthority("SUPERADMIN","ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/empleado").hasAnyAuthority("SUPERADMIN","ADMIN")
