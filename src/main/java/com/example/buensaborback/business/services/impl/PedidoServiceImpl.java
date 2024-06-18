@@ -192,8 +192,10 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     }
     public Pedido cancelar(Long id){
         Pedido pedido = getById(id);
+        if(pedido.getEstado() == Estado.PENDIENTE) {
             pedido.setEstado(Estado.CANCELADO);
             sumarStock(pedido);
+        }
             return update(pedido,id);
 
 
@@ -201,8 +203,10 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     }
     public Pedido pendiente(Long id){
         Pedido pedido = getById(id);
-        pedido.setEstado(Estado.CANCELADO);
-        restarStock(pedido);
+        if(pedido.getEstado() == Estado.CANCELADO) {
+            pedido.setEstado(Estado.PENDIENTE);
+            restarStock(pedido);
+        }
         return update(pedido,id);
 
 
