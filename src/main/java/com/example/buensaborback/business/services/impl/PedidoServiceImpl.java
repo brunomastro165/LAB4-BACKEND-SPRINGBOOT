@@ -197,9 +197,6 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
             sumarStock(pedido);
         }
             return update(pedido,id);
-
-
-
     }
     public Pedido pendiente(Long id){
         Pedido pedido = getById(id);
